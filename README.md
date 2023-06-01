@@ -1,6 +1,6 @@
 # team-koala
 CMPT 276 Summer 2023 Team Koala Project
-Edit Daniyar
+Edit Danny
 Edit Jack
 Edit Agraj
 Edit Rafael

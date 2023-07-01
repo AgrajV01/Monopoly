@@ -1,6 +1,7 @@
 import java.util.Random;
 
 public class Die {
+    public int diceOne, diceTwo;
     private Random random;
 
     public Die() {
@@ -8,6 +9,12 @@ public class Die {
     }
 
     public int roll() {
-        return random.nextInt(6) + 1;  // Returns a random number between 1 and 6
+        diceOne = random.nextInt(6) + 1;
+        diceTwo = random.nextInt(6) + 1;
+        return diceOne + diceTwo;
+    }
+
+    public boolean isDouble() {
+        return diceOne == diceTwo;
     }
 }

@@ -28,7 +28,7 @@ public class MonopolyUI {
                 updateUI();
             }
         });
-
+/*
         buyCityButton = new JButton("Buy City");
         buyCityButton.addActionListener(new ActionListener() {
             @Override
@@ -38,12 +38,13 @@ public class MonopolyUI {
             }
         });
 
+ */
         gameBoardPanel = new JPanel();
         // You should add code to draw the game board on the JPanel here
 
         frame.getContentPane().add(gameBoardPanel, BorderLayout.CENTER);
         frame.getContentPane().add(rollDiceButton, BorderLayout.NORTH);
-        frame.getContentPane().add(buyCityButton, BorderLayout.SOUTH);
+        //frame.getContentPane().add(buyCityButton, BorderLayout.SOUTH);
     }
 
     private void updateUI() {

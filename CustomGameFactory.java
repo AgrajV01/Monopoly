@@ -8,7 +8,7 @@ public class CustomGameFactory implements GameFactory {
 
     public CustomGameFactory(int numPlayers, int cash, String boardStyle) {
         this.numPlayers = numPlayers;
-        this.money = money;
+        this.money = cash;
         this.boardStyle = boardStyle;
     }
 

@@ -7,11 +7,14 @@ public class Player {
     private int position;
     private List<City> ownedCities;
 
+    private int jailCards; // number of get out of jail free cards this player has
+
     public Player(String name, int money) {
         this.name = name;
         this.money = money; // Starting money in Monopoly
         this.position = 0; // Starting at 'GO'
         this.ownedCities = new ArrayList<>();
+        this.jailCards = 0;
     }
 
     public String getName() {
@@ -35,7 +38,7 @@ public class Player {
     }
 
     public void move(int steps) {
-        position = (position + steps) % 10;  // Assuming the board size is 10
+        position = (position + steps) % 12;  // Assuming the board size is 10
     }
 
     public void buyCity(City city) {
@@ -50,8 +53,12 @@ public class Player {
 
     public void payRent(int rent) {
         money -= rent;
-        if(money < 0) {
-            // The player is bankrupt, handle it according to your game rules
+        if (money < 0) {
+            // The player is bankrupt, all players current properties and assets are transferred to person they owe
         }
+    }
+
+    public void receiveRent(int rent) {
+        money += rent;
     }
 }

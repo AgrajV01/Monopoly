@@ -15,24 +15,24 @@ public class Game {
         numOfPlayers = factory.getNumPlayers();
     }
 
+
     public void rollDiceAndMove() {
         int roll = die.roll();
         players.get(currentPlayer).move(roll);
+        System.out.println("You rolled: " + die.diceOne + " + " + die.diceTwo + " = " + roll);
 
         // Check if player's new position is a city and it's owned by someone else
         int position = players.get(currentPlayer).getPosition();
-        City city = board.getCity(position);
-        if (city.getOwner() != null && city.getOwner() != players.get(currentPlayer)) {
-            players.get(currentPlayer).payRent(city.getRent());
+        board.getPosition(position).action(players.get(currentPlayer)); // action is decided depending on position of the player
+    }
+
+    /*
+        public void buyCurrentCity() {
+            int position = players.get(currentPlayer).getPosition();
+            City city = board.getCity(position);
+            players.get(currentPlayer).buyCity(city);
         }
-    }
-
-    public void buyCurrentCity() {
-        int position = players.get(currentPlayer).getPosition();
-        City city = board.getCity(position);
-        players.get(currentPlayer).buyCity(city);
-    }
-
+    */
     public int switchTurn() {
         if(numOfPlayers == currentPlayer + 1)
             currentPlayer = -1;

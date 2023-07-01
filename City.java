@@ -1,4 +1,4 @@
-public class City {
+public class City implements Space {
     private String name;
     private int price;
     private int rent;
@@ -34,5 +34,19 @@ public class City {
     // Check if city is available to purchase
     public boolean isAvailable() {
         return owner == null;
+    }
+
+    @Override
+    public void action(Player player) {
+        System.out.println("You have landed on: " + this.name);
+        if (isAvailable()) {
+            // Purchase City? option appears on GUI
+            player.buyCity(this);
+        }
+        else {
+
+            player.payRent(rent);
+            owner.receiveRent(rent);
+        }
     }
 }

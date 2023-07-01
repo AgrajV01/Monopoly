@@ -138,8 +138,8 @@ public class GUI2 implements ActionListener {
 
 
         Random random = new Random();
-        int dice1 = random.nextInt(1,7);
-        int dice2 = random.nextInt(1,7);
+        int dice1 = random.nextInt(6) + 1;
+        int dice2 = random.nextInt(6) + 1;
 
         GUI2 a = new GUI2();
 

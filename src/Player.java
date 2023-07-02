@@ -1,5 +1,6 @@
 import java.util.ArrayList;
 import java.util.List;
+import java.lang.Math;
 
 public class Player {
     private String name;
@@ -7,6 +8,7 @@ public class Player {
     private int position;
     private List<City> ownedCities;
 
+    private boolean inJail;
     private int jailCards; // number of get out of jail free cards this player has
 
     public Player(String name, int money) {
@@ -15,6 +17,7 @@ public class Player {
         this.position = 0; // Starting at 'GO'
         this.ownedCities = new ArrayList<>();
         this.jailCards = 0;
+        inJail = false;
     }
 
     public String getName() {
@@ -33,12 +36,19 @@ public class Player {
         return position;
     }
 
+    public void setPosition(int position) { this.position = position; }
+
+    public void sendToJail() {
+        setPosition(10);
+        inJail = true;
+    }
     public List<City> getOwnedCities() {
         return ownedCities;
     }
 
     public void move(int steps) {
-        position = (position + steps) % 12;  // Assuming the board size is 10
+        position = Math.floorMod(position + steps, 12);  // Assuming the board size is 12
+
     }
 
     public void buyCity(City city) {
@@ -61,4 +71,14 @@ public class Player {
     public void receiveRent(int rent) {
         money += rent;
     }
+
+    public int getJailCards() {
+        return jailCards;
+    }
+
+    public void setJailCards(int count) {
+        jailCards = count;
+    }
+
+    public boolean getJailState() { return inJail; }
 }

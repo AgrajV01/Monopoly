@@ -10,11 +10,11 @@ public class Board {
     }
 
     private void initializeBoard() {
-        theBoard.add(0, new OtherSpace()); // start square
+        theBoard.add(0, new OtherSpace("Go!")); // start square
         theBoard.add(1, new City("City 1", 60, 10));
-        theBoard.add(2, new ActionCard()); // chance
+        theBoard.add(2, new ActionCard("Chance")); // chance
         theBoard.add(3, new City("City 2", 60, 10));
-        theBoard.add(4, new OtherSpace()); // income tax
+        theBoard.add(4, new OtherSpace("Income tax")); // income tax
         theBoard.add(5, new City("City 3", 60, 10));
         theBoard.add(6, new City("City 4", 60, 10));
         theBoard.add(7, new City("City 5", 60, 10));

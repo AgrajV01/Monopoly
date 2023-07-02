@@ -1,28 +1,30 @@
 import java.util.Random;
 
-public class ActionCard implements Space {
+public class ActionCard extends Space {
     private Random random;
 
-    public ActionCard() {
+    public ActionCard(String name) {
         random = new Random();
+        this.name = name;
+        this.isProperty = false;
     }
     @Override
     public void action(Player player) {
-        int cardType = random.nextInt(8);
+        int cardType = random.nextInt(6);
 
         switch (cardType) {
             case 0:
-                // receive get out of jail free card
+                player.setJailCards(player.getJailCards() + 1); // gives player a jail card
             case 1:
-                // go to jail
+                player.sendToJail(); // sends player to jail
             case 2:
-                // receive money from the bank
+                player.receiveRent(100); // player receives money from the bank
             case 3:
-                // pay taxes to the bank
+                player.payRent(150); // player pays taxes to the bank
             case 4:
-                // move forward X spaces
+                player.move(3); // player moves forward 3 squares
             case 5:
-                // move backward X spaces
+                player.move(-3); // player moves backward 3 squares
         }
     }
 }

@@ -1,10 +1,10 @@
-public class City implements Space {
-    private String name;
+public class City extends Space {
     private int price;
     private int rent;
     private Player owner;
 
     public City(String name, int price, int rent) {
+        this.isProperty = true;
         this.name = name;
         this.price = price;
         this.rent = rent;
@@ -44,7 +44,7 @@ public class City implements Space {
             player.buyCity(this);
         }
         else {
-
+            System.out.println("This property is owned by: " + owner);
             player.payRent(rent);
             owner.receiveRent(rent);
         }

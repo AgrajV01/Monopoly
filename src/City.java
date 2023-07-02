@@ -44,7 +44,7 @@ public class City extends Space {
             player.buyCity(this);
         }
         else {
-            System.out.println("This property is owned by: " + owner);
+            System.out.println("This property is owned by: " + owner.getName());
             player.payRent(rent);
             owner.receiveRent(rent);
         }

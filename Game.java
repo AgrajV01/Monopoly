@@ -13,6 +13,11 @@ public class Game {
         currentPlayer = player1; // Player 1 starts the game
     }
 
+    public void subscribeToPlayers(PlayerObserver p){
+        player1.subscribe(p);
+        player2.subscribe(p);
+    }
+
     public void rollDiceAndMove() {
         int roll = die.roll();
         currentPlayer.move(roll);

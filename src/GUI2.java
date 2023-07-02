@@ -14,6 +14,9 @@ public class GUI2 implements ActionListener {
     private JLabel label;
     private JFrame frame;
     private ImageIcon image;
+    private JLayeredPane layeredPane;
+    private JLabel diceLabel1;
+    private JLabel diceLabel2;
 
     String jailFile = "jail.png"; // Images
     String black = "black.png";
@@ -25,39 +28,47 @@ public class GUI2 implements ActionListener {
     String _5 = "5.png";
     String _6 = "6.png";
 
-    public GUI2() { // initializes panel and frame
-
-        panel = new JPanel(); // panel is decorator for frame
-        panel.setLayout(null);
+    public GUI2() {// initializes panel and frame
+        layeredPane = new JLayeredPane(); // create the layered pane
+        layeredPane.setPreferredSize(new Dimension(1000, 1000)); // set size
 
         frame = new JFrame(); // creating frame to add panel onto
-        frame.setSize(300, 375);
+        frame.setSize(1000, 1000);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
+        frame.add(layeredPane); // add layeredPane to frame
     }
 
-    public void setBackdrop(String fileName) { // backdrop decoration
-
+    public void setBackdrop(String fileName) {
         image = new ImageIcon(getClass().getResource(fileName));
         JLabel pictureLabel = new JLabel(image);
-        pictureLabel.setSize(300,350);
+        pictureLabel.setBounds(390,370,200, 300); // assuming the size of backdrop is same as the frame
 
-        panel.add(pictureLabel); // image must be added to panel last in order to be in the background
-        frame.add(panel); // adds panel to frame (Do I need to do this each time?)
+        layeredPane.add(pictureLabel, new Integer(2)); // add to layeredPane on second layer
 
     }
 
-    public void setOkButton() { // button decoration
+    public void setOkButton() {
+        button = new JButton("Roll");
+        button.setBounds(450,600, 80, 25);
+        button.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                // When button is clicked, remove old dice labels
+                layeredPane.remove(diceLabel1);
+                layeredPane.remove(diceLabel2);
+                // Generate new dice values
+                Random random = new Random();
+                int dice1 = random.nextInt(6) + 1;
+                int dice2 = random.nextInt(6) + 1;
+                // Display new dice values
+                displayDice(dice1, dice2);
+                // Refresh the frame
+                frame.repaint();
+            }
+        });
 
-        button = new JButton("OK"); // creates button object
-        button.setBounds(110, 300, 80, 25); // bounds start from upper left corner
-        button.addActionListener(this); // "this" refers to "this class" and using an action method within it
-
-        label = new JLabel("Press OK to Continue."); // label decorator for frame
-        label.setBounds(80, 275, 175, 25);
-
-        panel.add(button);
-        panel.add(label);
+        layeredPane.add(button, new Integer(3)); // add to layeredPane on the top layer
 
     }
 
@@ -80,9 +91,6 @@ public class GUI2 implements ActionListener {
 
     public void displayDice(int firstDice, int secondDice) {
 
-        //JFrame newFrame = new JFrame();
-        //JPanel newPanel = new JPanel();
-
         String dice1 = String.valueOf(firstDice) + ".png"; // create relevant file names
         String dice2 = String.valueOf(secondDice) + ".png";
 
@@ -91,23 +99,36 @@ public class GUI2 implements ActionListener {
 
         ImageIcon image1 = new ImageIcon(getClass().getResource(dice1)); // gets images of dice
         ImageIcon image2  = new ImageIcon(getClass().getResource(dice2));
-        JLabel diceLabel1 = new JLabel(image1);
-        JLabel diceLabel2 = new JLabel(image2);
+        diceLabel1 = new JLabel(image1);
+        diceLabel2 = new JLabel(image2);
 
-        diceLabel1.setBounds(40, 110, 95, 95);
-        diceLabel2.setBounds(150, 110, 95, 95);
+        diceLabel1.setBounds(410, 390, 75, 75);
+        diceLabel2.setBounds(500, 390, 75, 75);
 
-        panel.add(diceLabel1);
-        panel.add(diceLabel2);
-
-        setOkButton();
-
+        layeredPane.add(diceLabel1, new Integer(3)); // add to layeredPane on higher layer
+        layeredPane.add(diceLabel2, new Integer(3)); // add to layeredPane on higher layer
 
         setBackdrop(black);
 
-        frame.add(panel);
-        frame.setVisible(true); // must come at the very end
+        setOkButton();
 
+    }
+
+    public void initializeTheBoard() {
+        System.out.println("initializingTheBoard");
+
+        ImageIcon image1 = new ImageIcon(getClass().getResource("board.png")); // gets images of dice
+        JLabel boardImage = new JLabel(image1);
+
+        boardImage.setBounds(0, 0, 1000, 1000);
+
+        layeredPane.add(boardImage, new Integer(1)); // add to layeredPane on lower layer
+
+        setOkButton();
+
+        setBackdrop(black);
+
+        frame.setVisible(true); // must come at the very end
     }
 
     public void rollDice() {
@@ -135,22 +156,13 @@ public class GUI2 implements ActionListener {
     }
 
     public static void main(String[] args) {
-
-
         Random random = new Random();
         int dice1 = random.nextInt(6) + 1;
         int dice2 = random.nextInt(6) + 1;
 
         GUI2 a = new GUI2();
-
+        a.initializeTheBoard();
         a.displayDice(dice1, dice2);
-
-        GUI2 b = new GUI2();
-
-        b.rollDice(); // creates new GUI object
-
-
-
     }
 
     @Override

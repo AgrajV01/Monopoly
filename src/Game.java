@@ -46,6 +46,10 @@ public class Game {
         return currentPlayer;
     }
 
+    public int getNumPlayers() {
+        return numOfPlayers;
+    }
+
     public Board getBoard() {
         return board;
     }

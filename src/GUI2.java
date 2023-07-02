@@ -2,8 +2,9 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.Color;
+import java.util.ArrayList;
 import java.util.Random;
+import java.util.List;
 
 public class GUI2 implements ActionListener {
 
@@ -17,6 +18,7 @@ public class GUI2 implements ActionListener {
     private JLayeredPane layeredPane;
     private JLabel diceLabel1;
     private JLabel diceLabel2;
+    private static final int DISTPLAYERS = 15;
 
     String jailFile = "jail.png"; // Images
     String black = "black.png";
@@ -114,7 +116,7 @@ public class GUI2 implements ActionListener {
 
     }
 
-    public void initializeTheBoard() {
+    public void initializeTheBoard(Game game) {
         System.out.println("initializingTheBoard");
 
         ImageIcon image1 = new ImageIcon(getClass().getResource("board.png")); // gets images of dice
@@ -128,7 +130,27 @@ public class GUI2 implements ActionListener {
 
         setBackdrop(black);
 
+        displayPlayers(game);
+
         frame.setVisible(true); // must come at the very end
+    }
+
+    public void displayPlayers(Game game) {
+        System.out.println("adding Players");
+
+        List<JLabel> playerIcons = new ArrayList<JLabel>(game.getNumPlayers());
+
+        for(int i = 1; i < game.getNumPlayers()+1; i++) {
+
+            ImageIcon image1 = new ImageIcon(getClass().getResource("P" + i + ".png")); // gets images of dice
+            playerIcons.add(new JLabel(image1));
+
+            playerIcons.get(i-1).setBounds(820 + (i-1) * DISTPLAYERS, 820 + (i-1) * DISTPLAYERS, 30, 30);
+
+            layeredPane.add(playerIcons.get(i-1), new Integer(3)); // add to layeredPane on lower layer
+        }
+
+            frame.setVisible(true); // must come at the very end
     }
 
     public void rollDice() {
@@ -156,12 +178,20 @@ public class GUI2 implements ActionListener {
     }
 
     public static void main(String[] args) {
+        // Create the game
+        int numPlayers = 4;
+        int cash = 2000;
+        String boardStyle = "Classic";
+
+        GameFactory factory = new CustomGameFactory(numPlayers, cash, boardStyle);
+        Game game = new Game(factory);
+
         Random random = new Random();
         int dice1 = random.nextInt(6) + 1;
         int dice2 = random.nextInt(6) + 1;
 
         GUI2 a = new GUI2();
-        a.initializeTheBoard();
+        a.initializeTheBoard(game);
         a.displayDice(dice1, dice2);
     }
 

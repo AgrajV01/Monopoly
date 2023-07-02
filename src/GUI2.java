@@ -10,6 +10,7 @@ public class GUI2 implements ActionListener {
 
 
     private JPanel panel;
+    private List<JLabel> playerIcons = new ArrayList<>();
     private JButton button;
     private JButton rollButton;
     private JLabel label;
@@ -76,6 +77,75 @@ public class GUI2 implements ActionListener {
 
         layeredPane.add(button, new Integer(3)); // add to layeredPane on the top layer
 
+        button.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                // When button is clicked, remove old dice labels
+                layeredPane.remove(diceLabel1);
+                layeredPane.remove(diceLabel2);
+                // Generate new dice values
+                Random random = new Random();
+                int dice1 = random.nextInt(6) + 1;
+                int dice2 = random.nextInt(6) + 1;
+                // Move the current player (you'll need to keep track of whose turn it is)
+                game.makeMove(dice1 + dice2);
+
+                // Retrieve the current player's position after making a move
+                int currentPlayerPosition = game.getCurrentPlayer().getPosition();
+                // Retrieve the player's piece
+                JLabel currentPlayerIcon = playerIcons.get(game.getCurrentPlayerIndex());
+                // Define an array of points for the board positions
+                Point[] boardPositions = getBoardPositions();
+                // Animate the piece to the new position
+                animateMovement(currentPlayerIcon, boardPositions[currentPlayerPosition], 500);
+
+                // Display new dice values
+                displayDice(dice1, dice2);
+                // Refresh the frame
+                frame.repaint();
+            }
+        });
+
+    }
+
+    private Point[] getBoardPositions() {
+        Point[] boardPositions = new Point[40];
+        int length = 800; // Assuming your board image is 800px wide and tall
+        int offset = 50; // Offset from the border of the board
+        int cellWidth = length / 5; // Enlarging each cell
+
+        for (int i = 0; i < 10; i++) {
+            // Bottom row (0 to 9)
+            boardPositions[i] = new Point(offset + i * cellWidth, length - offset);
+            // Right column (10 to 19)
+            boardPositions[i + 10] = new Point(length - offset, length - offset - i * cellWidth);
+            // Top row (20 to 29)
+            boardPositions[i + 20] = new Point(length - offset - i * cellWidth, offset);
+            // Left column (30 to 39)
+            boardPositions[i + 30] = new Point(offset, offset + i * cellWidth);
+        }
+
+        return boardPositions;
+    }
+
+    private void animateMovement(JLabel piece, Point newPosition, int delay) {
+        Timer timer = new Timer(delay, null);
+        timer.addActionListener(new ActionListener() {
+            int xDirection = (newPosition.x - piece.getX()) > 0 ? 1 : -1;
+            int yDirection = (newPosition.y - piece.getY()) > 0 ? 1 : -1;
+
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                if (piece.getLocation().equals(newPosition)) {
+                    timer.stop();
+                } else {
+                    int nextX = piece.getX() + xDirection;
+                    int nextY = piece.getY() + yDirection;
+                    piece.setLocation(nextX, nextY);
+                }
+            }
+        });
+        timer.start();
     }
 
     /*public void displayJail(Game game) { // uses backdrop and button decorations
@@ -140,8 +210,6 @@ public class GUI2 implements ActionListener {
 
     public void displayPlayers(Game game) {
         System.out.println("adding Players");
-
-        List<JLabel> playerIcons = new ArrayList<JLabel>();
 
         for(int i = 1; i < game.getNumPlayers()+1; i++) {
 
@@ -216,6 +284,7 @@ public class GUI2 implements ActionListener {
 
 
     }
+
 
     public static void main(String[] args) {
         // Create the game

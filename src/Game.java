@@ -61,8 +61,8 @@ public class Game {
     }
 
 
-    public int getCurrentPlayer() {
-        return currentPlayer;
+    public Player getCurrentPlayer() {
+        return players.get(currentPlayer);
     }
 
     public int getNumPlayers() {
@@ -71,5 +71,9 @@ public class Game {
 
     public Board getBoard() {
         return board;
+    }
+
+    public int getCurrentPlayerIndex() {
+        return currentPlayer;
     }
 }

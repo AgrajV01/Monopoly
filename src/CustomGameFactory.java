@@ -21,7 +21,7 @@ public class CustomGameFactory implements GameFactory {
     public List<Player> createPlayers() {
         List<Player> players = new ArrayList<>();
         for(int i=0; i<numPlayers; i++) {
-            String name = "Player" + (char)i;
+            String name = "Player " + i;
             players.add(new Player(name, money));
         }
         return players;

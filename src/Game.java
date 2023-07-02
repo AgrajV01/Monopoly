@@ -20,6 +20,9 @@ public class Game {
         int roll = die.roll();
         players.get(currentPlayer).move(roll);
         System.out.println("You rolled: " + die.diceOne + " + " + die.diceTwo + " = " + roll);
+        if (die.isDouble()) {
+            System.out.println("You rolled a double!");
+        }
 
         // Check if player's new position is a city and it's owned by someone else
         int position = players.get(currentPlayer).getPosition();

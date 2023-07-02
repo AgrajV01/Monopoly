@@ -19,6 +19,7 @@ public class GUI2 implements ActionListener {
     private JLabel diceLabel1;
     private JLabel diceLabel2;
     private static final int DISTPLAYERS = 15;
+    private static final int MOVEUP = -90;
 
     String jailFile = "jail.png"; // Images
     String black = "black.png";
@@ -44,7 +45,7 @@ public class GUI2 implements ActionListener {
     public void setBackdrop(String fileName) {
         image = new ImageIcon(getClass().getResource(fileName));
         JLabel pictureLabel = new JLabel(image);
-        pictureLabel.setBounds(390,370,200, 300); // assuming the size of backdrop is same as the frame
+        pictureLabel.setBounds(390,370+MOVEUP,200, 300); // assuming the size of backdrop is same as the frame
 
         layeredPane.add(pictureLabel, new Integer(2)); // add to layeredPane on second layer
 
@@ -52,7 +53,7 @@ public class GUI2 implements ActionListener {
 
     public void setOkButton() {
         button = new JButton("Roll");
-        button.setBounds(450,600, 80, 25);
+        button.setBounds(450,600+MOVEUP, 80, 25);
         button.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -104,8 +105,8 @@ public class GUI2 implements ActionListener {
         diceLabel1 = new JLabel(image1);
         diceLabel2 = new JLabel(image2);
 
-        diceLabel1.setBounds(410, 390, 75, 75);
-        diceLabel2.setBounds(500, 390, 75, 75);
+        diceLabel1.setBounds(410, 390+MOVEUP, 75, 75);
+        diceLabel2.setBounds(500, 390+MOVEUP, 75, 75);
 
         layeredPane.add(diceLabel1, new Integer(3)); // add to layeredPane on higher layer
         layeredPane.add(diceLabel2, new Integer(3)); // add to layeredPane on higher layer
@@ -122,7 +123,7 @@ public class GUI2 implements ActionListener {
         ImageIcon image1 = new ImageIcon(getClass().getResource("board.png")); // gets images of dice
         JLabel boardImage = new JLabel(image1);
 
-        boardImage.setBounds(0, 0, 1000, 1000);
+        boardImage.setBounds(0, 0+MOVEUP, 1000, 1000);
 
         layeredPane.add(boardImage, new Integer(1)); // add to layeredPane on lower layer
 
@@ -149,7 +150,7 @@ public class GUI2 implements ActionListener {
 
             JLabel playerIcon = new JLabel(resizedIcon);
 
-            playerIcon.setBounds(800 + (i - 1) * DISTPLAYERS, 800 + (i - 1) * DISTPLAYERS, 60, 60);
+            playerIcon.setBounds(800 + (i - 1) * DISTPLAYERS, 800 + MOVEUP + (i - 1) * DISTPLAYERS, 60, 60);
             playerIcons.add(playerIcon);
 
             layeredPane.add(playerIcons.get(i - 1), new Integer(3)); // add to layeredPane on lower layer

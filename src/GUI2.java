@@ -18,7 +18,7 @@ public class GUI2 implements ActionListener {
     private JLayeredPane layeredPane;
     private JLabel diceLabel1;
     private JLabel diceLabel2;
-    private static final int DISTPLAYERS = 15;
+    private static final int DISTPLAYERS = 20;
     private static final int MOVEUP = -90;
 
     String jailFile = "jail.png"; // Images
@@ -145,12 +145,12 @@ public class GUI2 implements ActionListener {
 
             ImageIcon originalIcon = new ImageIcon(getClass().getResource("P" + i + ".png")); // gets images of dice
             Image originalImage = originalIcon.getImage();
-            Image resizedImage = originalImage.getScaledInstance(60, -1, Image.SCALE_SMOOTH);
+            Image resizedImage = originalImage.getScaledInstance(50, -1, Image.SCALE_SMOOTH);
             ImageIcon resizedIcon = new ImageIcon(resizedImage);
 
             JLabel playerIcon = new JLabel(resizedIcon);
 
-            playerIcon.setBounds(800 + (i - 1) * DISTPLAYERS, 800 + MOVEUP + (i - 1) * DISTPLAYERS, 60, 60);
+            playerIcon.setBounds(800 + (i - 1) * DISTPLAYERS, 800 + MOVEUP + (i - 1) * DISTPLAYERS, 50, 50);
             playerIcons.add(playerIcon);
 
             layeredPane.add(playerIcons.get(i - 1), new Integer(3)); // add to layeredPane on lower layer

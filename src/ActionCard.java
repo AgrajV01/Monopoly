@@ -1,5 +1,9 @@
 import java.util.Random;
-
+/**
+ * The ActionCard class represents an action card in the Monopoly game.
+ * It extends the Space class and implements the action method to perform a specific action
+ * when a player lands on an action card space.
+ */
 public class ActionCard extends Space {
     private Random random;
 

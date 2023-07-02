@@ -1,3 +1,7 @@
+/**
+ * The Main class serves as the entry point for starting the Monopoly game.
+ * It creates an instance of the game with custom settings and initializes the user interface.
+ */
 public class Main {
     public static void main(String[] args) {
         // Create the game

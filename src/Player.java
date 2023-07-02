@@ -1,7 +1,11 @@
 import java.util.ArrayList;
 import java.util.List;
 import java.lang.Math;
-
+/**
+ * The Player class represents a player in the Monopoly game.
+ * It holds information about the player's name, money, position, owned cities,
+ * jail status, and jail cards.
+ */
 public class Player {
     private String name;
     private int money;
@@ -65,7 +69,11 @@ public class Player {
         money -= rent;
         if (money < 0) {
             // The player is bankrupt, all players current properties and assets are transferred to person they owe
+            playerbankrupted();
         }
+    }
+    private void playerbankrupted(){
+        System.out.println("Player " + name + " is Bankrupted!");
     }
 
     public void receiveRent(int rent) {

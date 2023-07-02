@@ -19,6 +19,7 @@ public class GUI2 implements ActionListener {
     private JLabel diceLabel1;
     private JLabel diceLabel2;
     private static final int DISTPLAYERS = 20;
+    private static final int DISTCARDS = DISTPLAYERS/4;
     private static final int MOVEUP = -80;
 
     String jailFile = "jail.png"; // Images
@@ -51,7 +52,7 @@ public class GUI2 implements ActionListener {
 
     }
 
-    public void setOkButton() {
+    public void setOkButton(Game game) {
         button = new JButton("Roll");
         button.setBounds(450,600+MOVEUP, 80, 25);
         button.addActionListener(new ActionListener() {
@@ -64,6 +65,8 @@ public class GUI2 implements ActionListener {
                 Random random = new Random();
                 int dice1 = random.nextInt(6) + 1;
                 int dice2 = random.nextInt(6) + 1;
+                // Move the current player (you'll need to keep track of whose turn it is)
+                game.makeMove(dice1 + dice2);
                 // Display new dice values
                 displayDice(dice1, dice2);
                 // Refresh the frame
@@ -75,17 +78,17 @@ public class GUI2 implements ActionListener {
 
     }
 
-    public void displayJail() { // uses backdrop and button decorations
+    /*public void displayJail(Game game) { // uses backdrop and button decorations
 
         //panel.removeAll(); // removes previous panel components
-        setOkButton();
+        setOkButton(game);
         setBackdrop(jailFile);  // note: backdrop must always be set last for visibility
 
         frame.add(panel);
         frame.setVisible(true); // must come at the very end
 
 
-    }
+    }*/
 
     // binary options buttons function (Yes/No)
     // display question label
@@ -113,8 +116,6 @@ public class GUI2 implements ActionListener {
 
         setBackdrop(black);
 
-        setOkButton();
-
     }
 
     public void initializeTheBoard(Game game) {
@@ -127,11 +128,12 @@ public class GUI2 implements ActionListener {
 
         layeredPane.add(boardImage, new Integer(1)); // add to layeredPane on lower layer
 
-        setOkButton();
+        setOkButton(game);
 
         setBackdrop(black);
 
         displayPlayers(game);
+        displayCards(5,2);
 
         frame.setVisible(true); // must come at the very end
     }
@@ -139,7 +141,7 @@ public class GUI2 implements ActionListener {
     public void displayPlayers(Game game) {
         System.out.println("adding Players");
 
-        List<JLabel> playerIcons = new ArrayList<JLabel>(game.getNumPlayers());
+        List<JLabel> playerIcons = new ArrayList<JLabel>();
 
         for(int i = 1; i < game.getNumPlayers()+1; i++) {
 
@@ -157,6 +159,38 @@ public class GUI2 implements ActionListener {
         }
 
         frame.setVisible(true); // must come at the very end
+    }
+
+    public void displayCards(int chance, int chest) {
+        System.out.println("adding cards");
+
+        for(int i = 1; i < chance+1; i++) {
+            ImageIcon originalIcon = new ImageIcon(getClass().getResource("chance" + ".png"));
+            Image originalImage = originalIcon.getImage();
+            Image resizedImage = originalImage.getScaledInstance(320, -1, Image.SCALE_SMOOTH);
+            ImageIcon resizedIcon = new ImageIcon(resizedImage);
+
+            JLabel chanceIcon = new JLabel(resizedIcon);
+
+            chanceIcon.setBounds(460 + (i - 1) * DISTCARDS, 460 + MOVEUP + (i - 1) * DISTCARDS, 320, 320);
+
+            layeredPane.add(chanceIcon, new Integer(4));
+        }
+
+        for(int i = 1; i < chest+1; i++) {
+            ImageIcon originalIcon = new ImageIcon(getClass().getResource("chest" + ".png"));
+            Image originalImage = originalIcon.getImage();
+            Image resizedImage = originalImage.getScaledInstance(250, -1, Image.SCALE_SMOOTH);
+            ImageIcon resizedIcon = new ImageIcon(resizedImage);
+
+            JLabel chestIcon = new JLabel(resizedIcon);
+
+            chestIcon.setBounds(220 + (i - 1) * DISTCARDS, 220 + MOVEUP + (i - 1) * DISTCARDS, 250, 250);
+
+            layeredPane.add(chestIcon, new Integer(4));
+        }
+
+        frame.setVisible(true);
     }
 
     public void rollDice() {

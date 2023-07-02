@@ -59,6 +59,7 @@ public class Player {
         }
     }
 
+
     public void buyCity(City city) {
         if(city.getPrice() > money) {
             System.out.println("Not enough money to buy this city");
@@ -70,9 +71,14 @@ public class Player {
     }
 
     public void payRent(int rent) {
-        money -= rent;
-        if (money < 0) {
-            // The player is bankrupt, all players current properties and assets are transferred to person they owe
+        if(money >= rent) {
+            money -= rent;
+        } else {
+            System.out.println("Not enough money to pay rent. Transferring assets and going bankrupt.");
+            for(City city : ownedCities) {
+                city.getOwner().receiveRent(city.getPrice());
+                city.setOwner(null);
+            }
             playerbankrupted();
         }
     }

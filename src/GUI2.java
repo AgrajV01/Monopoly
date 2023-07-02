@@ -19,7 +19,7 @@ public class GUI2 implements ActionListener {
     private JLabel diceLabel1;
     private JLabel diceLabel2;
     private static final int DISTPLAYERS = 20;
-    private static final int MOVEUP = -90;
+    private static final int MOVEUP = -80;
 
     String jailFile = "jail.png"; // Images
     String black = "black.png";

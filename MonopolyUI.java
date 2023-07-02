@@ -3,7 +3,7 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-public class MonopolyUI {
+public class MonopolyUI implements PlayerObserver {
     private Game game;
     private JFrame frame;
     private JButton rollDiceButton;
@@ -52,5 +52,20 @@ public class MonopolyUI {
 
     public void showUI() {
         frame.setVisible(true);
+    }
+    
+    public void onGameOver(){
+        updateUI();
+    }
+
+    public void onPlayerState(Player p){
+        String name = p.getName();
+        if (name.indexOf('1' ) != -1) {
+            updateUI();
+
+        }else if (name.indexOf('2' ) != -1){
+            updateUI();
+        }
+
     }
 }

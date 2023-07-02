@@ -142,15 +142,20 @@ public class GUI2 implements ActionListener {
 
         for(int i = 1; i < game.getNumPlayers()+1; i++) {
 
-            ImageIcon image1 = new ImageIcon(getClass().getResource("P" + i + ".png")); // gets images of dice
-            playerIcons.add(new JLabel(image1));
+            ImageIcon originalIcon = new ImageIcon(getClass().getResource("P" + i + ".png")); // gets images of dice
+            Image originalImage = originalIcon.getImage();
+            Image resizedImage = originalImage.getScaledInstance(60, -1, Image.SCALE_SMOOTH);
+            ImageIcon resizedIcon = new ImageIcon(resizedImage);
 
-            playerIcons.get(i-1).setBounds(820 + (i-1) * DISTPLAYERS, 820 + (i-1) * DISTPLAYERS, 30, 30);
+            JLabel playerIcon = new JLabel(resizedIcon);
 
-            layeredPane.add(playerIcons.get(i-1), new Integer(3)); // add to layeredPane on lower layer
+            playerIcon.setBounds(800 + (i - 1) * DISTPLAYERS, 800 + (i - 1) * DISTPLAYERS, 60, 60);
+            playerIcons.add(playerIcon);
+
+            layeredPane.add(playerIcons.get(i - 1), new Integer(3)); // add to layeredPane on lower layer
         }
 
-            frame.setVisible(true); // must come at the very end
+        frame.setVisible(true); // must come at the very end
     }
 
     public void rollDice() {

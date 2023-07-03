@@ -7,7 +7,7 @@ import java.util.Random;
 import java.util.List;
 
 public class GUI2 implements ActionListener {
-
+    private Point[] boardPositions;
     private static Die die = new Die();
     private JPanel panel;
     private List<JLabel> playerIcons = new ArrayList<>();
@@ -72,8 +72,6 @@ public class GUI2 implements ActionListener {
                 int currentPlayerPosition = game.getPrevPlayer().getPosition();
                 // Retrieve the player's piece
                 JLabel currentPlayerIcon = playerIcons.get(game.getPrevPlayerIndex());
-                // Define an array of points for the board positions
-                Point[] boardPositions = getBoardPositions();
                 // Animate the piece to the new position
                 animateMovement(currentPlayerIcon, boardPositions[currentPlayerPosition], 50);
 
@@ -83,28 +81,35 @@ public class GUI2 implements ActionListener {
                 frame.repaint();
             }
         });
-
     }
 
-    private Point[] getBoardPositions() {
-        Point[] boardPositions = new Point[40];
-        int length = 10; // Assuming your board image is 800px wide and tall
-        int offset = 5; // Offset from the border of the board
-        int cellWidth = length / 5; // Enlarging each cell
+    private void setBoardPositions() {
+        int cellsPerSide = 10;
+        Point[] positions = new Point[cellsPerSide * 4];
+        int boardSize = 1130;
+        int squareSize = boardSize/cellsPerSide; // Size of a square (900/10 assuming board height and width is 900)
+        int xDisplacement = 0;
+        int yDisplacement = -200;
 
-        for (int i = 0; i < 10; i++) {
-            // Top row (0 to 9)
-            boardPositions[i] = new Point(offset + i * cellWidth, offset);
-            // Left column (10 to 19)
-            boardPositions[i + 10] = new Point(offset, offset + i * cellWidth);
-            // Bottom row (20 to 29)
-            boardPositions[i + 20] = new Point(length - offset - i * cellWidth, length - offset);
-            // Right column (30 to 39)
-            boardPositions[i + 30] = new Point(length - offset, length - offset - i * cellWidth);
+        // Set up positions along the bottom of the board
+        for (int i = 0; i < cellsPerSide; i++) {
+            positions[i] = new Point(boardSize - i * squareSize + xDisplacement, boardSize - squareSize + yDisplacement);
         }
-
-        return boardPositions;
+        // Set up positions along the right side of the board
+        for (int i = 0; i < cellsPerSide; i++) {
+            positions[cellsPerSide + i] = new Point(0 + xDisplacement, boardSize - i * squareSize + yDisplacement);
+        }
+        // Set up positions along the top of the board
+        for (int i = 0; i < cellsPerSide; i++) {
+            positions[2 * cellsPerSide + i] = new Point(i * squareSize + xDisplacement, 0 + yDisplacement);
+        }
+        // Set up positions along the left side of the board
+        for (int i = 0; i < cellsPerSide; i++) {
+            positions[3 * cellsPerSide + i] = new Point(boardSize - squareSize + xDisplacement, i * squareSize + yDisplacement);
+        }
+        boardPositions = positions;
     }
+
 
     private void animateMovement(JLabel piece, Point newPosition, int delay) {
         Timer timer = new Timer(delay, null);
@@ -187,6 +192,8 @@ public class GUI2 implements ActionListener {
     public void initializeTheBoard(Game game) {
         System.out.println("initializingTheBoard");
 
+        setBoardPositions();
+
         ImageIcon icon = new ImageIcon(getClass().getResource("board.png")); // gets images of dice
         Image image = icon.getImage();
         image = image.getScaledInstance(820, -1, Image.SCALE_SMOOTH);
@@ -235,12 +242,12 @@ public class GUI2 implements ActionListener {
         for(int i = 1; i < chance+1; i++) {
             ImageIcon originalIcon = new ImageIcon(getClass().getResource("chance" + ".png"));
             Image originalImage = originalIcon.getImage();
-            Image resizedImage = originalImage.getScaledInstance(320, -1, Image.SCALE_SMOOTH);
+            Image resizedImage = originalImage.getScaledInstance(200, -1, Image.SCALE_SMOOTH);
             ImageIcon resizedIcon = new ImageIcon(resizedImage);
 
             JLabel chanceIcon = new JLabel(resizedIcon);
 
-            chanceIcon.setBounds(460 + (i - 1) * DISTCARDS, 460 + MOVEUP + (i - 1) * DISTCARDS, 320, 320);
+            chanceIcon.setBounds(510 + (i - 1) * DISTCARDS, 510 + MOVEUP + (i - 1) * DISTCARDS, 320, 320);
 
             layeredPane.add(chanceIcon, new Integer(4));
         }
@@ -248,12 +255,12 @@ public class GUI2 implements ActionListener {
         for(int i = 1; i < chest+1; i++) {
             ImageIcon originalIcon = new ImageIcon(getClass().getResource("chest" + ".png"));
             Image originalImage = originalIcon.getImage();
-            Image resizedImage = originalImage.getScaledInstance(250, -1, Image.SCALE_SMOOTH);
+            Image resizedImage = originalImage.getScaledInstance(150, -1, Image.SCALE_SMOOTH);
             ImageIcon resizedIcon = new ImageIcon(resizedImage);
 
             JLabel chestIcon = new JLabel(resizedIcon);
 
-            chestIcon.setBounds(220 + (i - 1) * DISTCARDS, 220 + MOVEUP + (i - 1) * DISTCARDS, 250, 250);
+            chestIcon.setBounds(170 + (i - 1) * DISTCARDS, 170 + MOVEUP + (i - 1) * DISTCARDS, 250, 250);
 
             layeredPane.add(chestIcon, new Integer(4));
         }

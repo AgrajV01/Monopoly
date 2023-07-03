@@ -50,7 +50,17 @@ public class Utility extends Space{
         System.out.println("You have landed on: " + this.name);
         if (isAvailable()) {
             // Purchase City? option appears on GUI
-            player.buyUtility(this);
+            //player.buyUtility(this);
+    // Purchase City? option appears on the terminal after entering Y/N, the player pieces move
+            System.out.println("This utility is available for purchase at a price of " + price);
+            if (player.wantToBuyUtility(this)) {
+                player.buyUtility(this);
+                System.out.println("Congratulations! You have successfully purchased " + this.name);
+            } else {
+                System.out.println("You chose not to purchase " + this.name);
+            }
+
+
         }
         else {
             System.out.println("This property is owned by: " + owner.getName());

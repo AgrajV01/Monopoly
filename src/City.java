@@ -44,7 +44,15 @@ public class City extends Space {
         System.out.println("You have landed on: " + this.name);
         if (isAvailable()) {
             // Purchase City? option appears on GUI
-            player.buyCity(this);
+            //player.buyCity(this);
+            System.out.println("This city is available for purchase at a price of $" + price);
+            if (player.wantToBuyCity(this)) {
+                player.buyCity(this);
+                System.out.println("Congratulations! You have successfully purchased " + this.name);
+            } else {
+                System.out.println("You chose not to purchase " + this.name);
+            }
+
         }
         else {
             System.out.println("This property is owned by: " + owner.getName());

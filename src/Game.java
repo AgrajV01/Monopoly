@@ -48,6 +48,10 @@ public class Game {
 
         // Check if player's new position is a city and it's owned by someone else
         int position = players.get(currentPlayer).getPosition();
+
+        board.getPosition(position).action(getCurrentPlayer());
+
+/*
         if(board.getPosition(position) instanceof City) {
             City city = (City) board.getPosition(position);
             if(city.getOwner() != null && city.getOwner() != players.get(currentPlayer)) {
@@ -55,6 +59,9 @@ public class Game {
                 city.getOwner().receiveRent(city.getRent());
             }
         }
+
+ */
+
 
         // Switch the turn to the next player
         switchTurn();

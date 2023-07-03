@@ -51,7 +51,8 @@ public class Utility extends Space{
         if (isAvailable()) {
             // Purchase City? option appears on GUI
             //player.buyUtility(this);
-    // Purchase City? option appears on the terminal after entering Y/N, the player pieces move
+            
+            // Purchase City? option appears on the terminal after entering Y/N, the player pieces move
             System.out.println("This utility is available for purchase at a price of " + price);
             if (player.wantToBuyUtility(this)) {
                 player.buyUtility(this);
@@ -64,8 +65,14 @@ public class Utility extends Space{
         }
         else {
             System.out.println("This property is owned by: " + owner.getName());
+            // player.payRent(rent);
+            // owner.receiveRent(rent);
+            int rent = this.rent;
+            System.out.println("Rent to be paid: $" + rent);
+            System.out.println( player.getName() + " initially has $" + player.getMoney());
             player.payRent(rent);
             owner.receiveRent(rent);
+            System.out.println("Amount left after paying rent is: $" + player.getMoney());
         }
     }
 }

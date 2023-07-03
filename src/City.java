@@ -56,8 +56,15 @@ public class City extends Space {
         }
         else {
             System.out.println("This property is owned by: " + owner.getName());
+            //player.payRent(rent);
+            //owner.receiveRent(rent);
+            int rent = this.rent;
+            System.out.println("Rent to be paid: $" + rent);
+            System.out.println( player.getName() + " initially has $" + player.getMoney());
             player.payRent(rent);
             owner.receiveRent(rent);
+            System.out.println("Amount left after paying rent is: $" + player.getMoney());
+
         }
     }
 }

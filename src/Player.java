@@ -69,9 +69,16 @@ public class Player {
     }
 
     public void move(int steps) {
+        int temp = position;
         position = Math.floorMod(position + steps, 12);  // Assuming the board size is 12
+        
+        if (steps > 0 && position < temp) {
+            System.out.println("You have passed Go! You collect 200$");
+            money += 200;
+        }
         notifyObservers();
     }
+
 
     public void buyCity(City city) {
         if(city.getPrice() > money) {
@@ -85,9 +92,14 @@ public class Player {
     }
 
     public void payRent(int rent) {
-        money -= rent;
-        if (money < 0) {
-            // The player is bankrupt, all players current properties and assets are transferred to person they owe
+        if(money >= rent) {
+            money -= rent;
+        } else {
+            System.out.println("Not enough money to pay rent. Transferring assets and going bankrupt.");
+            for(City city : ownedCities) {
+                city.getOwner().receiveRent(city.getPrice());
+                city.setOwner(null);
+            }
             playerbankrupted();
             return;
         }

@@ -25,6 +25,9 @@ public class Game {
         int roll = die.roll();
         players.get(currentPlayer).move(roll);
         System.out.println("You rolled: " + die.diceOne + " + " + die.diceTwo + " = " + roll);
+        if (die.isDouble()) {
+            System.out.println("You rolled a double!");
+        }
 
         // Check if player's new position is a city and it's owned by someone else
         int position = players.get(currentPlayer).getPosition();
@@ -45,11 +48,45 @@ public class Game {
         return ++currentPlayer;
     }
 
-    public int getCurrentPlayer() {
-        return currentPlayer;
+    public void makeMove(int roll) {
+        players.get(currentPlayer).move(roll);
+        System.out.println("You rolled a " + roll);
+
+        // Check if player's new position is a city and it's owned by someone else
+        int position = players.get(currentPlayer).getPosition();
+
+        board.getPosition(position).action(getCurrentPlayer());
+
+/*
+        if(board.getPosition(position) instanceof City) {
+            City city = (City) board.getPosition(position);
+            if(city.getOwner() != null && city.getOwner() != players.get(currentPlayer)) {
+                players.get(currentPlayer).payRent(city.getRent());
+                city.getOwner().receiveRent(city.getRent());
+            }
+        }
+
+ */
+
+
+        // Switch the turn to the next player
+        switchTurn();
+    }
+
+
+    public Player getCurrentPlayer() {
+        return players.get(currentPlayer);
+    }
+
+    public int getNumPlayers() {
+        return numOfPlayers;
     }
 
     public Board getBoard() {
         return board;
+    }
+
+    public int getCurrentPlayerIndex() {
+        return currentPlayer;
     }
 }

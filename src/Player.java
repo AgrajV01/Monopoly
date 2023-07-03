@@ -12,6 +12,8 @@ public class Player {
     private int position;
     private List<City> ownedCities;
 
+    private List<Utility> ownedUtilities;
+
     private boolean inJail;
     private int jailCards; // number of get out of jail free cards this player has
 
@@ -68,6 +70,16 @@ public class Player {
         money -= city.getPrice();
         ownedCities.add(city);
         city.setOwner(this);
+    }
+
+    public void buyUtility(Utility utility) {
+        if (utility.getPrice() > money) {
+            System.out.println("Not enough money to buy this utility");
+            return;
+        }
+        money -= utility.getPrice();
+        ownedUtilities.add(utility);
+        utility.setOwner(this);
     }
 
     public void payRent(int rent) {

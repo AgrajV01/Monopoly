@@ -12,7 +12,7 @@ public class Player {
     private int position;
     private List<City> ownedCities;
 
-    private List<Utility> ownedUtilities;
+    private List<Utility> ownedUtilities = new ArrayList<>();
 
     private boolean inJail;
     private int jailCards; // number of get out of jail free cards this player has

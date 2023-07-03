@@ -8,7 +8,7 @@ import java.util.List;
 
 public class GUI2 implements ActionListener {
 
-    private Die die;
+    private static Die die = new Die();
     private JPanel panel;
     private List<JLabel> playerIcons = new ArrayList<>();
     private JButton button;
@@ -69,19 +69,19 @@ public class GUI2 implements ActionListener {
                 int dice1 = random.nextInt(6) + 1;
                 int dice2 = random.nextInt(6) + 1;
                 // Move the current player (you'll need to keep track of whose turn it is)
-                game.makeMove(dice1 + dice2);
+                game.makeMove(die);
 
                 // Retrieve the current player's position after making a move
-                int currentPlayerPosition = game.getCurrentPlayer().getPosition();
+                int currentPlayerPosition = game.getPrevPlayer().getPosition();
                 // Retrieve the player's piece
-                JLabel currentPlayerIcon = playerIcons.get(game.getCurrentPlayerIndex());
+                JLabel currentPlayerIcon = playerIcons.get(game.getPrevPlayerIndex());
                 // Define an array of points for the board positions
                 Point[] boardPositions = getBoardPositions();
                 // Animate the piece to the new position
                 animateMovement(currentPlayerIcon, boardPositions[currentPlayerPosition], 50);
 
                 // Display new dice values
-                displayDice(dice1, dice2);
+                displayDice();
                 // Refresh the frame
                 frame.repaint();
             }
@@ -91,8 +91,8 @@ public class GUI2 implements ActionListener {
 
     private Point[] getBoardPositions() {
         Point[] boardPositions = new Point[40];
-        int length = 100; // Assuming your board image is 800px wide and tall
-        int offset = 50; // Offset from the border of the board
+        int length = 10; // Assuming your board image is 800px wide and tall
+        int offset = 5; // Offset from the border of the board
         int cellWidth = length / 5; // Enlarging each cell
 
         for (int i = 0; i < 10; i++) {
@@ -116,6 +116,7 @@ public class GUI2 implements ActionListener {
             @Override
             public void actionPerformed(ActionEvent e) {
                 // Check if piece has reached horizontal position
+                die.roll();
                 if (piece.getX() != newPosition.getX()) {
                     // If not, move horizontally
                     int nextX = piece.getX() + (newPosition.getX() > piece.getX() ? speed : -speed);
@@ -159,15 +160,14 @@ public class GUI2 implements ActionListener {
 
 
 
-    public void displayDice(int firstDice, int secondDice) {
-
-        String dice1 = String.valueOf(firstDice) + ".png"; // create relevant file names
-        String dice2 = String.valueOf(secondDice) + ".png";
+    public void displayDice() {
+        String dice1 = String.valueOf(die.diceOne) + ".png"; // create relevant file names
+        String dice2 = String.valueOf(die.diceOne) + ".png";
 
         System.out.println(dice1);
         System.out.println(dice2);
 
-        ImageIcon originalIcon1 = new ImageIcon(getClass().getResource(dice1)); // gets images of dice
+        ImageIcon originalIcon1 = new ImageIcon(getClass().getResource(dice1)); // gts images of dice
         ImageIcon originalIcon2  = new ImageIcon(getClass().getResource(dice2));
         Image originalImage1 = originalIcon1.getImage();
         Image originalImage2 = originalIcon2.getImage();
@@ -185,14 +185,16 @@ public class GUI2 implements ActionListener {
         layeredPane.add(diceLabel2, new Integer(5)); // add to layeredPane on higher layer
 
         setBackdrop(black);
-
     }
 
     public void initializeTheBoard(Game game) {
         System.out.println("initializingTheBoard");
 
-        ImageIcon image1 = new ImageIcon(getClass().getResource("board.png")); // gets images of dice
-        JLabel boardImage = new JLabel(image1);
+        ImageIcon icon = new ImageIcon(getClass().getResource("board.png")); // gets images of dice
+        Image image = icon.getImage();
+        image = image.getScaledInstance(820, -1, Image.SCALE_SMOOTH);
+        icon = new ImageIcon(image);
+        JLabel boardImage = new JLabel(icon);
 
         boardImage.setBounds(0, 0+MOVEUP, 1000, 1000);
 
@@ -204,6 +206,7 @@ public class GUI2 implements ActionListener {
 
         displayPlayers(game);
         displayCards(5,6);
+        displayDice();
 
         frame.setVisible(true); // must come at the very end
     }
@@ -261,30 +264,6 @@ public class GUI2 implements ActionListener {
         frame.setVisible(true);
     }
 
-    public void rollDice() {
-
-        rollButton = new JButton("ROLL DICE"); // creates button object
-        rollButton.setBounds(110, 300, 80, 25); // bounds start from upper left corner
-        frame.add(panel);
-        rollButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-
-                frame.dispose();
-
-            }
-        }); // "this" refers to "this class" and using an action method within it
-
-        panel.add(rollButton);
-
-        setBackdrop(black);
-
-
-        frame.setVisible(true); // must come at the very end
-
-
-    }
-
 
     public static void main(String[] args) {
         // Create the game
@@ -296,12 +275,9 @@ public class GUI2 implements ActionListener {
         Game game = new Game(factory);
 
         Random random = new Random();
-        int dice1 = random.nextInt(6) + 1;
-        int dice2 = random.nextInt(6) + 1;
 
         GUI2 a = new GUI2();
         a.initializeTheBoard(game);
-        a.displayDice(dice1, dice2);
     }
 
     @Override

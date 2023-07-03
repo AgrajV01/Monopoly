@@ -52,7 +52,7 @@ public class Player {
 
     public void move(int steps) {
         int temp = position;
-        position = Math.floorMod(position + steps, 12);  // Assuming the board size is 12
+        position = Math.floorMod(position + steps, 40);  // Assuming the board size is 40
         if (steps > 0 && position < temp) {
             System.out.println("You have passed Go! You collect 200$");
             money += 200;

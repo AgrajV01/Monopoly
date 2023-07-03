@@ -6,9 +6,10 @@ import java.util.ArrayList;
 import java.util.Random;
 import java.util.List;
 
-public class GUI2 implements ActionListener {
+public class GUI2 implements ActionListener , PlayerObserver {
     private Point[] boardPositions;
     private static Die die = new Die();
+
     private JPanel panel;
     private List<JLabel> playerIcons = new ArrayList<>();
     private JButton button;
@@ -268,6 +269,46 @@ public class GUI2 implements ActionListener {
         frame.setVisible(true);
     }
 
+    public void rollDice() {
+
+        rollButton = new JButton("ROLL DICE"); // creates button object
+        rollButton.setBounds(110, 300, 80, 25); // bounds start from upper left corner
+        frame.add(panel);
+        rollButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+
+                frame.dispose();
+
+            }
+        }); // "this" refers to "this class" and using an action method within it
+
+        panel.add(rollButton);
+
+        setBackdrop(black);
+
+
+        frame.setVisible(true); // must come at the very end
+
+
+    }
+
+    public void onGameOver(){
+        // update UI for game over screen
+    }
+
+    public void onPlayerState(Player p){
+        String name = p.getName();
+
+        if (name.indexOf('1' ) != -1) {
+            // update UI for player one
+
+        }else if (name.indexOf('2' ) != -1){
+            // update UI for player two
+        }
+
+    }
+    
     @Override
     public void actionPerformed(ActionEvent e) { // for ok button
 

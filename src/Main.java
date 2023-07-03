@@ -18,5 +18,6 @@ public class Main {
 
         GUI2 a = new GUI2();
         a.initializeTheBoard(game);
+
     }
 }

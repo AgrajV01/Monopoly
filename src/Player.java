@@ -17,6 +17,8 @@ public class Player {
     private boolean inJail;
     private int jailCards; // number of get out of jail free cards this player has
 
+    private List<PlayerObserver> subscribers;
+
     public Player(String name, int money) {
         this.name = name;
         this.money = money; // Starting money in Monopoly
@@ -24,6 +26,22 @@ public class Player {
         this.ownedCities = new ArrayList<>();
         this.jailCards = 0;
         inJail = false;
+    }
+    
+    public void subscribe(PlayerObserver p){
+        subscribers.add(p);
+    }
+
+    public void notifyObservers(){
+        for(PlayerObserver p : subscribers){
+            p.onPlayerState(this);
+        }
+    }
+
+    public void notifyGameOver(){
+        for(PlayerObserver p : subscribers){
+            p.onGameOver();
+        }
     }
 
     public String getName() {
@@ -55,10 +73,12 @@ public class Player {
     public void move(int steps) {
         int temp = position;
         position = Math.floorMod(position + steps, 40);  // Assuming the board size is 40
+
         if (steps > 0 && position < temp) {
             System.out.println("You have passed Go! You collect 200$");
             money += 200;
         }
+        notifyObservers();
     }
 
 
@@ -70,6 +90,7 @@ public class Player {
         money -= city.getPrice();
         ownedCities.add(city);
         city.setOwner(this);
+        notifyObservers();
     }
 
     public void buyUtility(Utility utility) {
@@ -92,14 +113,18 @@ public class Player {
                 city.setOwner(null);
             }
             playerbankrupted();
+            return;
         }
+        notifyObservers();
     }
     private void playerbankrupted(){
         System.out.println("Player " + name + " is Bankrupted!");
+        notifyGameOver();
     }
 
     public void receiveRent(int rent) {
         money += rent;
+        notifyObservers();
     }
 
     public int getJailCards() {
@@ -108,6 +133,7 @@ public class Player {
 
     public void setJailCards(int count) {
         jailCards = count;
+        notifyObservers();
     }
 
     public boolean getJailState() { return inJail; }

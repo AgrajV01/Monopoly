@@ -79,7 +79,7 @@ public class GUI2 implements ActionListener {
                 // Define an array of points for the board positions
                 Point[] boardPositions = getBoardPositions();
                 // Animate the piece to the new position
-                animateMovement(currentPlayerIcon, boardPositions[currentPlayerPosition], 500);
+                animateMovement(currentPlayerIcon, boardPositions[currentPlayerPosition], 50);
 
                 // Display new dice values
                 displayDice(dice1, dice2);
@@ -97,14 +97,14 @@ public class GUI2 implements ActionListener {
         int cellWidth = length / 5; // Enlarging each cell
 
         for (int i = 0; i < 10; i++) {
-            // Bottom row (0 to 9)
-            boardPositions[i] = new Point(offset + i * cellWidth, length - offset);
-            // Right column (10 to 19)
-            boardPositions[i + 10] = new Point(length - offset, length - offset - i * cellWidth);
-            // Top row (20 to 29)
-            boardPositions[i + 20] = new Point(length - offset - i * cellWidth, offset);
-            // Left column (30 to 39)
-            boardPositions[i + 30] = new Point(offset, offset + i * cellWidth);
+            // Top row (0 to 9)
+            boardPositions[i] = new Point(offset + i * cellWidth, offset);
+            // Left column (10 to 19)
+            boardPositions[i + 10] = new Point(offset, offset + i * cellWidth);
+            // Bottom row (20 to 29)
+            boardPositions[i + 20] = new Point(length - offset - i * cellWidth, length - offset);
+            // Right column (30 to 39)
+            boardPositions[i + 30] = new Point(length - offset, length - offset - i * cellWidth);
         }
 
         return boardPositions;
@@ -113,22 +113,35 @@ public class GUI2 implements ActionListener {
     private void animateMovement(JLabel piece, Point newPosition, int delay) {
         Timer timer = new Timer(delay, null);
         timer.addActionListener(new ActionListener() {
-            int xDirection = (newPosition.x - piece.getX()) > 0 ? 1 : -1;
-            int yDirection = (newPosition.y - piece.getY()) > 0 ? 1 : -1;
-
+            int speed = 5; // Move 5 pixels at a time
             @Override
             public void actionPerformed(ActionEvent e) {
-                if (piece.getLocation().equals(newPosition)) {
-                    timer.stop();
+                // Check if piece has reached horizontal position
+                if (piece.getX() != newPosition.getX()) {
+                    // If not, move horizontally
+                    int nextX = piece.getX() + (newPosition.getX() > piece.getX() ? speed : -speed);
+                    // If we overshoot, correct the position
+                    if (newPosition.getX() > piece.getX() ? nextX > newPosition.getX() : nextX < newPosition.getX()) {
+                        nextX = (int) newPosition.getX();
+                    }
+                    piece.setLocation(nextX, piece.getY());
+                } else if (piece.getY() != newPosition.getY()) {
+                    // If horizontal position has been reached, move vertically
+                    int nextY = piece.getY() + (newPosition.getY() > piece.getY() ? speed : -speed);
+                    // If we overshoot, correct the position
+                    if (newPosition.getY() > piece.getY() ? nextY > newPosition.getY() : nextY < newPosition.getY()) {
+                        nextY = (int) newPosition.getY();
+                    }
+                    piece.setLocation(piece.getX(), nextY);
                 } else {
-                    int nextX = piece.getX() + xDirection;
-                    int nextY = piece.getY() + yDirection;
-                    piece.setLocation(nextX, nextY);
+                    // If both x and y coordinates have been reached, stop timer
+                    timer.stop();
                 }
             }
         });
         timer.start();
     }
+
 
     /*public void displayJail(Game game) { // uses backdrop and button decorations
 

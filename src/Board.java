@@ -25,7 +25,7 @@ public class Board {
         theBoard.add(4, new OtherSpace("Income tax")); // income tax
         theBoard.add(5, new Utility("Reading Railroad", 200, 25));
         theBoard.add(6, new City("Oriental Avenue", 100, 6, 50));
-        theBoard.add(7, new OtherSpace("Chance"));
+        theBoard.add(7, new ActionCard("Chance"));
         theBoard.add(8, new City("Vermont Avenue", 100, 6, 50));
         theBoard.add(9, new City("Connecticut Avenue", 120, 8, 50));
         theBoard.add(10, new OtherSpace("Jail"));
@@ -40,7 +40,7 @@ public class Board {
         theBoard.add(19, new City("New York Avenue", 200, 16, 100));
         theBoard.add(20, new OtherSpace("Free Parking"));
         theBoard.add(21, new City("Kentucky Avenue", 220, 18, 150));
-        theBoard.add(22, new OtherSpace("Chance"));
+        theBoard.add(22, new ActionCard("Chance"));
         theBoard.add(23, new City("Indiana Avenue", 220, 18, 150));
         theBoard.add(24, new City("Illinois Avenue", 240, 20, 150));
         theBoard.add(25, new Utility("B. & O. Railroad", 200, 25));
@@ -54,7 +54,7 @@ public class Board {
         theBoard.add(33, new ActionCard("Community Chest"));
         theBoard.add(34, new City("Pennsylvania Avenue", 320, 28, 200));
         theBoard.add(35, new Utility("Short Line", 200, 25));
-        theBoard.add(36, new OtherSpace("Chance"));
+        theBoard.add(36, new ActionCard("Chance"));
         theBoard.add(37, new City("Park Place", 350, 35, 200));
         theBoard.add(38, new OtherSpace("Luxury Tax"));
         theBoard.add(39, new City("Boardwalk", 400, 50, 200));

@@ -167,8 +167,8 @@ public class GUI2 implements ActionListener , PlayerObserver {
         String dice1 = String.valueOf(die.diceOne) + ".png"; // create relevant file names
         String dice2 = String.valueOf(die.diceTwo) + ".png";
 
-        System.out.println(dice1);
-        System.out.println(dice2);
+        //System.out.println(dice1);
+        //System.out.println(dice2);
 
         ImageIcon originalIcon1 = new ImageIcon(getClass().getResource(dice1)); // gts images of dice
         ImageIcon originalIcon2  = new ImageIcon(getClass().getResource(dice2));

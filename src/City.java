@@ -46,7 +46,7 @@ public class City extends Space {
             // Purchase City? option appears on GUI
             System.out.println( player.getName() + " initially has $" + player.getMoney());
             player.buyCity(this);
-            System.out.println("This utility is available for purchase at a price of " + price);
+            System.out.println("This city is available for purchase at a price of " + price);
             System.out.println("After Purchasing, the balance amount you have is " + player.getMoney());
 
             /*

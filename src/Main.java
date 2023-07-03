@@ -15,5 +15,7 @@ public class Main {
         // Create the UI for the game and show it
         MonopolyUI ui = new MonopolyUI(game);
         ui.showUI();
+
+        game.subscribeToPlayers(ui);
     }
 }

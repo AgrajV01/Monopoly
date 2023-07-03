@@ -15,6 +15,11 @@ public class Game {
         numOfPlayers = factory.getNumPlayers();
     }
 
+    public void subscribeToPlayers(PlayerObserver o){
+        for (Player p : players){
+            p.subscribe(o);
+        }
+    }
 
     public void rollDiceAndMove() {
         int roll = die.roll();

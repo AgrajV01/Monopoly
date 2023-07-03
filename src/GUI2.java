@@ -8,7 +8,7 @@ import java.util.List;
 
 public class GUI2 implements ActionListener {
 
-
+    private Die die;
     private JPanel panel;
     private List<JLabel> playerIcons = new ArrayList<>();
     private JButton button;
@@ -91,7 +91,7 @@ public class GUI2 implements ActionListener {
 
     private Point[] getBoardPositions() {
         Point[] boardPositions = new Point[40];
-        int length = 700; // Assuming your board image is 800px wide and tall
+        int length = 100; // Assuming your board image is 800px wide and tall
         int offset = 50; // Offset from the border of the board
         int cellWidth = length / 5; // Enlarging each cell
 

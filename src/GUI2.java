@@ -47,17 +47,16 @@ public class GUI2 implements ActionListener {
     public void setBackdrop(String fileName) {
         image = new ImageIcon(getClass().getResource(fileName));
         JLabel pictureLabel = new JLabel(image);
-        pictureLabel.setBounds(390,370+MOVEUP,200, 300); // assuming the size of backdrop is same as the frame
+        pictureLabel.setBounds(435,415+MOVEUP,130, 170); // assuming the size of backdrop is same as the frame
 
-        layeredPane.add(pictureLabel, new Integer(2)); // add to layeredPane on second layer
-
+        layeredPane.add(pictureLabel, new Integer(4)); // add to layeredPane on second layer
     }
 
     public void setOkButton(Game game) {
         button = new JButton("Roll");
-        button.setBounds(450,600+MOVEUP, 80, 25);
+        button.setBounds(460,550+MOVEUP, 80, 25);
 
-        layeredPane.add(button, new Integer(3)); // add to layeredPane on the top layer
+        layeredPane.add(button, new Integer(5)); // add to layeredPane on the top layer
 
         button.addActionListener(new ActionListener() {
             @Override
@@ -92,7 +91,7 @@ public class GUI2 implements ActionListener {
 
     private Point[] getBoardPositions() {
         Point[] boardPositions = new Point[40];
-        int length = 800; // Assuming your board image is 800px wide and tall
+        int length = 700; // Assuming your board image is 800px wide and tall
         int offset = 50; // Offset from the border of the board
         int cellWidth = length / 5; // Enlarging each cell
 
@@ -113,7 +112,7 @@ public class GUI2 implements ActionListener {
     private void animateMovement(JLabel piece, Point newPosition, int delay) {
         Timer timer = new Timer(delay, null);
         timer.addActionListener(new ActionListener() {
-            int speed = 5; // Move 5 pixels at a time
+            int speed = 20; // Move 5 pixels at a time
             @Override
             public void actionPerformed(ActionEvent e) {
                 // Check if piece has reached horizontal position
@@ -168,16 +167,22 @@ public class GUI2 implements ActionListener {
         System.out.println(dice1);
         System.out.println(dice2);
 
-        ImageIcon image1 = new ImageIcon(getClass().getResource(dice1)); // gets images of dice
-        ImageIcon image2  = new ImageIcon(getClass().getResource(dice2));
-        diceLabel1 = new JLabel(image1);
-        diceLabel2 = new JLabel(image2);
+        ImageIcon originalIcon1 = new ImageIcon(getClass().getResource(dice1)); // gets images of dice
+        ImageIcon originalIcon2  = new ImageIcon(getClass().getResource(dice2));
+        Image originalImage1 = originalIcon1.getImage();
+        Image originalImage2 = originalIcon2.getImage();
+        Image resizedImage1 = originalImage1.getScaledInstance(50, -1, Image.SCALE_SMOOTH);
+        Image resizedImage2 = originalImage2.getScaledInstance(50, -1, Image.SCALE_SMOOTH);
+        ImageIcon resizedIcon1 = new ImageIcon(resizedImage1);
+        ImageIcon resizedIcon2 = new ImageIcon(resizedImage2);
+        diceLabel1 = new JLabel(resizedIcon1);
+        diceLabel2 = new JLabel(resizedIcon2);
 
-        diceLabel1.setBounds(410, 390+MOVEUP, 75, 75);
-        diceLabel2.setBounds(500, 390+MOVEUP, 75, 75);
+        diceLabel1.setBounds(445, 420+MOVEUP, 50, 50);
+        diceLabel2.setBounds(505, 420+MOVEUP, 50, 50);
 
-        layeredPane.add(diceLabel1, new Integer(3)); // add to layeredPane on higher layer
-        layeredPane.add(diceLabel2, new Integer(3)); // add to layeredPane on higher layer
+        layeredPane.add(diceLabel1, new Integer(5)); // add to layeredPane on higher layer
+        layeredPane.add(diceLabel2, new Integer(5)); // add to layeredPane on higher layer
 
         setBackdrop(black);
 
@@ -198,7 +203,7 @@ public class GUI2 implements ActionListener {
         setBackdrop(black);
 
         displayPlayers(game);
-        displayCards(5,2);
+        displayCards(5,6);
 
         frame.setVisible(true); // must come at the very end
     }

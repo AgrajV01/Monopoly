@@ -48,9 +48,9 @@ public class Game {
         return ++currentPlayer;
     }
 
-    public void makeMove(int roll) {
-        players.get(currentPlayer).move(roll);
-        System.out.println("You rolled a " + roll);
+    public void makeMove(Die roll) {
+        players.get(currentPlayer).move(roll.diceOne+ roll.diceTwo);
+        System.out.println("You rolled a " + (roll.diceOne + roll.diceTwo));
 
         // Check if player's new position is a city and it's owned by someone else
         int position = players.get(currentPlayer).getPosition();
@@ -78,6 +78,12 @@ public class Game {
         return players.get(currentPlayer);
     }
 
+    public Player getPrevPlayer() {
+        if(currentPlayer != 0)
+            return players.get(currentPlayer-1);
+        else return players.get(3);
+    }
+
     public int getNumPlayers() {
         return numOfPlayers;
     }
@@ -88,5 +94,10 @@ public class Game {
 
     public int getCurrentPlayerIndex() {
         return currentPlayer;
+    }
+    public int getPrevPlayerIndex() {
+        if(currentPlayer != 0)
+            return currentPlayer-1;
+        else return 3;
     }
 }

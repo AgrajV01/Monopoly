@@ -12,6 +12,8 @@ public class Player {
     private int position;
     private List<City> ownedCities;
 
+    private List<Utility> ownedUtilities = new ArrayList<>();
+
     private boolean inJail;
     private int jailCards; // number of get out of jail free cards this player has
 
@@ -70,8 +72,8 @@ public class Player {
 
     public void move(int steps) {
         int temp = position;
-        position = Math.floorMod(position + steps, 12);  // Assuming the board size is 12
-        
+        position = Math.floorMod(position + steps, 40);  // Assuming the board size is 40
+
         if (steps > 0 && position < temp) {
             System.out.println("You have passed Go! You collect 200$");
             money += 200;
@@ -89,6 +91,16 @@ public class Player {
         ownedCities.add(city);
         city.setOwner(this);
         notifyObservers();
+    }
+
+    public void buyUtility(Utility utility) {
+        if (utility.getPrice() > money) {
+            System.out.println("Not enough money to buy this utility");
+            return;
+        }
+        money -= utility.getPrice();
+        ownedUtilities.add(utility);
+        utility.setOwner(this);
     }
 
     public void payRent(int rent) {

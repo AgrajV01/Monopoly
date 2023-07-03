@@ -6,8 +6,9 @@ import java.util.ArrayList;
 import java.util.Random;
 import java.util.List;
 
-public class GUI2 implements ActionListener, PlayerObserver {
-
+public class GUI2 implements ActionListener , PlayerObserver {
+    private Point[] boardPositions;
+    private static Die die = new Die();
 
     private JPanel panel;
     private List<JLabel> playerIcons = new ArrayList<>();
@@ -47,106 +48,103 @@ public class GUI2 implements ActionListener, PlayerObserver {
     public void setBackdrop(String fileName) {
         image = new ImageIcon(getClass().getResource(fileName));
         JLabel pictureLabel = new JLabel(image);
-        pictureLabel.setBounds(390,370+MOVEUP,200, 300); // assuming the size of backdrop is same as the frame
+        pictureLabel.setBounds(435,415+MOVEUP,130, 170); // assuming the size of backdrop is same as the frame
 
-        layeredPane.add(pictureLabel, new Integer(2)); // add to layeredPane on second layer
-
+        layeredPane.add(pictureLabel, new Integer(4)); // add to layeredPane on second layer
     }
 
     public void setOkButton(Game game) {
         button = new JButton("Roll");
-        button.setBounds(450,600+MOVEUP, 80, 25);
-        button.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                // When button is clicked, remove old dice labels
-                layeredPane.remove(diceLabel1);
-                layeredPane.remove(diceLabel2);
-                // Generate new dice values
-                Random random = new Random();
-                int dice1 = random.nextInt(6) + 1;
-                int dice2 = random.nextInt(6) + 1;
-                // Move the current player (you'll need to keep track of whose turn it is)
-                game.makeMove(dice1 + dice2);
-                // Display new dice values
-                displayDice(dice1, dice2);
-                // Refresh the frame
-                frame.repaint();
-            }
-        });
+        button.setBounds(460,550+MOVEUP, 80, 25);
 
-        layeredPane.add(button, new Integer(3)); // add to layeredPane on the top layer
+        layeredPane.add(button, new Integer(5)); // add to layeredPane on the top layer
 
         button.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 // When button is clicked, remove old dice labels
+                die.roll();
                 layeredPane.remove(diceLabel1);
                 layeredPane.remove(diceLabel2);
-                // Generate new dice values
-                Random random = new Random();
-                int dice1 = random.nextInt(6) + 1;
-                int dice2 = random.nextInt(6) + 1;
                 // Move the current player (you'll need to keep track of whose turn it is)
-                game.makeMove(dice1 + dice2);
+                game.makeMove(die);
 
                 // Retrieve the current player's position after making a move
-                int currentPlayerPosition = game.getCurrentPlayer().getPosition();
+                int currentPlayerPosition = game.getPrevPlayer().getPosition();
                 // Retrieve the player's piece
-                JLabel currentPlayerIcon = playerIcons.get(game.getCurrentPlayerIndex());
-                // Define an array of points for the board positions
-                Point[] boardPositions = getBoardPositions();
+                JLabel currentPlayerIcon = playerIcons.get(game.getPrevPlayerIndex());
                 // Animate the piece to the new position
-                animateMovement(currentPlayerIcon, boardPositions[currentPlayerPosition], 500);
+                animateMovement(currentPlayerIcon, boardPositions[currentPlayerPosition], 50);
 
                 // Display new dice values
-                displayDice(dice1, dice2);
+                displayDice();
                 // Refresh the frame
                 frame.repaint();
             }
         });
-
     }
 
-    private Point[] getBoardPositions() {
-        Point[] boardPositions = new Point[40];
-        int length = 800; // Assuming your board image is 800px wide and tall
-        int offset = 50; // Offset from the border of the board
-        int cellWidth = length / 5; // Enlarging each cell
+    private void setBoardPositions() {
+        int cellsPerSide = 10;
+        Point[] positions = new Point[cellsPerSide * 4];
+        int boardSize = 800;
+        int squareSize = boardSize/cellsPerSide; // Size of a square (900/10 assuming board height and width is 900)
+        int xDisplacement = 100;
+        int yDisplacement = 20;
 
-        for (int i = 0; i < 10; i++) {
-            // Bottom row (0 to 9)
-            boardPositions[i] = new Point(offset + i * cellWidth, length - offset);
-            // Right column (10 to 19)
-            boardPositions[i + 10] = new Point(length - offset, length - offset - i * cellWidth);
-            // Top row (20 to 29)
-            boardPositions[i + 20] = new Point(length - offset - i * cellWidth, offset);
-            // Left column (30 to 39)
-            boardPositions[i + 30] = new Point(offset, offset + i * cellWidth);
+        // Set up positions along the bottom of the board
+        for (int i = 0; i < cellsPerSide; i++) {
+            positions[i] = new Point(boardSize - (i + 1) * squareSize + xDisplacement, boardSize - squareSize + yDisplacement);
         }
-
-        return boardPositions;
+        // Set up positions along the right side of the board
+        for (int i = 0; i < cellsPerSide; i++) {
+            positions[cellsPerSide + i] = new Point(0 + xDisplacement, boardSize - (i + 1) * squareSize + yDisplacement);
+        }
+        // Set up positions along the top of the board
+        for (int i = 0; i < cellsPerSide; i++) {
+            positions[2 * cellsPerSide + i] = new Point(i  * squareSize + xDisplacement, 0 + yDisplacement);
+        }
+        // Set up positions along the left side of the board
+        for (int i = 0; i < cellsPerSide; i++) {
+            positions[3 * cellsPerSide + i] = new Point(boardSize - squareSize + xDisplacement,i  * squareSize + yDisplacement);
+        }
+        boardPositions = positions;
     }
+
 
     private void animateMovement(JLabel piece, Point newPosition, int delay) {
         Timer timer = new Timer(delay, null);
         timer.addActionListener(new ActionListener() {
-            int xDirection = (newPosition.x - piece.getX()) > 0 ? 1 : -1;
-            int yDirection = (newPosition.y - piece.getY()) > 0 ? 1 : -1;
-
+            int speed = 20; // Move 5 pixels at a time
             @Override
             public void actionPerformed(ActionEvent e) {
-                if (piece.getLocation().equals(newPosition)) {
-                    timer.stop();
+                // Check if piece has reached horizontal position
+                die.roll();
+                if (piece.getX() != newPosition.getX()) {
+                    // If not, move horizontally
+                    int nextX = piece.getX() + (newPosition.getX() > piece.getX() ? speed : -speed);
+                    // If we overshoot, correct the position
+                    if (newPosition.getX() > piece.getX() ? nextX > newPosition.getX() : nextX < newPosition.getX()) {
+                        nextX = (int) newPosition.getX();
+                    }
+                    piece.setLocation(nextX, piece.getY());
+                } else if (piece.getY() != newPosition.getY()) {
+                    // If horizontal position has been reached, move vertically
+                    int nextY = piece.getY() + (newPosition.getY() > piece.getY() ? speed : -speed);
+                    // If we overshoot, correct the position
+                    if (newPosition.getY() > piece.getY() ? nextY > newPosition.getY() : nextY < newPosition.getY()) {
+                        nextY = (int) newPosition.getY();
+                    }
+                    piece.setLocation(piece.getX(), nextY);
                 } else {
-                    int nextX = piece.getX() + xDirection;
-                    int nextY = piece.getY() + yDirection;
-                    piece.setLocation(nextX, nextY);
+                    // If both x and y coordinates have been reached, stop timer
+                    timer.stop();
                 }
             }
         });
         timer.start();
     }
+
 
     /*public void displayJail(Game game) { // uses backdrop and button decorations
 
@@ -165,34 +163,43 @@ public class GUI2 implements ActionListener, PlayerObserver {
 
 
 
-    public void displayDice(int firstDice, int secondDice) {
-
-        String dice1 = String.valueOf(firstDice) + ".png"; // create relevant file names
-        String dice2 = String.valueOf(secondDice) + ".png";
+    public void displayDice() {
+        String dice1 = String.valueOf(die.diceOne) + ".png"; // create relevant file names
+        String dice2 = String.valueOf(die.diceTwo) + ".png";
 
         System.out.println(dice1);
         System.out.println(dice2);
 
-        ImageIcon image1 = new ImageIcon(getClass().getResource(dice1)); // gets images of dice
-        ImageIcon image2  = new ImageIcon(getClass().getResource(dice2));
-        diceLabel1 = new JLabel(image1);
-        diceLabel2 = new JLabel(image2);
+        ImageIcon originalIcon1 = new ImageIcon(getClass().getResource(dice1)); // gts images of dice
+        ImageIcon originalIcon2  = new ImageIcon(getClass().getResource(dice2));
+        Image originalImage1 = originalIcon1.getImage();
+        Image originalImage2 = originalIcon2.getImage();
+        Image resizedImage1 = originalImage1.getScaledInstance(50, -1, Image.SCALE_SMOOTH);
+        Image resizedImage2 = originalImage2.getScaledInstance(50, -1, Image.SCALE_SMOOTH);
+        ImageIcon resizedIcon1 = new ImageIcon(resizedImage1);
+        ImageIcon resizedIcon2 = new ImageIcon(resizedImage2);
+        diceLabel1 = new JLabel(resizedIcon1);
+        diceLabel2 = new JLabel(resizedIcon2);
 
-        diceLabel1.setBounds(410, 390+MOVEUP, 75, 75);
-        diceLabel2.setBounds(500, 390+MOVEUP, 75, 75);
+        diceLabel1.setBounds(445, 420+MOVEUP, 50, 50);
+        diceLabel2.setBounds(505, 420+MOVEUP, 50, 50);
 
-        layeredPane.add(diceLabel1, new Integer(3)); // add to layeredPane on higher layer
-        layeredPane.add(diceLabel2, new Integer(3)); // add to layeredPane on higher layer
+        layeredPane.add(diceLabel1, new Integer(5)); // add to layeredPane on higher layer
+        layeredPane.add(diceLabel2, new Integer(5)); // add to layeredPane on higher layer
 
         setBackdrop(black);
-
     }
 
     public void initializeTheBoard(Game game) {
         System.out.println("initializingTheBoard");
 
-        ImageIcon image1 = new ImageIcon(getClass().getResource("board.png")); // gets images of dice
-        JLabel boardImage = new JLabel(image1);
+        setBoardPositions();
+
+        ImageIcon icon = new ImageIcon(getClass().getResource("board.png")); // gets images of dice
+        Image image = icon.getImage();
+        image = image.getScaledInstance(820, -1, Image.SCALE_SMOOTH);
+        icon = new ImageIcon(image);
+        JLabel boardImage = new JLabel(icon);
 
         boardImage.setBounds(0, 0+MOVEUP, 1000, 1000);
 
@@ -203,7 +210,8 @@ public class GUI2 implements ActionListener, PlayerObserver {
         setBackdrop(black);
 
         displayPlayers(game);
-        displayCards(5,2);
+        displayCards(5,6);
+        displayDice();
 
         frame.setVisible(true); // must come at the very end
     }
@@ -223,7 +231,7 @@ public class GUI2 implements ActionListener, PlayerObserver {
             playerIcon.setBounds(800 + (i - 1) * DISTPLAYERS, 800 + MOVEUP + (i - 1) * DISTPLAYERS, 50, 50);
             playerIcons.add(playerIcon);
 
-            layeredPane.add(playerIcons.get(i - 1), new Integer(3)); // add to layeredPane on lower layer
+            layeredPane.add(playerIcons.get(i - 1), new Integer(6)); // add to layeredPane on lower layer
         }
 
         frame.setVisible(true); // must come at the very end
@@ -235,12 +243,12 @@ public class GUI2 implements ActionListener, PlayerObserver {
         for(int i = 1; i < chance+1; i++) {
             ImageIcon originalIcon = new ImageIcon(getClass().getResource("chance" + ".png"));
             Image originalImage = originalIcon.getImage();
-            Image resizedImage = originalImage.getScaledInstance(320, -1, Image.SCALE_SMOOTH);
+            Image resizedImage = originalImage.getScaledInstance(200, -1, Image.SCALE_SMOOTH);
             ImageIcon resizedIcon = new ImageIcon(resizedImage);
 
             JLabel chanceIcon = new JLabel(resizedIcon);
 
-            chanceIcon.setBounds(460 + (i - 1) * DISTCARDS, 460 + MOVEUP + (i - 1) * DISTCARDS, 320, 320);
+            chanceIcon.setBounds(510 + (i - 1) * DISTCARDS, 510 + MOVEUP + (i - 1) * DISTCARDS, 320, 320);
 
             layeredPane.add(chanceIcon, new Integer(4));
         }
@@ -248,12 +256,12 @@ public class GUI2 implements ActionListener, PlayerObserver {
         for(int i = 1; i < chest+1; i++) {
             ImageIcon originalIcon = new ImageIcon(getClass().getResource("chest" + ".png"));
             Image originalImage = originalIcon.getImage();
-            Image resizedImage = originalImage.getScaledInstance(250, -1, Image.SCALE_SMOOTH);
+            Image resizedImage = originalImage.getScaledInstance(150, -1, Image.SCALE_SMOOTH);
             ImageIcon resizedIcon = new ImageIcon(resizedImage);
 
             JLabel chestIcon = new JLabel(resizedIcon);
 
-            chestIcon.setBounds(220 + (i - 1) * DISTCARDS, 220 + MOVEUP + (i - 1) * DISTCARDS, 250, 250);
+            chestIcon.setBounds(170 + (i - 1) * DISTCARDS, 170 + MOVEUP + (i - 1) * DISTCARDS, 250, 250);
 
             layeredPane.add(chestIcon, new Integer(4));
         }
@@ -285,25 +293,6 @@ public class GUI2 implements ActionListener, PlayerObserver {
 
     }
 
-
-    public static void main(String[] args) {
-        // Create the game
-        int numPlayers = 4;
-        int cash = 2000;
-        String boardStyle = "Classic";
-
-        GameFactory factory = new CustomGameFactory(numPlayers, cash, boardStyle);
-        Game game = new Game(factory);
-
-        Random random = new Random();
-        int dice1 = random.nextInt(6) + 1;
-        int dice2 = random.nextInt(6) + 1;
-
-        GUI2 a = new GUI2();
-        a.initializeTheBoard(game);
-        a.displayDice(dice1, dice2);
-    }
-
     public void onGameOver(){
         // update UI for game over screen
     }
@@ -319,7 +308,7 @@ public class GUI2 implements ActionListener, PlayerObserver {
         }
 
     }
-
+    
     @Override
     public void actionPerformed(ActionEvent e) { // for ok button
 

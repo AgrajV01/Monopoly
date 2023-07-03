@@ -6,6 +6,8 @@ public class Die {
 
     public Die() {
         random = new Random();
+        diceOne = 6;
+        diceTwo = 6;
     }
 
     public int roll() {

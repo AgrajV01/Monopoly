@@ -19,18 +19,45 @@ public class Board {
      */
     private void initializeBoard() {
         theBoard.add(0, new OtherSpace("Go!")); // start square
-        theBoard.add(1, new City("City 1", 60, 10));
-        theBoard.add(2, new ActionCard("Chance")); // chance
-        theBoard.add(3, new City("City 2", 60, 10));
+        theBoard.add(1, new City("Mediterranean Avenue", 60, 2, 50));
+        theBoard.add(2, new ActionCard("Community Chest")); // chance
+        theBoard.add(3, new City("Baltic Avenue", 60, 4, 50));
         theBoard.add(4, new OtherSpace("Income tax")); // income tax
-        theBoard.add(5, new City("City 3", 60, 10));
-        theBoard.add(6, new City("City 4", 60, 10));
-        theBoard.add(7, new City("City 5", 60, 10));
-        theBoard.add(8, new City("City 6", 60, 10));
-        theBoard.add(9, new City("City 7", 60, 10));
-        theBoard.add(10, new City("City 8", 60, 10));
-        theBoard.add(11, new City("City 9", 60, 10));
-        theBoard.add(12, new City("City 10", 60, 10));
+        theBoard.add(5, new Utility("Reading Railroad", 200, 25));
+        theBoard.add(6, new City("Oriental Avenue", 100, 6, 50));
+        theBoard.add(7, new OtherSpace("Chance"));
+        theBoard.add(8, new City("Vermont Avenue", 100, 6, 50));
+        theBoard.add(9, new City("Connecticut Avenue", 120, 8, 50));
+        theBoard.add(10, new OtherSpace("Jail"));
+        theBoard.add(11, new City("St. Charles Place", 140, 10, 100));
+        theBoard.add(12, new Utility("Electrical Company", 150, 4));
+        theBoard.add(13, new City("States Avenue", 140, 10, 100));
+        theBoard.add(14, new City("Virginia Avenue", 160, 12, 100));
+        theBoard.add(15, new Utility("Pennsylvania Railroad", 200, 25));
+        theBoard.add(16, new City("St. James Place", 180, 14, 100));
+        theBoard.add(17, new ActionCard("Community Chest"));
+        theBoard.add(18, new City("Tennessee Avenue", 180, 14, 100));
+        theBoard.add(19, new City("New York Avenue", 200, 16, 100));
+        theBoard.add(20, new OtherSpace("Free Parking"));
+        theBoard.add(21, new City("Kentucky Avenue", 220, 18, 150));
+        theBoard.add(22, new OtherSpace("Chance"));
+        theBoard.add(23, new City("Indiana Avenue", 220, 18, 150));
+        theBoard.add(24, new City("Illinois Avenue", 240, 20, 150));
+        theBoard.add(25, new Utility("B. & O. Railroad", 200, 25));
+        theBoard.add(26, new City("Atlantic Avenue", 260, 22, 150));
+        theBoard.add(27, new City("Ventnor Avenue", 260, 22, 150));
+        theBoard.add(28, new Utility("Water Works", 150, 4));
+        theBoard.add(29, new City("Marvin Gardens", 280, 24, 150));
+        theBoard.add(30, new OtherSpace("Go To Jail"));
+        theBoard.add(31, new City("Pacific Avenue", 300, 26, 200));
+        theBoard.add(32, new City("North Carolina Avenue", 300, 26, 200));
+        theBoard.add(33, new ActionCard("Community Chest"));
+        theBoard.add(34, new City("Pennsylvania Avenue", 320, 28, 200));
+        theBoard.add(35, new Utility("Short Line", 200, 25));
+        theBoard.add(36, new OtherSpace("Chance"));
+        theBoard.add(37, new City("Park Place", 350, 35, 200));
+        theBoard.add(38, new OtherSpace("Luxury Tax"));
+        theBoard.add(39, new City("Boardwalk", 400, 50, 200));
     }
 
     /**

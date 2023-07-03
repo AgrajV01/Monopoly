@@ -44,7 +44,12 @@ public class City extends Space {
         System.out.println("You have landed on: " + this.name);
         if (isAvailable()) {
             // Purchase City? option appears on GUI
-            //player.buyCity(this);
+            System.out.println( player.getName() + " initially has $" + player.getMoney());
+            player.buyCity(this);
+            System.out.println("This utility is available for purchase at a price of " + price);
+            System.out.println("After Purchasing, the balance amount you have is " + player.getMoney());
+
+            /*
             System.out.println("This city is available for purchase at a price of $" + price);
             if (player.wantToBuyCity(this)) {
                 player.buyCity(this);
@@ -52,18 +57,22 @@ public class City extends Space {
             } else {
                 System.out.println("You chose not to purchase " + this.name);
             }
-
+            */
         }
         else {
             System.out.println("This property is owned by: " + owner.getName());
             //player.payRent(rent);
             //owner.receiveRent(rent);
+
             int rent = this.rent;
             System.out.println("Rent to be paid: $" + rent);
             System.out.println( player.getName() + " initially has $" + player.getMoney());
             player.payRent(rent);
             owner.receiveRent(rent);
             System.out.println("Amount left after paying rent is: $" + player.getMoney());
+            System.out.println("After receiving the rent, Owner(" + owner.getName() + ") has $" + owner.getMoney());
+
+
 
         }
     }

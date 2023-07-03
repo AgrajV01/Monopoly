@@ -12,7 +12,7 @@ public class Player {
     private int position;
     private List<City> ownedCities;
 
-    private List<Utility> ownedUtilities = new ArrayList<>();
+    private List<Utility> ownedUtilities;
 
     private boolean inJail;
     private int jailCards; // number of get out of jail free cards this player has
@@ -24,6 +24,8 @@ public class Player {
         this.money = money; // Starting money in Monopoly
         this.position = 0; // Starting at 'GO'
         this.ownedCities = new ArrayList<>();
+        this.ownedUtilities = new ArrayList<>();
+        this. subscribers = new ArrayList<>();
         this.jailCards = 0;
         inJail = false;
     }
@@ -101,6 +103,7 @@ public class Player {
         money -= utility.getPrice();
         ownedUtilities.add(utility);
         utility.setOwner(this);
+        notifyObservers();
     }
 
     public void payRent(int rent) {

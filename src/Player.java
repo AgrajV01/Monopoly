@@ -82,7 +82,7 @@ public class Player {
             System.out.println("You have passed Go! You collect 200$");
             money += 200;
         }
-        //notifyObservers();
+        notifyObservers();
     }
 
 

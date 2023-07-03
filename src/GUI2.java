@@ -5,7 +5,7 @@ import java.awt.event.ActionListener;
 import java.awt.Color;
 import java.util.Random;
 
-public class GUI2 implements ActionListener {
+public class GUI2 implements ActionListener, PlayerObserver {
 
 
     private JPanel panel;
@@ -150,6 +150,22 @@ public class GUI2 implements ActionListener {
         b.rollDice(); // creates new GUI object
 
 
+
+    }
+
+    public void onGameOver(){
+        // update UI for game over screen
+    }
+
+    public void onPlayerState(Player p){
+        String name = p.getName();
+
+        if (name.indexOf('1' ) != -1) {
+            // update UI for player one
+
+        }else if (name.indexOf('2' ) != -1){
+            // update UI for player two
+        }
 
     }
 

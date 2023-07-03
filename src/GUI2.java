@@ -56,24 +56,6 @@ public class GUI2 implements ActionListener {
     public void setOkButton(Game game) {
         button = new JButton("Roll");
         button.setBounds(450,600+MOVEUP, 80, 25);
-        button.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                // When button is clicked, remove old dice labels
-                layeredPane.remove(diceLabel1);
-                layeredPane.remove(diceLabel2);
-                // Generate new dice values
-                Random random = new Random();
-                int dice1 = random.nextInt(6) + 1;
-                int dice2 = random.nextInt(6) + 1;
-                // Move the current player (you'll need to keep track of whose turn it is)
-                game.makeMove(dice1 + dice2);
-                // Display new dice values
-                displayDice(dice1, dice2);
-                // Refresh the frame
-                frame.repaint();
-            }
-        });
 
         layeredPane.add(button, new Integer(3)); // add to layeredPane on the top layer
 

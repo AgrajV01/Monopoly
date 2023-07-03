@@ -86,26 +86,26 @@ public class GUI2 implements ActionListener {
     private void setBoardPositions() {
         int cellsPerSide = 10;
         Point[] positions = new Point[cellsPerSide * 4];
-        int boardSize = 1130;
+        int boardSize = 800;
         int squareSize = boardSize/cellsPerSide; // Size of a square (900/10 assuming board height and width is 900)
-        int xDisplacement = 0;
-        int yDisplacement = -200;
+        int xDisplacement = 100;
+        int yDisplacement = 20;
 
         // Set up positions along the bottom of the board
         for (int i = 0; i < cellsPerSide; i++) {
-            positions[i] = new Point(boardSize - i * squareSize + xDisplacement, boardSize - squareSize + yDisplacement);
+            positions[i] = new Point(boardSize - (i + 1) * squareSize + xDisplacement, boardSize - squareSize + yDisplacement);
         }
         // Set up positions along the right side of the board
         for (int i = 0; i < cellsPerSide; i++) {
-            positions[cellsPerSide + i] = new Point(0 + xDisplacement, boardSize - i * squareSize + yDisplacement);
+            positions[cellsPerSide + i] = new Point(0 + xDisplacement, boardSize - (i + 1) * squareSize + yDisplacement);
         }
         // Set up positions along the top of the board
         for (int i = 0; i < cellsPerSide; i++) {
-            positions[2 * cellsPerSide + i] = new Point(i * squareSize + xDisplacement, 0 + yDisplacement);
+            positions[2 * cellsPerSide + i] = new Point(i  * squareSize + xDisplacement, 0 + yDisplacement);
         }
         // Set up positions along the left side of the board
         for (int i = 0; i < cellsPerSide; i++) {
-            positions[3 * cellsPerSide + i] = new Point(boardSize - squareSize + xDisplacement, i * squareSize + yDisplacement);
+            positions[3 * cellsPerSide + i] = new Point(boardSize - squareSize + xDisplacement,i  * squareSize + yDisplacement);
         }
         boardPositions = positions;
     }
@@ -230,7 +230,7 @@ public class GUI2 implements ActionListener {
             playerIcon.setBounds(800 + (i - 1) * DISTPLAYERS, 800 + MOVEUP + (i - 1) * DISTPLAYERS, 50, 50);
             playerIcons.add(playerIcon);
 
-            layeredPane.add(playerIcons.get(i - 1), new Integer(3)); // add to layeredPane on lower layer
+            layeredPane.add(playerIcons.get(i - 1), new Integer(6)); // add to layeredPane on lower layer
         }
 
         frame.setVisible(true); // must come at the very end
@@ -266,22 +266,6 @@ public class GUI2 implements ActionListener {
         }
 
         frame.setVisible(true);
-    }
-
-
-    public static void main(String[] args) {
-        // Create the game
-        int numPlayers = 4;
-        int cash = 2000;
-        String boardStyle = "Classic";
-
-        GameFactory factory = new CustomGameFactory(numPlayers, cash, boardStyle);
-        Game game = new Game(factory);
-
-        Random random = new Random();
-
-        GUI2 a = new GUI2();
-        a.initializeTheBoard(game);
     }
 
     @Override

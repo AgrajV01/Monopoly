@@ -1,6 +1,8 @@
 import java.util.ArrayList;
 import java.util.List;
 import java.lang.Math;
+import java.util.Scanner;
+
 /**
  * The Player class represents a player in the Monopoly game.
  * It holds information about the player's name, money, position, owned cities,
@@ -17,7 +19,7 @@ public class Player {
     private boolean inJail;
     private int jailCards; // number of get out of jail free cards this player has
 
-    private List<PlayerObserver> subscribers;
+    // private List<PlayerObserver> subscribers;
 
     public Player(String name, int money) {
         this.name = name;
@@ -27,7 +29,7 @@ public class Player {
         this.jailCards = 0;
         inJail = false;
     }
-    
+    /*
     public void subscribe(PlayerObserver p){
         subscribers.add(p);
     }
@@ -43,7 +45,7 @@ public class Player {
             p.onGameOver();
         }
     }
-
+    */
     public String getName() {
         return name;
     }
@@ -78,7 +80,7 @@ public class Player {
             System.out.println("You have passed Go! You collect 200$");
             money += 200;
         }
-        notifyObservers();
+        //notifyObservers();
     }
 
 
@@ -90,7 +92,7 @@ public class Player {
         money -= city.getPrice();
         ownedCities.add(city);
         city.setOwner(this);
-        notifyObservers();
+        //notifyObservers();
     }
 
     public void buyUtility(Utility utility) {
@@ -115,16 +117,16 @@ public class Player {
             playerbankrupted();
             return;
         }
-        notifyObservers();
+        //notifyObservers();
     }
     private void playerbankrupted(){
         System.out.println("Player " + name + " is Bankrupted!");
-        notifyGameOver();
+        //notifyGameOver();
     }
 
     public void receiveRent(int rent) {
         money += rent;
-        notifyObservers();
+        //notifyObservers();
     }
 
     public int getJailCards() {
@@ -133,8 +135,39 @@ public class Player {
 
     public void setJailCards(int count) {
         jailCards = count;
-        notifyObservers();
+        //notifyObservers();
     }
 
     public boolean getJailState() { return inJail; }
+
+    // displays the player's money before and after purchasing the utility
+    public boolean wantToBuyUtility(Utility utility) {
+        Scanner scanner = new Scanner(System.in);
+        System.out.println("Current Money: $" + money);
+        System.out.println("Do you want to buy " + utility.getName() + " for $" + utility.getPrice() + "? (Y/N)");
+        String input = scanner.nextLine().trim().toLowerCase();
+
+        if (input.equals("y")) {
+            int remainingMoney = money - utility.getPrice();
+            System.out.println("Remaining Money: $" + remainingMoney);
+            return true;
+        } else {
+            return false;
+        }
+    }
+    // displays the player's money before and after purchasing the city
+    public boolean wantToBuyCity(City city){
+        Scanner scanner = new Scanner(System.in);
+        System.out.println("Current Money: $" + money);
+        System.out.println("Do you want to buy " + city.getName() + " for $" + city.getPrice() + "? (Y/N)");
+        String input = scanner.nextLine().trim().toLowerCase();
+
+        if (input.equals("y")) {
+            int remainingMoney = money - city.getPrice();
+            System.out.println("Remaining Money: $" + remainingMoney);
+            return true;
+        } else {
+            return false;
+        }
+    }
 }

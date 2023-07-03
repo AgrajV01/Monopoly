@@ -28,7 +28,8 @@ public class Game {
 
         // Check if player's new position is a city and it's owned by someone else
         int position = players.get(currentPlayer).getPosition();
-        board.getPosition(position).action(players.get(currentPlayer)); // action is decided depending on position of the player
+        // action is decided depending on position of the player
+        board.getPosition(position).action(players.get(currentPlayer));
     }
 
     /*

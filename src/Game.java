@@ -44,7 +44,7 @@ public class Game {
 
     public void makeMove(Die roll) {
         players.get(currentPlayer).move(roll.diceOne+ roll.diceTwo);
-        System.out.println("You rolled a " + roll);
+        System.out.println("You rolled a " + (roll.diceOne + roll.diceTwo));
 
         // Check if player's new position is a city and it's owned by someone else
         int position = players.get(currentPlayer).getPosition();

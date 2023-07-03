@@ -62,12 +62,9 @@ public class GUI2 implements ActionListener {
             @Override
             public void actionPerformed(ActionEvent e) {
                 // When button is clicked, remove old dice labels
+                die.roll();
                 layeredPane.remove(diceLabel1);
                 layeredPane.remove(diceLabel2);
-                // Generate new dice values
-                Random random = new Random();
-                int dice1 = random.nextInt(6) + 1;
-                int dice2 = random.nextInt(6) + 1;
                 // Move the current player (you'll need to keep track of whose turn it is)
                 game.makeMove(die);
 
@@ -162,7 +159,7 @@ public class GUI2 implements ActionListener {
 
     public void displayDice() {
         String dice1 = String.valueOf(die.diceOne) + ".png"; // create relevant file names
-        String dice2 = String.valueOf(die.diceOne) + ".png";
+        String dice2 = String.valueOf(die.diceTwo) + ".png";
 
         System.out.println(dice1);
         System.out.println(dice2);

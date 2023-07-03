@@ -19,7 +19,7 @@ public class Player {
     private boolean inJail;
     private int jailCards; // number of get out of jail free cards this player has
 
-    // private List<PlayerObserver> subscribers;
+    private List<PlayerObserver> subscribers;
 
     public Player(String name, int money) {
         this.name = name;
@@ -27,11 +27,11 @@ public class Player {
         this.position = 0; // Starting at 'GO'
         this.ownedCities = new ArrayList<>();
         this.ownedUtilities = new ArrayList<>();
-        this. subscribers = new ArrayList<>();
+        this.subscribers = new ArrayList<>();
         this.jailCards = 0;
         inJail = false;
     }
-    /*
+
     public void subscribe(PlayerObserver p){
         subscribers.add(p);
     }
@@ -47,7 +47,7 @@ public class Player {
             p.onGameOver();
         }
     }
-    */
+
     public String getName() {
         return name;
     }
@@ -94,7 +94,7 @@ public class Player {
         money -= city.getPrice();
         ownedCities.add(city);
         city.setOwner(this);
-        //notifyObservers();
+        notifyObservers();
     }
 
     public void buyUtility(Utility utility) {
@@ -120,16 +120,16 @@ public class Player {
             playerbankrupted();
             return;
         }
-        //notifyObservers();
+        notifyObservers();
     }
     private void playerbankrupted(){
         System.out.println("Player " + name + " is Bankrupted!");
-        //notifyGameOver();
+        notifyGameOver();
     }
 
     public void receiveRent(int rent) {
         money += rent;
-        //notifyObservers();
+        notifyObservers();
     }
 
     public int getJailCards() {
@@ -138,7 +138,7 @@ public class Player {
 
     public void setJailCards(int count) {
         jailCards = count;
-        //notifyObservers();
+        notifyObservers();
     }
 
     public boolean getJailState() { return inJail; }

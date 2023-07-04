@@ -7,7 +7,8 @@ import java.util.Random;
 import java.util.List;
 
 public class GUI2 implements ActionListener , PlayerObserver {
-    private JButton buyButton;  // the "Buy" button
+    private JButton buyCityButton;  // the "Buy" button
+    private JButton buyUtilityButton;  // the "Buy" button
     private Point[] boardPositions;
     private static Die die = new Die();
 
@@ -79,32 +80,63 @@ public class GUI2 implements ActionListener , PlayerObserver {
 
                 // Display new dice values
                 displayDice();
-                if (buyButton != null) {
-                    layeredPane.remove(buyButton);
-                    buyButton = null;  // avoid holding onto a button that's been removed
+                if (buyCityButton != null) {
+                    layeredPane.remove(buyCityButton);
+                    buyCityButton = null;  // avoid holding onto a button that's been removed
+                    layeredPane.revalidate();  // recheck the layout
+                    layeredPane.repaint();  // repaint the panel
                 }
-                if(game.getCurrentPlayer().getIsOnCity() != null)
-                    setBuyButton(game);
+                else if (buyUtilityButton != null) {
+                    layeredPane.remove(buyUtilityButton);
+                    buyUtilityButton = null;  // avoid holding onto a button that's been removed
+                    layeredPane.revalidate();  // recheck the layout
+                    layeredPane.repaint();  // repaint the panel
+                }
+                if(game.getPrevPlayer().getIsOnCity() != null)
+                    setBuyCityButton(game);
+                else if(game.getPrevPlayer().getIsOnUtility() != null)
+                    setBuyUtilityButton(game);
                 frame.repaint();
             }
         });
     }
 
-    public void setBuyButton(Game game) {
-        buyButton = new JButton("Buy");
-        buyButton.setBounds(460,520+MOVEUP, 80, 25);
+    public void setBuyCityButton(Game game) {
+        buyCityButton = new JButton("Buy City");
+        buyCityButton.setBounds(460,520+MOVEUP, 80, 25);
 
-        layeredPane.add(buyButton, new Integer(5)); // add to layeredPane on the top layer
+        layeredPane.add(buyCityButton, new Integer(5)); // add to layeredPane on the top layer
 
-        buyButton.addActionListener(new ActionListener() {
+        buyCityButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                System.out.println(game.getCurrentPlayer().getName() + " initially has $" + game.getCurrentPlayer().getMoney());
-                game.getCurrentPlayer().buyCity(game.getCurrentPlayer().getIsOnCity());
-                System.out.println("This city is available for purchase at a price of " + game.getCurrentPlayer().getIsOnCity().getPrice());
-                System.out.println("After Purchasing, the balance amount you have is " + game.getCurrentPlayer().getMoney());
-                game.getCurrentPlayer().setIsOnCity(null);
-                layeredPane.remove(buyButton);
+                System.out.println(game.getPrevPlayer().getName() + " initially has $" + game.getPrevPlayer().getMoney());
+                game.getPrevPlayer().buyCity(game.getPrevPlayer().getIsOnCity());
+                System.out.println("This city is available for purchase at a price of " + game.getPrevPlayer().getIsOnCity().getPrice());
+                System.out.println("After Purchasing, the balance amount you have is " + game.getPrevPlayer().getMoney());
+                game.getPrevPlayer().setIsOnCity(null);
+                layeredPane.remove(buyCityButton);
+                // Refresh the frame
+                frame.repaint();
+            }
+        });
+    }
+
+    public void setBuyUtilityButton(Game game) {
+        buyUtilityButton = new JButton("Buy Utility");
+        buyUtilityButton.setBounds(440,520+MOVEUP, 120, 25);
+
+        layeredPane.add(buyUtilityButton, new Integer(5)); // add to layeredPane on the top layer
+
+        buyUtilityButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                System.out.println(game.getPrevPlayer().getName() + " initially has $" + game.getPrevPlayer().getMoney());
+                game.getPrevPlayer().buyUtility(game.getPrevPlayer().getIsOnUtility());
+                System.out.println("This utility is available for purchase at a price of " + game.getPrevPlayer().getIsOnUtility().getPrice());
+                System.out.println("After Purchasing, the balance amount you have is " + game.getPrevPlayer().getMoney());
+                game.getPrevPlayer().setIsOnUtility(null);
+                layeredPane.remove(buyUtilityButton);
                 // Refresh the frame
                 frame.repaint();
             }

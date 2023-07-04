@@ -11,6 +11,7 @@ import java.util.Scanner;
 public class Player {
     private String name;
     private City isOnCity;
+    private Utility isOnUtility;
     private int money;
     private int position;
     private boolean isBankrupted;
@@ -29,6 +30,14 @@ public class Player {
 
     public City getIsOnCity(){
         return isOnCity;
+    }
+
+    public void setIsOnUtility(Utility isOnUtility){
+        this.isOnUtility = isOnUtility;
+    }
+
+    public Utility getIsOnUtility(){
+        return isOnUtility;
     }
 
     public List<Utility> getOwnedUtilities() {

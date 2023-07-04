@@ -28,7 +28,7 @@ public class CustomGameFactory implements GameFactory {
         }
         for(int i=0; i<numOfAiPlayers; i++) {
             String name = "AI " + i;
-            players.add(new Player(name, money));
+            players.add(new AI(name, money));
         }
         return players;
     }

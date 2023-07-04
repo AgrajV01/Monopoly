@@ -30,7 +30,9 @@ public class Player {
     public void setOnCity(City onCity){
         this.onCity = onCity;
     }
-
+    public String getType(){
+        return "Player";
+    }
     public City getOnCity(){
         return onCity;
     }

@@ -7,6 +7,7 @@ import java.util.Random;
 import java.util.List;
 
 public class GUI2 implements ActionListener , PlayerObserver {
+    private boolean isAITurn = false;
     private JButton buyCityButton;  // the "Buy" button
     private JButton buyUtilityButton;  // the "Buy" button
     private Point[] boardPositions;
@@ -25,7 +26,6 @@ public class GUI2 implements ActionListener , PlayerObserver {
     private static final int DISTPLAYERS = 20;
     private static final int DISTCARDS = DISTPLAYERS/4;
     private static final int MOVEUP = -80;
-
     String jailFile = "jail.png"; // Images
     String black = "black.png";
 
@@ -46,7 +46,6 @@ public class GUI2 implements ActionListener , PlayerObserver {
 
         frame.add(layeredPane); // add layeredPane to frame
     }
-
     public void setBackdrop(String fileName) {
         image = new ImageIcon(getClass().getResource(fileName));
         JLabel pictureLabel = new JLabel(image);
@@ -54,7 +53,6 @@ public class GUI2 implements ActionListener , PlayerObserver {
 
         layeredPane.add(pictureLabel, new Integer(4)); // add to layeredPane on second layer
     }
-
     public void setOkButton(Game game) {
         button = new JButton("Roll");
         button.setBounds(460,550+MOVEUP, 80, 25);
@@ -64,7 +62,7 @@ public class GUI2 implements ActionListener , PlayerObserver {
         button.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                if(isAnimating) return;
+                if(isAnimating || isAITurn) return;
                 // When button is clicked, remove old dice labels
                 die.roll();
                 layeredPane.remove(diceLabel1);
@@ -114,7 +112,6 @@ public class GUI2 implements ActionListener , PlayerObserver {
             }
         });
     }
-
     public void setBuyCityButton(Game game) {
         buyCityButton = new JButton("Buy City");
         buyCityButton.setBounds(460,520+MOVEUP, 80, 25);
@@ -135,7 +132,6 @@ public class GUI2 implements ActionListener , PlayerObserver {
             }
         });
     }
-
     public void setBuyUtilityButton(Game game) {
         buyUtilityButton = new JButton("Buy Utility");
         buyUtilityButton.setBounds(440,520+MOVEUP, 120, 25);
@@ -168,7 +164,6 @@ public class GUI2 implements ActionListener , PlayerObserver {
             layeredPane.add(pointLabel, new Integer(5));
         }
     }
-
     private void setBoardPositions() {
         int cellsPerSide = 10;
         Point[] positions = new Point[cellsPerSide * 4];
@@ -197,8 +192,6 @@ public class GUI2 implements ActionListener , PlayerObserver {
         //displayPoints(positions);
         boardPositions = positions;
     }
-
-
     private void animateMovement(JLabel piece, Point newPosition, int delay) {
         if(isAnimating) return; // If an animation is already playing, don't start a new one.
 
@@ -227,26 +220,6 @@ public class GUI2 implements ActionListener , PlayerObserver {
         });
         timer.start();
     }
-
-
-
-    /*public void displayJail(Game game) { // uses backdrop and button decorations
-
-        //panel.removeAll(); // removes previous panel components
-        setOkButton(game);
-        setBackdrop(jailFile);  // note: backdrop must always be set last for visibility
-
-        frame.add(panel);
-        frame.setVisible(true); // must come at the very end
-
-
-    }*/
-
-    // binary options buttons function (Yes/No)
-    // display question label
-
-
-
     public void displayDice() {
         String dice1 = String.valueOf(die.diceOne) + ".png"; // create relevant file names
         String dice2 = String.valueOf(die.diceTwo) + ".png";
@@ -274,6 +247,16 @@ public class GUI2 implements ActionListener , PlayerObserver {
         setBackdrop(black);
     }
 
+    private void aiTurn(){
+        button.doClick();
+
+        if(buyCityButton != null) {
+            buyCityButton.doClick();
+        }
+        else if(buyUtilityButton != null) {
+            buyUtilityButton.doClick();
+        }
+    }
     public void initializeTheBoard(Game game) {
         System.out.println("initializingTheBoard");
 
@@ -289,7 +272,14 @@ public class GUI2 implements ActionListener , PlayerObserver {
 
         layeredPane.add(boardImage, new Integer(1)); // add to layeredPane on lower layer
 
-        setOkButton(game);
+        if(game.getCurrentPlayer().getType().equals("AI")) {
+            isAITurn = true;
+            aiTurn();
+        }
+        else {
+            isAITurn = false;
+            setOkButton(game);
+        }
 
         setBackdrop(black);
 
@@ -352,30 +342,6 @@ public class GUI2 implements ActionListener , PlayerObserver {
 
         frame.setVisible(true);
     }
-
-    /*public void rollDice() {
-
-        rollButton = new JButton("ROLL DICE"); // creates button object
-        rollButton.setBounds(110, 300, 80, 25); // bounds start from upper left corner
-        frame.add(panel);
-        rollButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-
-                frame.dispose();
-
-            }
-        }); // "this" refers to "this class" and using an action method within it
-
-        panel.add(rollButton);
-
-        setBackdrop(black);
-
-
-        frame.setVisible(true); // must come at the very end
-
-
-    }*/
 
     public void onGameOver(){
         image = new ImageIcon(getClass().getResource("bankrupcy.png"));

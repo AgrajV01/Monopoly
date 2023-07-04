@@ -3,8 +3,6 @@ public class City extends Space {
     private int rent;
     private int houseCost;
     private Player owner;
-
-
     public City(String name, int price, int rent, int houseCost) {
         this.isProperty = true;
         this.name = name;
@@ -45,10 +43,7 @@ public class City extends Space {
         if (isAvailable()) {
             // Purchase City? option appears on GUI
             if(player.getMoney() >= this.price) {
-                System.out.println(player.getName() + " initially has $" + player.getMoney());
-                player.buyCity(this);
-                System.out.println("This city is available for purchase at a price of " + price);
-                System.out.println("After Purchasing, the balance amount you have is " + player.getMoney());
+                player.setIsOnCity(this);
             }
             else{
                 System.out.println("This city is available for purchase at a price of " + price);
@@ -85,11 +80,8 @@ public class City extends Space {
                 player.payRent(this.price -bal);
                 owner.receiveRent(this.price -bal);
                 player.setIsBankrupted(true);
-                Game.gameOver();
+                //Game.gameOver();
             }
-
-
-
         }
     }
 }

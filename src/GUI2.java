@@ -7,6 +7,7 @@ import java.util.Random;
 import java.util.List;
 
 public class GUI2 implements ActionListener , PlayerObserver {
+    private JButton buyButton;  // the "Buy" button
     private Point[] boardPositions;
     private static Die die = new Die();
 
@@ -78,6 +79,32 @@ public class GUI2 implements ActionListener , PlayerObserver {
 
                 // Display new dice values
                 displayDice();
+                if (buyButton != null) {
+                    layeredPane.remove(buyButton);
+                    buyButton = null;  // avoid holding onto a button that's been removed
+                }
+                if(game.getCurrentPlayer().getIsOnCity() != null)
+                    setBuyButton(game);
+                frame.repaint();
+            }
+        });
+    }
+
+    public void setBuyButton(Game game) {
+        buyButton = new JButton("Buy");
+        buyButton.setBounds(460,520+MOVEUP, 80, 25);
+
+        layeredPane.add(buyButton, new Integer(5)); // add to layeredPane on the top layer
+
+        buyButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                System.out.println(game.getCurrentPlayer().getName() + " initially has $" + game.getCurrentPlayer().getMoney());
+                game.getCurrentPlayer().buyCity(game.getCurrentPlayer().getIsOnCity());
+                System.out.println("This city is available for purchase at a price of " + game.getCurrentPlayer().getIsOnCity().getPrice());
+                System.out.println("After Purchasing, the balance amount you have is " + game.getCurrentPlayer().getMoney());
+                game.getCurrentPlayer().setIsOnCity(null);
+                layeredPane.remove(buyButton);
                 // Refresh the frame
                 frame.repaint();
             }
@@ -260,7 +287,7 @@ public class GUI2 implements ActionListener , PlayerObserver {
         frame.setVisible(true);
     }
 
-    public void rollDice() {
+    /*public void rollDice() {
 
         rollButton = new JButton("ROLL DICE"); // creates button object
         rollButton.setBounds(110, 300, 80, 25); // bounds start from upper left corner
@@ -282,7 +309,7 @@ public class GUI2 implements ActionListener , PlayerObserver {
         frame.setVisible(true); // must come at the very end
 
 
-    }
+    }*/
 
     public void onGameOver(){
         image = new ImageIcon(getClass().getResource("bankrupcy.png"));

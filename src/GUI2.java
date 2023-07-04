@@ -195,7 +195,7 @@ public class GUI2 implements ActionListener , PlayerObserver {
 
         Timer timer = new Timer(delay, null);
         timer.addActionListener(new ActionListener() {
-            int speed = 30; // Adjust the speed accordingly
+            int speed = 15; // Adjust the speed accordingly
             @Override
             public void actionPerformed(ActionEvent e) {
                 int dx = newPosition.x - piece.getX();

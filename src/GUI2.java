@@ -11,7 +11,7 @@ public class GUI2 implements ActionListener , PlayerObserver {
     private JButton buyUtilityButton;  // the "Buy" button
     private Point[] boardPositions;
     private static Die die = new Die();
-
+    private boolean isAnimating = false;
     private JPanel panel;
     private List<JLabel> playerIcons = new ArrayList<>();
     private JButton button;
@@ -64,6 +64,7 @@ public class GUI2 implements ActionListener , PlayerObserver {
         button.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
+                if(isAnimating) return;
                 // When button is clicked, remove old dice labels
                 die.roll();
                 layeredPane.remove(diceLabel1);
@@ -172,6 +173,10 @@ public class GUI2 implements ActionListener , PlayerObserver {
 
 
     private void animateMovement(JLabel piece, Point newPosition, int delay) {
+        if(isAnimating) return; // If an animation is already playing, don't start a new one.
+
+        isAnimating = true; // Animation starts
+
         Timer timer = new Timer(delay, null);
         timer.addActionListener(new ActionListener() {
             int speed = 10; // Adjust the speed accordingly
@@ -183,6 +188,7 @@ public class GUI2 implements ActionListener , PlayerObserver {
                 if (dx * dx + dy * dy <= speed * speed) {
                     piece.setLocation(newPosition.x, newPosition.y);
                     timer.stop();
+                    isAnimating = false; // Animation ends
                     return;
                 }
 
@@ -194,6 +200,7 @@ public class GUI2 implements ActionListener , PlayerObserver {
         });
         timer.start();
     }
+
 
 
     /*public void displayJail(Game game) { // uses backdrop and button decorations
@@ -362,7 +369,7 @@ public class GUI2 implements ActionListener , PlayerObserver {
         }
 
     }
-    
+
     @Override
     public void actionPerformed(ActionEvent e) { // for ok button
 

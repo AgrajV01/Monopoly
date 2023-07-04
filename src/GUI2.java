@@ -77,7 +77,16 @@ public class GUI2 implements ActionListener , PlayerObserver {
                 // Retrieve the player's piece
                 JLabel currentPlayerIcon = playerIcons.get(game.getPrevPlayerIndex());
                 // Animate the piece to the new position
-                animateMovement(currentPlayerIcon, boardPositions[currentPlayerPosition], 15);
+                Point newPosition = boardPositions[currentPlayerPosition];
+                if(currentPlayerPosition < 10)
+                    newPosition.y += 20*game.getPrevPlayerIndex();
+                else if(currentPlayerPosition < 20)
+                    newPosition.x -= 10*game.getPrevPlayerIndex();
+                else if(currentPlayerPosition < 30)
+                    newPosition.y -= 20*game.getPrevPlayerIndex();
+                else
+                    newPosition.x += 10*game.getPrevPlayerIndex();
+                animateMovement(currentPlayerIcon, newPosition, 15);
 
                 // Display new dice values
                 displayDice();

@@ -6,12 +6,14 @@ public class CustomGameFactory implements GameFactory {
     private int money;
     private String boardStyle;
     private int numOfAiPlayers;
+    private GUI2 gui; // added gui data member
 
-    public CustomGameFactory(int numPlayers, int numOfAiPlayers, int cash, String boardStyle) {
+    public CustomGameFactory(int numPlayers, int numOfAiPlayers, int cash, String boardStyle, GUI2 gui) {
         this.numPlayers = numPlayers;
         this.numOfAiPlayers = numOfAiPlayers;
         this.money = cash;
         this.boardStyle = boardStyle;
+        this.gui = gui; // added gui into contructor
     }
 
     @Override
@@ -24,7 +26,7 @@ public class CustomGameFactory implements GameFactory {
         List<Player> players = new ArrayList<>();
         for(int i=0; i<(numPlayers-numOfAiPlayers); i++) {
             String name = "Player " + i;
-            players.add(new Player(name, money));
+            players.add(new Player(name, money, gui)); // passing gui to Players for textArea
         }
         for(int i=0; i<numOfAiPlayers; i++) {
             String name = "AI " + i;

@@ -16,6 +16,7 @@ public class Player {
     private int position;
     private boolean isBankrupted;
     private List<City> ownedCities;
+    private GUI2 gui; // added this to be able to print elements on screen
 
     private List<Utility> ownedUtilities;
 
@@ -51,7 +52,7 @@ public class Player {
 
 
     //
-    public Player(String name, int money) {
+    public Player(String name, int money, GUI2 gui) {
         this.name = name;
         this.money = money; // Starting money in Monopoly
         this.position = 0; // Starting at 'GO'
@@ -63,6 +64,7 @@ public class Player {
         this.onCity = null;
         this.onUtility = null;
         inJail = false;
+        this.gui = gui; // gui object is passed to constructor, we can print to textArea from this class
     }
 
     public void subscribe(PlayerObserver p){
@@ -191,6 +193,8 @@ public class Player {
         System.out.println("Current Money: $" + money);
         System.out.println("Do you want to buy " + utility.getName() + " for $" + utility.getPrice() + "? (Y/N)");
         String input = scanner.nextLine().trim().toLowerCase();
+
+        gui.getTextArea().append("Do you want to buy " + utility.getName() + " for $" + utility.getPrice() + "? (Y/N)");
 
         if (input.equals("y")) {
             int remainingMoney = money - utility.getPrice();

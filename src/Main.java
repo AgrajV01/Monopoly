@@ -12,12 +12,14 @@ public class Main {
         int cash = 2000;
         String boardStyle = "Classic";
 
-        GameFactory factory = new CustomGameFactory(numPlayers, numOfAiPlayers, cash, boardStyle);
+        GUI2 a = new GUI2(); // must add to the factory
+
+        GameFactory factory = new CustomGameFactory(numPlayers, numOfAiPlayers, cash, boardStyle, a);
         Game game = new Game(factory);
 
         Random random = new Random();
 
-        GUI2 a = new GUI2();
+
         a.initializeTheBoard(game);
     }
 }

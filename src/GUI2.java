@@ -20,7 +20,7 @@ public class GUI2 implements ActionListener , PlayerObserver {
     private JLayeredPane layeredPane;
     private JLabel diceLabel1;
     private JLabel diceLabel2;
-    private JTextArea text;
+    private JTextArea text;;
     private static final int DISTPLAYERS = 20;
     private static final int DISTCARDS = DISTPLAYERS/4;
     private static final int MOVEUP = -80;
@@ -446,6 +446,12 @@ public class GUI2 implements ActionListener , PlayerObserver {
 
         frame.setVisible(true);
 
+
+    }
+
+    public JTextArea getTextArea() { // for passing private data member
+
+        return text;
 
     }
 

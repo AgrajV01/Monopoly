@@ -7,13 +7,15 @@ import java.util.Random;
 public class Main {
     public static void main(String[] args) {
         // Create the game
-        int numPlayers = 3;
+        int numPlayers = 4;
         int numOfAiPlayers = 1;
         int cash = 2000;
         String boardStyle = "Classic";
 
         GameFactory factory = new CustomGameFactory(numPlayers, numOfAiPlayers, cash, boardStyle);
         Game game = new Game(factory);
+        for(int i = 0;i < 3;i++)
+            System.out.println(game.players.get(i).getType());
 
         Random random = new Random();
 

@@ -3,7 +3,7 @@ import java.util.List;
 public class Game {
     private Board board;
     private Die die;
-    private static List<Player> players;
+    public static List<Player> players;
     private int currentPlayer, numOfPlayers;
 
     public void cleanProperty(){
@@ -50,7 +50,6 @@ public class Game {
     public int switchTurn() {
         if(numOfPlayers == currentPlayer + 1)
             currentPlayer = -1;
-
         return ++currentPlayer;
     }
 

@@ -22,13 +22,13 @@ public class CustomGameFactory implements GameFactory {
     @Override
     public List<Player> createPlayers() {
         List<Player> players = new ArrayList<>();
-        for(int i=0; i<numPlayers; i++) {
+        for(int i=0; i<(numPlayers-numOfAiPlayers); i++) {
             String name = "Player " + i;
             players.add(new Player(name, money));
         }
         for(int i=0; i<numOfAiPlayers; i++) {
             String name = "AI " + i;
-            players.add(new Player(name, money));
+            players.add(new AI(name, money));
         }
         return players;
     }

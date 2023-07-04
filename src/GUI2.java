@@ -283,6 +283,7 @@ public class GUI2 implements ActionListener , PlayerObserver {
 
         setBackdrop(black);
 
+        displayBackground();
         displayPlayers(game);
         displayStats(game);
         displayMan(game);
@@ -439,6 +440,28 @@ public class GUI2 implements ActionListener , PlayerObserver {
         //same thing for text box (figure this out tomorrow)
         layeredPane.add(textDisplay, new Integer(5)); // add to layeredPane on lower layer
 
+
+    }
+
+    public void displayBackground() {
+
+        System.out.println("setting backdrop");
+
+        URL url = getClass().getResource("background.jpeg");
+        ImageIcon originalIcon = new ImageIcon(url); // get StatDisplay image
+        Image originalImage = originalIcon.getImage();
+        Image resizedImage = originalImage.getScaledInstance(1500, 1000, Image.SCALE_SMOOTH);
+        ImageIcon resizedIcon = new ImageIcon(resizedImage);
+
+        JLabel backDisplay = new JLabel(resizedIcon);
+
+
+
+
+
+        backDisplay.setBounds(0, 0, 1500, 1000);
+
+        layeredPane.add(backDisplay, new Integer(1)); // add to layeredPane on lower layer
 
     }
 

@@ -145,14 +145,27 @@ public class GUI2 implements ActionListener , PlayerObserver {
             }
         });
     }
+    public void displayPoints(Point[] points) {
+        for (Point point : points) {
+            // Create a JLabel to represent the point
+            JLabel pointLabel = new JLabel();
+            pointLabel.setOpaque(true);
+            pointLabel.setBackground(Color.BLACK);
+            pointLabel.setBounds(point.x, point.y, 5, 5);
+
+            // Add the point label to the layeredPane on the top layer
+            layeredPane.add(pointLabel, new Integer(5));
+        }
+    }
 
     private void setBoardPositions() {
         int cellsPerSide = 10;
         Point[] positions = new Point[cellsPerSide * 4];
-        int boardSize = 800;
+        int boardSize = 670;
         int squareSize = boardSize/cellsPerSide; // Size of a square (900/10 assuming board height and width is 900)
-        int xDisplacement = 100;
-        int yDisplacement = 20;
+        int xDisplacement = 210;
+        int yDisplacement = xDisplacement + MOVEUP;
+        int displacement = 80;
 
         // Set up positions along the bottom of the board
         for (int i = 0; i < cellsPerSide; i++) {
@@ -160,16 +173,17 @@ public class GUI2 implements ActionListener , PlayerObserver {
         }
         // Set up positions along the right side of the board
         for (int i = 0; i < cellsPerSide; i++) {
-            positions[cellsPerSide + i] = new Point(0 + xDisplacement, boardSize - (i + 1) * squareSize + yDisplacement);
+            positions[cellsPerSide + i] = new Point(xDisplacement - squareSize, boardSize - (i + 1) * squareSize + yDisplacement);
         }
         // Set up positions along the top of the board
         for (int i = 0; i < cellsPerSide; i++) {
-            positions[2 * cellsPerSide + i] = new Point(i  * squareSize + xDisplacement, 0 + yDisplacement);
+            positions[2 * cellsPerSide + i] = new Point((i - 1)  * squareSize + xDisplacement, yDisplacement - squareSize);
         }
         // Set up positions along the left side of the board
         for (int i = 0; i < cellsPerSide; i++) {
-            positions[3 * cellsPerSide + i] = new Point(boardSize - squareSize + xDisplacement,i  * squareSize + yDisplacement);
+            positions[3 * cellsPerSide + i] = new Point(boardSize - squareSize + xDisplacement,(i - 1)  * squareSize + yDisplacement);
         }
+        //displayPoints(positions);
         boardPositions = positions;
     }
 
@@ -181,7 +195,7 @@ public class GUI2 implements ActionListener , PlayerObserver {
 
         Timer timer = new Timer(delay, null);
         timer.addActionListener(new ActionListener() {
-            int speed = 10; // Adjust the speed accordingly
+            int speed = 30; // Adjust the speed accordingly
             @Override
             public void actionPerformed(ActionEvent e) {
                 int dx = newPosition.x - piece.getX();

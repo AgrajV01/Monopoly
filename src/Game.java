@@ -3,7 +3,7 @@ import java.util.List;
 public class Game {
     private Board board;
     private Die die;
-    private List<Player> players;
+    private static List<Player> players;
     private int currentPlayer, numOfPlayers;
 
     public Game(GameFactory factory) {
@@ -70,6 +70,10 @@ public class Game {
 
 
         // Switch the turn to the next player
+        for(Player pl : players) {
+            if (pl.getIsBankrupted() == true)
+                return;
+        }
         switchTurn();
     }
 
@@ -99,5 +103,51 @@ public class Game {
         if(currentPlayer != 0)
             return currentPlayer-1;
         else return 3;
+    }
+    public static void gameOver() {
+        // Determine the player with the highest value
+        Player winner = getPlayerWithHighestValue();
+        int propertyMoney =calculateTotalValue(winner) - winner.getMoney();
+        // Print the winner and other players in descending order of value
+        System.out.println("Game Over!");
+        System.out.println("Player with the highest value: " + winner.getName());
+        System.out.println(winner.getName() + " has total $" + calculateTotalValue(winner) +
+                "($" + winner.getMoney() + " in money and $" + propertyMoney + "in properties)");
+        System.out.println("Other players:");
+        players.stream()
+                .filter(player -> player != winner)
+                .sorted((p1, p2) -> Integer.compare(calculateTotalValue(p2), calculateTotalValue(p1)))
+                .forEach(p -> System.out.println(p.getName() + "-- Total Value(Including properties and money): "
+                        + calculateTotalValue(p)));
+
+    }
+    private static Player getPlayerWithHighestValue() {
+        Player winner = players.get(0);
+        int highestValue = calculateTotalValue(winner);
+
+        for (int i = 1; i < players.size(); i++) {
+            Player player = players.get(i);
+            int playerValue = calculateTotalValue(player) ;
+
+            if (playerValue > highestValue) {
+                winner = player;
+                highestValue = playerValue;
+            }
+        }
+
+        return winner;
+    }
+    private static int calculateTotalValue(Player player) {
+        int totalValue = player.getMoney();
+
+        for (City city : player.getOwnedCities()) {
+            totalValue += city.getPrice();
+        }
+
+        for (Utility utility : player.getOwnedUtilities()) {
+            totalValue += utility.getPrice();
+        }
+
+        return totalValue;
     }
 }

@@ -11,6 +11,7 @@ public class OtherSpace extends Space {
         }
         else if (player.getPosition() == 4) {
             System.out.println("Income Tax!");
+            System.out.println(player.getName() + " Must pay $200");
             player.payRent(200);
         }
         else if (player.getPosition() == 10) {
@@ -30,6 +31,7 @@ public class OtherSpace extends Space {
             player.sendToJail();
         } else if (player.getPosition() == 38) {
             System.out.println("Luxury Tax!");
+            System.out.println(player.getName() + " Must pay $100");
             player.payRent(100);
         }
     }

@@ -12,6 +12,7 @@ public class Player {
     private String name;
     private int money;
     private int position;
+    private boolean isBankrupted;
     private List<City> ownedCities;
 
     private List<Utility> ownedUtilities;
@@ -21,6 +22,10 @@ public class Player {
 
     private List<PlayerObserver> subscribers;
 
+    public List<Utility> getOwnedUtilities() {
+        return ownedUtilities;
+    }
+
     public Player(String name, int money) {
         this.name = name;
         this.money = money; // Starting money in Monopoly
@@ -29,6 +34,7 @@ public class Player {
         this.ownedUtilities = new ArrayList<>();
         this.subscribers = new ArrayList<>();
         this.jailCards = 0;
+        this.isBankrupted = false;
         inJail = false;
     }
 
@@ -63,7 +69,12 @@ public class Player {
     public int getPosition() {
         return position;
     }
-
+    public boolean getIsBankrupted(){
+        return isBankrupted;
+    }
+    public void setIsBankrupted(boolean ans){
+        isBankrupted = ans;
+    }
     public void setPosition(int position) { this.position = position; }
 
     public void sendToJail() {
@@ -112,18 +123,22 @@ public class Player {
         if(money >= rent) {
             money -= rent;
         } else {
+            /*
             System.out.println("Not enough money to pay rent. Transferring assets and going bankrupt.");
             for(City city : ownedCities) {
                 city.getOwner().receiveRent(city.getPrice());
                 city.setOwner(null);
             }
+             */
+            money =0;
             playerbankrupted();
             return;
         }
         notifyObservers();
     }
     private void playerbankrupted(){
-        System.out.println("Player " + name + " is Bankrupted!");
+        System.out.println(name + " is Bankrupted!");
+        Game.gameOver();
         notifyGameOver();
     }
 
@@ -173,4 +188,5 @@ public class Player {
             return false;
         }
     }
+
 }

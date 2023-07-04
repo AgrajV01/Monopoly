@@ -148,7 +148,7 @@ public class Player {
     }
     private void playerbankrupted(){
         System.out.println(name + " is Bankrupted!");
-        //Game.gameOver();
+        Game.gameOver();
         notifyGameOver();
     }
 

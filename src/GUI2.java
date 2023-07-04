@@ -2,6 +2,7 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.Random;
 import java.util.List;
@@ -31,12 +32,13 @@ public class GUI2 implements ActionListener , PlayerObserver {
     String _5 = "5.png";
     String _6 = "6.png";
 
-    public GUI2() {
-        layeredPane = new JLayeredPane();
-        layeredPane.setPreferredSize(new Dimension(1000, 1000));
 
-        frame = new JFrame();
-        frame.setSize(1000, 1000);
+    public GUI2() {// initializes panel and frame
+        layeredPane = new JLayeredPane(); // create the layered pane
+        layeredPane.setPreferredSize(new Dimension(1500, 1000)); // set size
+
+        frame = new JFrame(); // creating frame to add panel onto
+        frame.setSize(1500, 1000);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
         frame.add(layeredPane);
@@ -322,7 +324,11 @@ public class GUI2 implements ActionListener , PlayerObserver {
 
         setBackdrop(black);
 
+        displayBackground();
         displayPlayers(game);
+        displayStats(game);
+        displayMan(game);
+        displayText(game);
         displayCards(5,6);
         displayDice();
 
@@ -351,6 +357,43 @@ public class GUI2 implements ActionListener , PlayerObserver {
 
         frame.setVisible(true);
     }
+
+
+    public void displayStats(Game game) {
+        System.out.println("initializingTheStatsDisplay");
+
+        for(int i = 1; i < game.getNumPlayers()+1; i++) {
+
+            int hShift = 0; // for display positioning
+            int vShift = 0;
+
+            ImageIcon originalIcon = new ImageIcon(getClass().getResource("S" + i + ".png")); // get StatDisplay image
+            Image originalImage = originalIcon.getImage();
+            Image resizedImage = originalImage.getScaledInstance(150, 200, Image.SCALE_SMOOTH);
+            ImageIcon resizedIcon = new ImageIcon(resizedImage);
+
+            JLabel statDisplay = new JLabel(resizedIcon);
+
+            if( i > 2 ) // for setting display position
+                vShift = 250;
+            else vShift = 0;
+
+            if( i == 2 || i == 4)
+                hShift = 200;
+            else hShift = 0;
+
+            statDisplay.setBounds(950 + hShift, -50 + vShift, 250, 400);
+
+
+            layeredPane.add(statDisplay, new Integer(6)); // add to layeredPane on lower layer
+
+        }
+
+        frame.setVisible(true); // must come at the very end
+
+    }
+
+
 
     public void displayCards(int chance, int chest) {
         System.out.println("adding cards");
@@ -383,6 +426,113 @@ public class GUI2 implements ActionListener , PlayerObserver {
 
         frame.setVisible(true);
     }
+
+
+    public void displayMan(Game game) {
+        System.out.println("waking up the monopoly man");
+
+        URL url = getClass().getResource("man.gif");
+        ImageIcon originalIcon = new ImageIcon(url); // get StatDisplay image
+        Image originalImage = originalIcon.getImage();
+        Image resizedImage = originalImage.getScaledInstance(150, 200, Image.SCALE_DEFAULT);
+        ImageIcon resizedIcon = new ImageIcon(resizedImage);
+
+        JLabel manDisplay = new JLabel(resizedIcon);
+
+
+
+        manDisplay.setBounds(1000, 450, 700, 500);
+
+
+        //same thing for text box (figure this out tomorrow)
+        layeredPane.add(manDisplay, new Integer(5)); // add to layeredPane on lower layer
+
+        ImageIcon originalIcon1 = new ImageIcon(getClass().getResource("text.png")); // get StatDisplay image
+        Image originalImage1 = originalIcon.getImage();
+        Image resizedImage1 = originalImage.getScaledInstance(150, 200, Image.SCALE_SMOOTH);
+        ImageIcon resizedIcon1 = new ImageIcon(resizedImage);
+
+        JLabel textDisplay = new JLabel(resizedIcon);
+
+        textDisplay.setBounds(900, 400, 700, 500);
+
+
+        // now for text
+
+
+        frame.setVisible(true);
+
+    }
+
+    public void displayText(Game game) {
+
+        System.out.println("placing text box");
+
+        URL url = getClass().getResource("text.png");
+        ImageIcon originalIcon = new ImageIcon(url); // get StatDisplay image
+        Image originalImage = originalIcon.getImage();
+        Image resizedImage = originalImage.getScaledInstance(350, 200, Image.SCALE_SMOOTH);
+        ImageIcon resizedIcon = new ImageIcon(resizedImage);
+
+        JLabel textDisplay = new JLabel(resizedIcon);
+
+
+
+        textDisplay.setBounds(750, 400, 700, 500);
+
+
+        //same thing for text box (figure this out tomorrow)
+        layeredPane.add(textDisplay, new Integer(5)); // add to layeredPane on lower layer
+
+
+    }
+
+    public void displayBackground() {
+
+        System.out.println("setting backdrop");
+
+        URL url = getClass().getResource("background.jpeg");
+        ImageIcon originalIcon = new ImageIcon(url); // get StatDisplay image
+        Image originalImage = originalIcon.getImage();
+        Image resizedImage = originalImage.getScaledInstance(1500, 1000, Image.SCALE_SMOOTH);
+        ImageIcon resizedIcon = new ImageIcon(resizedImage);
+
+        JLabel backDisplay = new JLabel(resizedIcon);
+
+
+
+
+
+        backDisplay.setBounds(0, 0, 1500, 1000);
+
+        layeredPane.add(backDisplay, new Integer(1)); // add to layeredPane on lower layer
+
+    }
+
+    /*public void rollDice() {
+
+        rollButton = new JButton("ROLL DICE"); // creates button object
+        rollButton.setBounds(110, 300, 80, 25); // bounds start from upper left corner
+        frame.add(panel);
+        rollButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+
+                frame.dispose();
+
+            }
+        }); // "this" refers to "this class" and using an action method within it
+
+        panel.add(rollButton);
+
+        setBackdrop(black);
+
+
+        frame.setVisible(true); // must come at the very end
+
+
+    }*/
+
 
     public void onGameOver(){
         image = new ImageIcon(getClass().getResource("bankrupcy.png"));

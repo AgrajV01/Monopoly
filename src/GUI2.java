@@ -74,7 +74,7 @@ public class GUI2 implements ActionListener , PlayerObserver {
                 // Retrieve the player's piece
                 JLabel currentPlayerIcon = playerIcons.get(game.getPrevPlayerIndex());
                 // Animate the piece to the new position
-                animateMovement(currentPlayerIcon, boardPositions[currentPlayerPosition], 50);
+                animateMovement(currentPlayerIcon, boardPositions[currentPlayerPosition], 15);
 
                 // Display new dice values
                 displayDice();
@@ -115,31 +115,22 @@ public class GUI2 implements ActionListener , PlayerObserver {
     private void animateMovement(JLabel piece, Point newPosition, int delay) {
         Timer timer = new Timer(delay, null);
         timer.addActionListener(new ActionListener() {
-            int speed = 50; // Move 5 pixels at a time
+            int speed = 10; // Adjust the speed accordingly
             @Override
             public void actionPerformed(ActionEvent e) {
-                // Check if piece has reached horizontal position
-                die.roll();
-                if (piece.getX() != newPosition.getX()) {
-                    // If not, move horizontally
-                    int nextX = piece.getX() + (newPosition.getX() > piece.getX() ? speed : -speed);
-                    // If we overshoot, correct the position
-                    if (newPosition.getX() > piece.getX() ? nextX > newPosition.getX() : nextX < newPosition.getX()) {
-                        nextX = (int) newPosition.getX();
-                    }
-                    piece.setLocation(nextX, piece.getY());
-                } else if (piece.getY() != newPosition.getY()) {
-                    // If horizontal position has been reached, move vertically
-                    int nextY = piece.getY() + (newPosition.getY() > piece.getY() ? speed : -speed);
-                    // If we overshoot, correct the position
-                    if (newPosition.getY() > piece.getY() ? nextY > newPosition.getY() : nextY < newPosition.getY()) {
-                        nextY = (int) newPosition.getY();
-                    }
-                    piece.setLocation(piece.getX(), nextY);
-                } else {
-                    // If both x and y coordinates have been reached, stop timer
+                int dx = newPosition.x - piece.getX();
+                int dy = newPosition.y - piece.getY();
+
+                if (dx * dx + dy * dy <= speed * speed) {
+                    piece.setLocation(newPosition.x, newPosition.y);
                     timer.stop();
+                    return;
                 }
+
+                double angle = Math.atan2(dy, dx);
+                int nextX = piece.getX() + (int) (speed * Math.cos(angle));
+                int nextY = piece.getY() + (int) (speed * Math.sin(angle));
+                piece.setLocation(nextX, nextY);
             }
         });
         timer.start();
@@ -298,7 +289,7 @@ public class GUI2 implements ActionListener , PlayerObserver {
         JLabel pictureLabel = new JLabel(image);
         pictureLabel.setBounds(435,415+MOVEUP,130, 170); // assuming the size of backdrop is same as the frame
 
-        layeredPane.add(pictureLabel, 5); // add to layeredPane on second layer
+        layeredPane.add(pictureLabel, new Integer(5)); // add to layeredPane on second layer
     }
 
     public void onPlayerState(Player p){

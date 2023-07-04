@@ -16,6 +16,10 @@ public class Die {
         return diceOne + diceTwo;
     }
 
+    public int getRoll() {
+        return diceOne + diceTwo;
+    }
+
     public boolean isDouble() {
         return diceOne == diceTwo;
     }

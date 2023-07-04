@@ -321,12 +321,12 @@ public class GUI2 implements ActionListener , PlayerObserver {
             JLabel statDisplay = new JLabel(resizedIcon);
 
             if( i > 2 ) // for setting display position
-                hShift = 200;
-            else hShift = 0;
-
-            if( i == 2 || i == 4)
                 vShift = 250;
             else vShift = 0;
+
+            if( i == 2 || i == 4)
+                hShift = 200;
+            else hShift = 0;
 
             statDisplay.setBounds(950 + hShift, -50 + vShift, 250, 400);
 

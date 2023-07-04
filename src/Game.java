@@ -6,6 +6,11 @@ public class Game {
     private static List<Player> players;
     private int currentPlayer, numOfPlayers;
 
+    public void cleanProperty(){
+        for (Player p : players)
+            p.nullCityUtility();
+    }
+
     public Game(GameFactory factory) {
         this.board = factory.createBoard();
         this.players = factory.createPlayers();

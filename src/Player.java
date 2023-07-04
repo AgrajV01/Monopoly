@@ -10,8 +10,8 @@ import java.util.Scanner;
  */
 public class Player {
     private String name;
-    private City isOnCity;
-    private Utility isOnUtility;
+    private City onCity;
+    private Utility onUtility;
     private int money;
     private int position;
     private boolean isBankrupted;
@@ -23,21 +23,24 @@ public class Player {
     private int jailCards; // number of get out of jail free cards this player has
 
     private List<PlayerObserver> subscribers;
-
-    public void setIsOnCity(City isOnCity){
-        this.isOnCity = isOnCity;
+    public void nullCityUtility(){
+        this.onCity = null;
+        this.onUtility = null;
+    }
+    public void setOnCity(City onCity){
+        this.onCity = onCity;
     }
 
-    public City getIsOnCity(){
-        return isOnCity;
+    public City getOnCity(){
+        return onCity;
     }
 
-    public void setIsOnUtility(Utility isOnUtility){
-        this.isOnUtility = isOnUtility;
+    public void setOnUtility(Utility onUtility){
+        this.onUtility = onUtility;
     }
 
-    public Utility getIsOnUtility(){
-        return isOnUtility;
+    public Utility getOnUtility(){
+        return onUtility;
     }
 
     public List<Utility> getOwnedUtilities() {
@@ -53,7 +56,8 @@ public class Player {
         this.subscribers = new ArrayList<>();
         this.jailCards = 0;
         this.isBankrupted = false;
-        this.isOnCity = null;
+        this.onCity = null;
+        this.onUtility = null;
         inJail = false;
     }
 

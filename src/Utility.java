@@ -51,7 +51,7 @@ public class Utility extends Space{
         if (isAvailable()) {
             // Purchase City? option appears on GUI
             if(player.getMoney() >= this.price) {
-                player.setIsOnUtility(this);
+                player.setOnUtility(this);
             }
             else{
                 System.out.println("This utility is available for purchase at a price of " + price);

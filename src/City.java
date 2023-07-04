@@ -43,7 +43,7 @@ public class City extends Space {
         if (isAvailable()) {
             // Purchase City? option appears on GUI
             if(player.getMoney() >= this.price) {
-                player.setIsOnCity(this);
+                player.setOnCity(this);
             }
             else{
                 System.out.println("This city is available for purchase at a price of " + price);

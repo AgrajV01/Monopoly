@@ -82,20 +82,22 @@ public class GUI2 implements ActionListener , PlayerObserver {
                 // Display new dice values
                 displayDice();
                 if (buyCityButton != null) {
+                    game.cleanProperty();
                     layeredPane.remove(buyCityButton);
                     buyCityButton = null;  // avoid holding onto a button that's been removed
                     layeredPane.revalidate();  // recheck the layout
                     layeredPane.repaint();  // repaint the panel
                 }
                 else if (buyUtilityButton != null) {
+                    game.cleanProperty();
                     layeredPane.remove(buyUtilityButton);
                     buyUtilityButton = null;  // avoid holding onto a button that's been removed
                     layeredPane.revalidate();  // recheck the layout
                     layeredPane.repaint();  // repaint the panel
                 }
-                if(game.getPrevPlayer().getIsOnCity() != null)
+                if(game.getPrevPlayer().getOnCity() != null)
                     setBuyCityButton(game);
-                else if(game.getPrevPlayer().getIsOnUtility() != null)
+                else if(game.getPrevPlayer().getOnUtility() != null)
                     setBuyUtilityButton(game);
                 frame.repaint();
             }
@@ -112,10 +114,10 @@ public class GUI2 implements ActionListener , PlayerObserver {
             @Override
             public void actionPerformed(ActionEvent e) {
                 System.out.println(game.getPrevPlayer().getName() + " initially has $" + game.getPrevPlayer().getMoney());
-                game.getPrevPlayer().buyCity(game.getPrevPlayer().getIsOnCity());
-                System.out.println("This city is available for purchase at a price of " + game.getPrevPlayer().getIsOnCity().getPrice());
+                game.getPrevPlayer().buyCity(game.getPrevPlayer().getOnCity());
+                System.out.println("This city is available for purchase at a price of " + game.getPrevPlayer().getOnCity().getPrice());
                 System.out.println("After Purchasing, the balance amount you have is " + game.getPrevPlayer().getMoney());
-                game.getPrevPlayer().setIsOnCity(null);
+                game.cleanProperty();
                 layeredPane.remove(buyCityButton);
                 // Refresh the frame
                 frame.repaint();
@@ -133,10 +135,10 @@ public class GUI2 implements ActionListener , PlayerObserver {
             @Override
             public void actionPerformed(ActionEvent e) {
                 System.out.println(game.getPrevPlayer().getName() + " initially has $" + game.getPrevPlayer().getMoney());
-                game.getPrevPlayer().buyUtility(game.getPrevPlayer().getIsOnUtility());
-                System.out.println("This utility is available for purchase at a price of " + game.getPrevPlayer().getIsOnUtility().getPrice());
+                game.getPrevPlayer().buyUtility(game.getPrevPlayer().getOnUtility());
+                System.out.println("This utility is available for purchase at a price of " + game.getPrevPlayer().getOnUtility().getPrice());
                 System.out.println("After Purchasing, the balance amount you have is " + game.getPrevPlayer().getMoney());
-                game.getPrevPlayer().setIsOnUtility(null);
+                game.cleanProperty();
                 layeredPane.remove(buyUtilityButton);
                 // Refresh the frame
                 frame.repaint();

@@ -20,6 +20,7 @@ public class GUI2 implements ActionListener , PlayerObserver {
     private JLayeredPane layeredPane;
     private JLabel diceLabel1;
     private JLabel diceLabel2;
+    private JTextArea text;
     private static final int DISTPLAYERS = 20;
     private static final int DISTCARDS = DISTPLAYERS/4;
     private static final int MOVEUP = -80;
@@ -272,11 +273,12 @@ public class GUI2 implements ActionListener , PlayerObserver {
 
         setBackdrop(black);
 
-        displayBackground();
+        //displayBackground();
         displayPlayers(game);
         displayStats(game);
         displayMan(game);
-        displayText(game);
+        displayTextBox(game);
+        displayTextArea();
         displayCards(5,6);
         displayDice();
 
@@ -410,7 +412,7 @@ public class GUI2 implements ActionListener , PlayerObserver {
 
     }
 
-    public void displayText(Game game) {
+    public void displayTextBox(Game game) {
 
         System.out.println("placing text box");
 
@@ -429,6 +431,20 @@ public class GUI2 implements ActionListener , PlayerObserver {
 
         //same thing for text box (figure this out tomorrow)
         layeredPane.add(textDisplay, new Integer(5)); // add to layeredPane on lower layer
+
+
+    }
+
+    public void displayTextArea() {
+
+        text = new JTextArea();
+        text.setBounds(950,555, 300, 125);
+
+        text.append("This is the outputaaaaaAAAAAAAAAAA");
+
+        layeredPane.add(text, new Integer(6)); // add to layeredPane on lower layer
+
+        frame.setVisible(true);
 
 
     }

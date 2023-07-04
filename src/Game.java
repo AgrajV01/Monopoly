@@ -4,7 +4,7 @@ public class Game {
     private Board board;
     private Die die;
     private static List<Player> players;
-    private int currentPlayer, numOfPlayers, numOfAiPlayers;
+    private int currentPlayer, numOfPlayers;
 
     public void cleanProperty(){
         for (Player p : players)
@@ -18,7 +18,6 @@ public class Game {
         die = new Die();
         currentPlayer = 0; // Player 1 starts the game
         numOfPlayers = factory.getNumPlayers();
-        numOfAiPlayers = factory.getNumOfAiPlayers();
     }
 
     public void subscribeToPlayers(PlayerObserver o){
@@ -51,8 +50,7 @@ public class Game {
     public int switchTurn() {
         if(numOfPlayers == currentPlayer + 1)
             currentPlayer = -1;
-        if(numOfAiPlayers == currentPlayer + 1)
-            currentPlayer = -1;
+
         return ++currentPlayer;
     }
 
@@ -99,7 +97,6 @@ public class Game {
     public int getNumPlayers() {
         return numOfPlayers;
     }
-    public int getNumOfAiPlayers() { return numOfAiPlayers; }
 
     public Board getBoard() {
         return board;

@@ -115,7 +115,7 @@ public class GUI2 implements ActionListener , PlayerObserver {
     private void animateMovement(JLabel piece, Point newPosition, int delay) {
         Timer timer = new Timer(delay, null);
         timer.addActionListener(new ActionListener() {
-            int speed = 20; // Move 5 pixels at a time
+            int speed = 50; // Move 5 pixels at a time
             @Override
             public void actionPerformed(ActionEvent e) {
                 // Check if piece has reached horizontal position
@@ -294,7 +294,11 @@ public class GUI2 implements ActionListener , PlayerObserver {
     }
 
     public void onGameOver(){
-        // update UI for game over screen
+        image = new ImageIcon(getClass().getResource("bankrupcy.png"));
+        JLabel pictureLabel = new JLabel(image);
+        pictureLabel.setBounds(435,415+MOVEUP,130, 170); // assuming the size of backdrop is same as the frame
+
+        layeredPane.add(pictureLabel, 5); // add to layeredPane on second layer
     }
 
     public void onPlayerState(Player p){

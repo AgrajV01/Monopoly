@@ -8,7 +8,7 @@ public class Main {
     public static void main(String[] args) {
         // Create the game
         int numPlayers = 4;
-        int cash = 2000;
+        int cash = 200;
         String boardStyle = "Classic";
 
         GameFactory factory = new CustomGameFactory(numPlayers, cash, boardStyle);

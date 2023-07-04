@@ -3,7 +3,7 @@ import java.util.List;
 public class Game {
     private Board board;
     private Die die;
-    public static List<Player> players;
+    private static List<Player> players;
     private int currentPlayer, numOfPlayers;
 
     public void cleanProperty(){

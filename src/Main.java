@@ -14,13 +14,10 @@ public class Main {
 
         GameFactory factory = new CustomGameFactory(numPlayers, numOfAiPlayers, cash, boardStyle);
         Game game = new Game(factory);
-        for(int i = 0;i < 3;i++)
-            System.out.println(game.players.get(i).getType());
 
         Random random = new Random();
 
         GUI2 a = new GUI2();
         a.initializeTheBoard(game);
-
     }
 }

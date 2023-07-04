@@ -124,7 +124,6 @@ public class Game {
                 .sorted((p1, p2) -> Integer.compare(calculateTotalValue(p2), calculateTotalValue(p1)))
                 .forEach(p -> System.out.println(p.getName() + "-- Total Value(Including properties and money): "
                         + calculateTotalValue(p)));
-
     }
     private static Player getPlayerWithHighestValue() {
         Player winner = players.get(0);

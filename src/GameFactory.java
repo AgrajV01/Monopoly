@@ -4,4 +4,5 @@ public interface GameFactory {
     Board createBoard();
     List<Player> createPlayers();
     int getNumPlayers();
+    int getNumOfAiPlayers();
 }

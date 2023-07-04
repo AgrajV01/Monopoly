@@ -8,16 +8,13 @@ import java.util.Random;
 import java.util.List;
 
 public class GUI2 implements ActionListener , PlayerObserver {
-    private JButton buyCityButton;  // the "Buy" button
-    private JButton buyUtilityButton;  // the "Buy" button
+    private JButton buyCityButton;
+    private JButton buyUtilityButton;
     private Point[] boardPositions;
     private static Die die = new Die();
     private boolean isAnimating = false;
-    private JPanel panel;
     private List<JLabel> playerIcons = new ArrayList<>();
     private JButton button;
-    private JButton rollButton;
-    private JLabel label;
     private JFrame frame;
     private ImageIcon image;
     private JLayeredPane layeredPane;
@@ -26,16 +23,15 @@ public class GUI2 implements ActionListener , PlayerObserver {
     private static final int DISTPLAYERS = 20;
     private static final int DISTCARDS = DISTPLAYERS/4;
     private static final int MOVEUP = -80;
-
-    String jailFile = "jail.png"; // Images
     String black = "black.png";
 
-    String _1 = "1.png"; // Dice Faces
+    String _1 = "1.png";
     String _2 = "2.png";
     String _3 = "3.png";
     String _4 = "4.png";
     String _5 = "5.png";
     String _6 = "6.png";
+
 
     public GUI2() {// initializes panel and frame
         layeredPane = new JLayeredPane(); // create the layered pane
@@ -45,56 +41,66 @@ public class GUI2 implements ActionListener , PlayerObserver {
         frame.setSize(1500, 1000);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
-        frame.add(layeredPane); // add layeredPane to frame
+        frame.add(layeredPane);
     }
 
     public void setBackdrop(String fileName) {
         image = new ImageIcon(getClass().getResource(fileName));
         JLabel pictureLabel = new JLabel(image);
-        pictureLabel.setBounds(435,415+MOVEUP,130, 170); // assuming the size of backdrop is same as the frame
+        pictureLabel.setBounds(435,415+MOVEUP,130, 170);
 
-        layeredPane.add(pictureLabel, new Integer(4)); // add to layeredPane on second layer
+        layeredPane.add(pictureLabel, new Integer(4));
     }
 
     public void setOkButton(Game game) {
         button = new JButton("Roll");
         button.setBounds(460,550+MOVEUP, 80, 25);
 
-        layeredPane.add(button, new Integer(5)); // add to layeredPane on the top layer
+        layeredPane.add(button, new Integer(5));
 
         button.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 if(isAnimating) return;
-                // When button is clicked, remove old dice labels
+
                 die.roll();
                 layeredPane.remove(diceLabel1);
                 layeredPane.remove(diceLabel2);
-                // Move the current player (you'll need to keep track of whose turn it is)
+
                 game.makeMove(die);
 
-                // Retrieve the current player's position after making a move
                 int currentPlayerPosition = game.getPrevPlayer().getPosition();
-                // Retrieve the player's piece
+
                 JLabel currentPlayerIcon = playerIcons.get(game.getPrevPlayerIndex());
-                // Animate the piece to the new position
-                animateMovement(currentPlayerIcon, boardPositions[currentPlayerPosition], 15);
+
+                Point newPosition = new Point(boardPositions[currentPlayerPosition]);
+                int yOffset = 70/game.getNumPlayers();
+                int xOffset = yOffset;
+                if(currentPlayerPosition < 11)
+                    newPosition.y += yOffset*game.getPrevPlayerIndex();
+                else if(currentPlayerPosition < 21)
+                    newPosition.x -= xOffset*game.getPrevPlayerIndex();
+                else if(currentPlayerPosition < 31)
+                    newPosition.y -= yOffset*game.getPrevPlayerIndex();
+                else
+                    newPosition.x += xOffset*game.getPrevPlayerIndex();
+                animateMovement(currentPlayerIcon, newPosition, 15);
 
                 // Display new dice values
                 displayDice();
                 if (buyCityButton != null) {
                     game.cleanProperty();
                     layeredPane.remove(buyCityButton);
-                    buyCityButton = null;  // avoid holding onto a button that's been removed
-                    layeredPane.revalidate();  // recheck the layout
-                    layeredPane.repaint();  // repaint the panel
+                    buyCityButton = null;
+                    layeredPane.revalidate();
+                    layeredPane.repaint();
                 }
                 else if (buyUtilityButton != null) {
                     game.cleanProperty();
                     layeredPane.remove(buyUtilityButton);
-                    buyUtilityButton = null;  // avoid holding onto a button that's been removed
-                    layeredPane.revalidate();  // recheck the layout
-                    layeredPane.repaint();  // repaint the panel
+                    buyUtilityButton = null;
+                    layeredPane.revalidate();
+                    layeredPane.repaint();
                 }
                 if(game.getPrevPlayer().getOnCity() != null)
                     setBuyCityButton(game);
@@ -109,7 +115,7 @@ public class GUI2 implements ActionListener , PlayerObserver {
         buyCityButton = new JButton("Buy City");
         buyCityButton.setBounds(460,520+MOVEUP, 80, 25);
 
-        layeredPane.add(buyCityButton, new Integer(5)); // add to layeredPane on the top layer
+        layeredPane.add(buyCityButton, new Integer(5));
 
         buyCityButton.addActionListener(new ActionListener() {
             @Override
@@ -120,7 +126,6 @@ public class GUI2 implements ActionListener , PlayerObserver {
                 System.out.println("After Purchasing, the balance amount you have is " + game.getPrevPlayer().getMoney());
                 game.cleanProperty();
                 layeredPane.remove(buyCityButton);
-                // Refresh the frame
                 frame.repaint();
             }
         });
@@ -130,7 +135,7 @@ public class GUI2 implements ActionListener , PlayerObserver {
         buyUtilityButton = new JButton("Buy Utility");
         buyUtilityButton.setBounds(440,520+MOVEUP, 120, 25);
 
-        layeredPane.add(buyUtilityButton, new Integer(5)); // add to layeredPane on the top layer
+        layeredPane.add(buyUtilityButton, new Integer(5));
 
         buyUtilityButton.addActionListener(new ActionListener() {
             @Override
@@ -141,20 +146,17 @@ public class GUI2 implements ActionListener , PlayerObserver {
                 System.out.println("After Purchasing, the balance amount you have is " + game.getPrevPlayer().getMoney());
                 game.cleanProperty();
                 layeredPane.remove(buyUtilityButton);
-                // Refresh the frame
                 frame.repaint();
             }
         });
     }
     public void displayPoints(Point[] points) {
         for (Point point : points) {
-            // Create a JLabel to represent the point
             JLabel pointLabel = new JLabel();
             pointLabel.setOpaque(true);
             pointLabel.setBackground(Color.BLACK);
             pointLabel.setBounds(point.x, point.y, 5, 5);
 
-            // Add the point label to the layeredPane on the top layer
             layeredPane.add(pointLabel, new Integer(5));
         }
     }
@@ -163,10 +165,9 @@ public class GUI2 implements ActionListener , PlayerObserver {
         int cellsPerSide = 10;
         Point[] positions = new Point[cellsPerSide * 4];
         int boardSize = 670;
-        int squareSize = boardSize/cellsPerSide; // Size of a square (900/10 assuming board height and width is 900)
+        int squareSize = boardSize/cellsPerSide;
         int xDisplacement = 210;
         int yDisplacement = xDisplacement + MOVEUP;
-        int displacement = 80;
 
         // Set up positions along the bottom of the board
         for (int i = 0; i < cellsPerSide; i++) {
@@ -184,19 +185,19 @@ public class GUI2 implements ActionListener , PlayerObserver {
         for (int i = 0; i < cellsPerSide; i++) {
             positions[3 * cellsPerSide + i] = new Point(boardSize - squareSize + xDisplacement,(i - 1)  * squareSize + yDisplacement);
         }
-        //displayPoints(positions);
+
         boardPositions = positions;
     }
 
 
     private void animateMovement(JLabel piece, Point newPosition, int delay) {
-        if(isAnimating) return; // If an animation is already playing, don't start a new one.
+        if(isAnimating) return;
 
-        isAnimating = true; // Animation starts
+        isAnimating = true;
 
         Timer timer = new Timer(delay, null);
         timer.addActionListener(new ActionListener() {
-            int speed = 15; // Adjust the speed accordingly
+            int speed = 15;
             @Override
             public void actionPerformed(ActionEvent e) {
                 int dx = newPosition.x - piece.getX();
@@ -205,7 +206,7 @@ public class GUI2 implements ActionListener , PlayerObserver {
                 if (dx * dx + dy * dy <= speed * speed) {
                     piece.setLocation(newPosition.x, newPosition.y);
                     timer.stop();
-                    isAnimating = false; // Animation ends
+                    isAnimating = false;
                     return;
                 }
 
@@ -217,34 +218,11 @@ public class GUI2 implements ActionListener , PlayerObserver {
         });
         timer.start();
     }
-
-
-
-    /*public void displayJail(Game game) { // uses backdrop and button decorations
-
-        //panel.removeAll(); // removes previous panel components
-        setOkButton(game);
-        setBackdrop(jailFile);  // note: backdrop must always be set last for visibility
-
-        frame.add(panel);
-        frame.setVisible(true); // must come at the very end
-
-
-    }*/
-
-    // binary options buttons function (Yes/No)
-    // display question label
-
-
-
     public void displayDice() {
-        String dice1 = String.valueOf(die.diceOne) + ".png"; // create relevant file names
+        String dice1 = String.valueOf(die.diceOne) + ".png";
         String dice2 = String.valueOf(die.diceTwo) + ".png";
 
-        //System.out.println(dice1);
-        //System.out.println(dice2);
-
-        ImageIcon originalIcon1 = new ImageIcon(getClass().getResource(dice1)); // gts images of dice
+        ImageIcon originalIcon1 = new ImageIcon(getClass().getResource(dice1));
         ImageIcon originalIcon2  = new ImageIcon(getClass().getResource(dice2));
         Image originalImage1 = originalIcon1.getImage();
         Image originalImage2 = originalIcon2.getImage();
@@ -258,10 +236,21 @@ public class GUI2 implements ActionListener , PlayerObserver {
         diceLabel1.setBounds(445, 420+MOVEUP, 50, 50);
         diceLabel2.setBounds(505, 420+MOVEUP, 50, 50);
 
-        layeredPane.add(diceLabel1, new Integer(5)); // add to layeredPane on higher layer
-        layeredPane.add(diceLabel2, new Integer(5)); // add to layeredPane on higher layer
+        layeredPane.add(diceLabel1, new Integer(5));
+        layeredPane.add(diceLabel2, new Integer(5));
 
         setBackdrop(black);
+    }
+
+    private void aiTurn(){
+        button.doClick();
+
+        if(buyCityButton != null) {
+            buyCityButton.doClick();
+        }
+        else if(buyUtilityButton != null) {
+            buyUtilityButton.doClick();
+        }
     }
 
     public void initializeTheBoard(Game game) {
@@ -269,7 +258,7 @@ public class GUI2 implements ActionListener , PlayerObserver {
 
         setBoardPositions();
 
-        ImageIcon icon = new ImageIcon(getClass().getResource("board.png")); // gets images of dice
+        ImageIcon icon = new ImageIcon(getClass().getResource("board.png"));
         Image image = icon.getImage();
         image = image.getScaledInstance(820, -1, Image.SCALE_SMOOTH);
         icon = new ImageIcon(image);
@@ -277,7 +266,7 @@ public class GUI2 implements ActionListener , PlayerObserver {
 
         boardImage.setBounds(0, 0+MOVEUP, 1000, 1000);
 
-        layeredPane.add(boardImage, new Integer(1)); // add to layeredPane on lower layer
+        layeredPane.add(boardImage, new Integer(1));
 
         setOkButton(game);
 
@@ -291,7 +280,7 @@ public class GUI2 implements ActionListener , PlayerObserver {
         displayCards(5,6);
         displayDice();
 
-        frame.setVisible(true); // must come at the very end
+        frame.setVisible(true);
     }
 
     public void displayPlayers(Game game) {
@@ -299,7 +288,7 @@ public class GUI2 implements ActionListener , PlayerObserver {
 
         for(int i = 1; i < game.getNumPlayers()+1; i++) {
 
-            ImageIcon originalIcon = new ImageIcon(getClass().getResource("P" + i + ".png")); // gets images of dice
+            ImageIcon originalIcon = new ImageIcon(getClass().getResource("P" + i + ".png"));
             Image originalImage = originalIcon.getImage();
             Image resizedImage = originalImage.getScaledInstance(50, -1, Image.SCALE_SMOOTH);
             ImageIcon resizedIcon = new ImageIcon(resizedImage);
@@ -309,10 +298,10 @@ public class GUI2 implements ActionListener , PlayerObserver {
             playerIcon.setBounds(800 + (i - 1) * DISTPLAYERS, 800 + MOVEUP + (i - 1) * DISTPLAYERS, 50, 50);
             playerIcons.add(playerIcon);
 
-            layeredPane.add(playerIcons.get(i - 1), new Integer(6)); // add to layeredPane on lower layer
+            layeredPane.add(playerIcons.get(i - 1), new Integer(6));
         }
 
-        frame.setVisible(true); // must come at the very end
+        frame.setVisible(true);
     }
 
 
@@ -383,6 +372,7 @@ public class GUI2 implements ActionListener , PlayerObserver {
 
         frame.setVisible(true);
     }
+
 
     public void displayMan(Game game) {
         System.out.println("waking up the monopoly man");
@@ -489,30 +479,31 @@ public class GUI2 implements ActionListener , PlayerObserver {
 
     }*/
 
+
     public void onGameOver(){
         image = new ImageIcon(getClass().getResource("bankrupcy.png"));
         JLabel pictureLabel = new JLabel(image);
-        pictureLabel.setBounds(435,415+MOVEUP,130, 170); // assuming the size of backdrop is same as the frame
+        pictureLabel.setBounds(435,415+MOVEUP,130, 170);
 
-        layeredPane.add(pictureLabel, new Integer(5)); // add to layeredPane on second layer
+        layeredPane.add(pictureLabel, new Integer(5));
     }
 
     public void onPlayerState(Player p){
         String name = p.getName();
 
         if (name.indexOf('1' ) != -1) {
-            // update UI for player one
+
 
         }else if (name.indexOf('2' ) != -1){
-            // update UI for player two
+
         }
 
     }
 
     @Override
-    public void actionPerformed(ActionEvent e) { // for ok button
+    public void actionPerformed(ActionEvent e) {
 
-        frame.dispose(); // closes UI
+        frame.dispose();
 
     }
 

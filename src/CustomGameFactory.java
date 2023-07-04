@@ -5,9 +5,11 @@ public class CustomGameFactory implements GameFactory {
     private int numPlayers;
     private int money;
     private String boardStyle;
+    private int numOfAiPlayers;
 
-    public CustomGameFactory(int numPlayers, int cash, String boardStyle) {
+    public CustomGameFactory(int numPlayers, int numOfAiPlayers, int cash, String boardStyle) {
         this.numPlayers = numPlayers;
+        this.numOfAiPlayers = numOfAiPlayers;
         this.money = cash;
         this.boardStyle = boardStyle;
     }
@@ -24,6 +26,10 @@ public class CustomGameFactory implements GameFactory {
             String name = "Player " + i;
             players.add(new Player(name, money));
         }
+        for(int i=0; i<numOfAiPlayers; i++) {
+            String name = "AI " + i;
+            players.add(new Player(name, money));
+        }
         return players;
     }
 
@@ -31,4 +37,9 @@ public class CustomGameFactory implements GameFactory {
     public int getNumPlayers(){
         return numPlayers;
     }
+    @Override
+    public int getNumOfAiPlayers(){
+        return numOfAiPlayers;
+    }
+
 }

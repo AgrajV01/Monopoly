@@ -8,6 +8,9 @@ import java.util.Random;
 import java.util.List;
 
 public class GUI2 implements ActionListener , PlayerObserver {
+
+
+
     private int movesMade = 0;
     private JButton buyUtilityButton, endTurnButton, buyCityButton;
     private Point[] boardPositions;
@@ -31,6 +34,7 @@ public class GUI2 implements ActionListener , PlayerObserver {
     private JLabel property2;
     private JLabel property3;
     private JLabel property4;
+    private PlayerStats PlayerMenuPrototype;
 
 
     private JTextArea text;;
@@ -522,7 +526,6 @@ public class GUI2 implements ActionListener , PlayerObserver {
         System.out.println("initializingTheStatsDisplay");
 
 
-
         money1 = new JLabel(""); // Setting positions for money labels
         money2 = new JLabel("hi");
         money3 = new JLabel("hi");
@@ -534,21 +537,19 @@ public class GUI2 implements ActionListener , PlayerObserver {
         property4 = new JLabel("hi");
 
 
+        
 
+        player1.setMoneyBounds(1100 + hShift, 100+vShift, 100, 100);
 
         for(int i = 1; i < game.getNumPlayers()+1; i++) {
 
             int hShift = 0; // for display positioning
             int vShift = 0;
 
-            ImageIcon originalIcon = new ImageIcon(getClass().getResource("S" + i + ".png")); // get StatDisplay image
-            Image originalImage = originalIcon.getImage();
-            Image resizedImage = originalImage.getScaledInstance(150, 200, Image.SCALE_SMOOTH);
-            ImageIcon resizedIcon = new ImageIcon(resizedImage);
+           
 
-            JLabel statDisplay = new JLabel(resizedIcon);
-
-
+            // set bounds for all player menus
+            player1.initializeImage(i);
 
             if( i > 2 ) // for setting display position
                 vShift = 250;
@@ -564,11 +565,14 @@ public class GUI2 implements ActionListener , PlayerObserver {
 
             layeredPane.add(statDisplay, new Integer(6)); // add to layeredPane on lower layer
 
+    
+
             if(i == 1) { // set money1 and so on
-                money1.setBounds(1100 + hShift, 100+vShift, 100, 100);
-                layeredPane.add(money1, new Integer(7));
-                property1.setBounds(1120 + hShift, 155+vShift, 100, 100);
-                layeredPane.add(property1, new Integer(7));
+                PlayerStats player1 = PlayerMenuPrototype.clone();
+                // money1.setBounds(1100 + hShift, 100+vShift, 100, 100);
+                // layeredPane.add(money1, new Integer(7));
+                // property1.setBounds(1120 + hShift, 155+vShift, 100, 100);
+                // layeredPane.add(property1, new Integer(7));
 
             }
 

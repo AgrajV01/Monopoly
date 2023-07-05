@@ -51,33 +51,13 @@ public class GUI2 implements ActionListener , PlayerObserver {
         frame.add(layeredPane);
     }
 
-    public void setMoney1(int money) {
+    public void setMoney(int money) {
 
         String moneyString = String.valueOf(money);
         money1.setText(moneyString);
 
     }
 
-    public void setMoney2(int money) {
-
-        String moneyString = String.valueOf(money);
-        money2.setText(moneyString);
-
-    }
-
-    public void setMoney3(int money) {
-
-        String moneyString = String.valueOf(money);
-        money3.setText(moneyString);
-
-    }
-
-    public void setMoney4(int money) {
-
-        String moneyString = String.valueOf(money);
-        money4.setText(moneyString);
-
-    }
 
     public void setBackdrop(String fileName) {
         image = new ImageIcon(getClass().getResource(fileName));
@@ -638,12 +618,28 @@ public class GUI2 implements ActionListener , PlayerObserver {
     public void onPlayerState(Player p){
         String name = p.getName();
 
-        if (name.indexOf('1' ) != -1) {
-
-
-        }else if (name.indexOf('2' ) != -1){
-
-        }
+//        if (name.contains('1')) {
+//
+//            setMoney(p.getMoney());
+//
+//
+//        }else if (name.contains('2')){
+//
+//            setMoney(p.getMoney());
+//
+//        }
+//
+//        else if (name.contains('3')){
+//
+//            setMoney(p.getMoney());
+//
+//        }
+//
+//        else {
+//
+//            setMoney(p.getMoney());
+//
+//        }
 
     }
 

@@ -44,10 +44,10 @@ public class CustomGameFactory implements GameFactory {
 =======
             players.add(new AI(name, money));
         }*/
-        players.add(new Player("Player 1", money, gui));
-        players.add(new AI("AI 1 ", money, gui));
-        players.add(new Player("Player 2", money, gui));
-        players.add(new AI("AI 2", money, gui));
+        players.add(new Player("Player 1", money, gui)); // ensure that each player/AI has unique number for ID
+        players.add(new AI("AI 2 ", money, gui));
+        players.add(new Player("Player 3", money, gui));
+        players.add(new AI("AI 4", money, gui));
 
         return players;
     }

@@ -25,17 +25,17 @@ public class Board {
         theBoard.add(2, new ActionCard("Community Chest")); // chance
         theBoard.add(3, new City("Baltic Avenue", 60, 4, 50, gui));
         theBoard.add(4, new OtherSpace("Income tax")); // income tax
-        theBoard.add(5, new Utility("Reading Railroad", 200, 25));
+        theBoard.add(5, new Utility("Reading Railroad", 200, 25, gui));
         theBoard.add(6, new City("Oriental Avenue", 100, 6, 50, gui));
         theBoard.add(7, new ActionCard("Chance"));
         theBoard.add(8, new City("Vermont Avenue", 100, 6, 50, gui));
         theBoard.add(9, new City("Connecticut Avenue", 120, 8, 50, gui));
         theBoard.add(10, new OtherSpace("Jail"));
         theBoard.add(11, new City("St. Charles Place", 140, 10, 100, gui));
-        theBoard.add(12, new Utility("Electrical Company", 150, 4));
+        theBoard.add(12, new Utility("Electrical Company", 150, 4, gui));
         theBoard.add(13, new City("States Avenue", 140, 10, 100, gui));
         theBoard.add(14, new City("Virginia Avenue", 160, 12, 100, gui));
-        theBoard.add(15, new Utility("Pennsylvania Railroad", 200, 25));
+        theBoard.add(15, new Utility("Pennsylvania Railroad", 200, 25, gui));
         theBoard.add(16, new City("St. James Place", 180, 14, 100, gui));
         theBoard.add(17, new ActionCard("Community Chest"));
         theBoard.add(18, new City("Tennessee Avenue", 180, 14, 100, gui));
@@ -45,17 +45,17 @@ public class Board {
         theBoard.add(22, new ActionCard("Chance"));
         theBoard.add(23, new City("Indiana Avenue", 220, 18, 150, gui));
         theBoard.add(24, new City("Illinois Avenue", 240, 20, 150, gui));
-        theBoard.add(25, new Utility("B. & O. Railroad", 200, 25));
+        theBoard.add(25, new Utility("B. & O. Railroad", 200, 25, gui));
         theBoard.add(26, new City("Atlantic Avenue", 260, 22, 150, gui));
         theBoard.add(27, new City("Ventnor Avenue", 260, 22, 150, gui));
-        theBoard.add(28, new Utility("Water Works", 150, 4));
+        theBoard.add(28, new Utility("Water Works", 150, 4, gui));
         theBoard.add(29, new City("Marvin Gardens", 280, 24, 150, gui));
         theBoard.add(30, new OtherSpace("Go To Jail"));
         theBoard.add(31, new City("Pacific Avenue", 300, 26, 200, gui));
         theBoard.add(32, new City("North Carolina Avenue", 300, 26, 200, gui));
         theBoard.add(33, new ActionCard("Community Chest"));
         theBoard.add(34, new City("Pennsylvania Avenue", 320, 28, 200, gui));
-        theBoard.add(35, new Utility("Short Line", 200, 25));
+        theBoard.add(35, new Utility("Short Line", 200, 25, gui));
         theBoard.add(36, new ActionCard("Chance"));
         theBoard.add(37, new City("Park Place", 350, 35, 200, gui));
         theBoard.add(38, new OtherSpace("Luxury Tax"));

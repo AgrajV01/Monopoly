@@ -73,20 +73,27 @@ public class City extends Space {
         }
         else {
             System.out.println("This property is owned by: " + owner.getName());
+            gui.getTextArea().setText("This property is owned by: " + owner.getName());
             //player.payRent(rent);
             //owner.receiveRent(rent);
             if(player.getMoney() >= this.rent) {
                 int rent = this.rent;
                 System.out.println("Rent to be paid: $" + rent);
+                gui.getTextArea().append(" Rent to be paid: $" + rent + ". ");
                 System.out.println(player.getName() + " initially has $" + player.getMoney());
+                gui.getTextArea().append(player.getName() + " initially has $" + player.getMoney() + ".");
                 player.payRent(rent);
                 owner.receiveRent(rent);
                 System.out.println("Amount left after paying rent is: $" + player.getMoney());
-                System.out.println("After receiving the rent, Owner(" + owner.getName() + ") has $" + owner.getMoney());
+                gui.getTextArea().append(" Amount left after paying rent is: $" + player.getMoney());
+                System.out.println("After receiving the rent, Owner(" + owner.getName() + ") has $" + owner.getMoney() + ".");
+                gui.getTextArea().append(" After receiving the rent, Owner(" + owner.getName() + ") has $" + owner.getMoney());
             }
             else{
                 System.out.println(player.getName() + " has  $" + player.getMoney());
-                System.out.println("Insufficient funds! The Player is Bankrupted");
+                gui.getTextArea().append(player.getName() + " has  $" + player.getMoney() + ". ");
+                System.out.println("Insufficient funds! The Player is Bankrupted!");
+                gui.getTextArea().append("Insufficient funds! The Player is Bankrupted1");
                 int bal = this.price - player.getMoney();
                 player.payRent(this.price -bal);
                 owner.receiveRent(this.price -bal);

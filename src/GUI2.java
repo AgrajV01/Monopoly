@@ -87,8 +87,9 @@ public class GUI2 implements ActionListener , PlayerObserver {
     }
 
     public void setOkButton(Game game) {
+
         button = new JButton("Roll");
-        button.setBounds(460,520+MOVEUP, 80, 25);
+        button.setBounds(460, 550 + MOVEUP, 80, 25);
 
         layeredPane.add(button, new Integer(5));
 
@@ -129,11 +130,20 @@ public class GUI2 implements ActionListener , PlayerObserver {
 
                 // Display new dice values
                 displayDice();
+                if (buyCityButton != null) {
+                    game.cleanProperty();
+                    layeredPane.remove(buyCityButton);
+                    buyCityButton = null;
+                } else if (buyUtilityButton != null) {
+                    game.cleanProperty();
+                    layeredPane.remove(buyUtilityButton);
+                    buyUtilityButton = null;
+                }
                 layeredPane.remove(button);
                 button = null;
                 layeredPane.revalidate();
                 layeredPane.repaint();
-                setEndTurnButton(game);
+                nextTurn(game);
                 frame.repaint();
             }
         });
@@ -194,12 +204,16 @@ public class GUI2 implements ActionListener , PlayerObserver {
         });
         timer.setRepeats(false);
         timer.start();
-        setEndTurnButton(game);
+        if (game.getPrevPlayer().getOnCity() != null)
+            setBuyCityButton(game);
+        else if (game.getPrevPlayer().getOnUtility() != null)
+            setBuyUtilityButton(game);
+        setOkButton(game);
     }
 
     public void setBuyCityButton(Game game) {
         buyCityButton = new JButton("Buy City");
-        buyCityButton.setBounds(460,490+MOVEUP, 80, 25);
+        buyCityButton.setBounds(460,520+MOVEUP, 80, 25);
 
         layeredPane.add(buyCityButton, new Integer(5));
 
@@ -219,7 +233,7 @@ public class GUI2 implements ActionListener , PlayerObserver {
 
     public void setBuyUtilityButton(Game game) {
         buyUtilityButton = new JButton("Buy Utility");
-        buyUtilityButton.setBounds(440,490+MOVEUP, 120, 25);
+        buyUtilityButton.setBounds(440,520+MOVEUP, 120, 25);
 
         layeredPane.add(buyUtilityButton, new Integer(5));
 

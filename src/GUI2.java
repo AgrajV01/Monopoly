@@ -273,7 +273,7 @@ public class GUI2 implements ActionListener , PlayerObserver {
 
         setBackdrop(black);
 
-        //displayBackground();
+        displayBackground();
         displayPlayers(game);
         displayStats(game);
         displayMan(game);
@@ -440,7 +440,11 @@ public class GUI2 implements ActionListener , PlayerObserver {
         text = new JTextArea();
         text.setBounds(950,555, 300, 125);
 
-        text.append("This is the outputaaaaaAAAAAAAAAAA");
+
+        text.setText("Press Roll to Begin!");
+
+        text.setLineWrap(true);
+        text.setWrapStyleWord(true);
 
         layeredPane.add(text, new Integer(6)); // add to layeredPane on lower layer
 

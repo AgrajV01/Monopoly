@@ -3,13 +3,16 @@ public class City extends Space {
     private int rent;
     private int houseCost;
     private Player owner;
-    public City(String name, int price, int rent, int houseCost) {
+    private GUI2 gui;
+
+    public City(String name, int price, int rent, int houseCost, GUI2 gui) {
         this.isProperty = true;
         this.name = name;
         this.price = price;
         this.rent = rent;
         this.houseCost = houseCost;
         this.owner = null; // Initially, no one owns the city.
+        this.gui = gui;
     }
 
     public String getName() {

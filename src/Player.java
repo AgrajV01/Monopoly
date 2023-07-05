@@ -119,7 +119,8 @@ public class Player {
         position = Math.floorMod(position + steps, 40);  // Assuming the board size is 40
 
         if (steps > 0 && position < temp) {
-            System.out.println("You have passed Go! You collect 200$");
+            System.out.println("You have passed Go! You collect 200$.");
+            gui.getTextArea().setText("You have passed Go! You collect 200$.");
             money += 200;
         }
         notifyObservers();
@@ -129,6 +130,7 @@ public class Player {
     public void buyCity(City city) {
         if(city.getPrice() > money) {
             System.out.println("Not enough money to buy this city");
+            gui.getTextArea().setText("Not enough money to buy this city");
             return;
         }
         money -= city.getPrice();
@@ -140,6 +142,7 @@ public class Player {
     public void buyUtility(Utility utility) {
         if (utility.getPrice() > money) {
             System.out.println("Not enough money to buy this utility");
+            gui.getTextArea().setText("Not enough money to buy this utility");
             return;
         }
         money -= utility.getPrice();
@@ -167,6 +170,7 @@ public class Player {
     }
     private void playerbankrupted(){
         System.out.println(name + " is Bankrupted!");
+        gui.getTextArea().setText(name + " is Bankrupted!");
         //Game.gameOver();
         notifyGameOver();
     }
@@ -191,14 +195,19 @@ public class Player {
     public boolean wantToBuyUtility(Utility utility) {
         Scanner scanner = new Scanner(System.in);
         System.out.println("Current Money: $" + money);
+        gui.getTextArea().setText("Current Money: $" + money + ".");
         System.out.println("Do you want to buy " + utility.getName() + " for $" + utility.getPrice() + "? (Y/N)");
+        gui.getTextArea().append(" Do you want to buy " + utility.getName() + " for $" + utility.getPrice() + "? (Y/N)");
+
         String input = scanner.nextLine().trim().toLowerCase();
 
-        gui.getTextArea().append("Do you want to buy " + utility.getName() + " for $" + utility.getPrice() + "? (Y/N)");
+
+
 
         if (input.equals("y")) {
             int remainingMoney = money - utility.getPrice();
             System.out.println("Remaining Money: $" + remainingMoney);
+            gui.getTextArea().setText("Remaining Money: $" + remainingMoney);
             return true;
         } else {
             return false;
@@ -207,13 +216,16 @@ public class Player {
     // displays the player's money before and after purchasing the city
     public boolean wantToBuyCity(City city){
         Scanner scanner = new Scanner(System.in);
-        System.out.println("Current Money: $" + money);
-        System.out.println("Do you want to buy " + city.getName() + " for $" + city.getPrice() + "? (Y/N)");
+        System.out.println("Current Money: $" + money +".");
+        gui.getTextArea().setText("Current Money: $" + money +".");
+        System.out.println(" Do you want to buy " + city.getName() + " for $" + city.getPrice() + "? (Y/N)");
+        gui.getTextArea().append(" Do you want to buy " + city.getName() + " for $" + city.getPrice() + "? (Y/N)");
         String input = scanner.nextLine().trim().toLowerCase();
 
         if (input.equals("y")) {
             int remainingMoney = money - city.getPrice();
             System.out.println("Remaining Money: $" + remainingMoney);
+            gui.getTextArea().setText("Remaining Money: $" + remainingMoney);
             return true;
         } else {
             return false;

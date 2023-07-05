@@ -1,6 +1,9 @@
 import java.util.ArrayList;
 import java.util.List;
-
+/**
+ * The CustomGameFactory class implements the GameFactory interface and provides a custom game setup
+ * by specifying the number of players, AI players, starting money, and board style.
+ */
 public class CustomGameFactory implements GameFactory {
     private int numPlayers;
     private int money;

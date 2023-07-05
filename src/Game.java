@@ -1,5 +1,7 @@
 import java.util.List;
-
+/**
+ * The Game class represents a game instance with players, a board, and dice.
+ */
 public class Game {
     private Board board;
     private Die die;

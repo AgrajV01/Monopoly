@@ -435,16 +435,22 @@ public class GUI2 implements ActionListener , PlayerObserver {
 
         layeredPane.add(boardImage, new Integer(1)); // 1 is lowest layer
 
+
+
         setBackdrop(black);
 
         displayBackground();
         displayPlayers(game);
+
+
         displayStats(game);
         displayMan(game);
         displayTextBox(game);
         displayTextArea();
         displayCards(5,6);
         displayDice();
+
+        game.subscribeToPlayers(this); // for updating player stats
 
         //setOkButton(game);
         nextTurn(game);
@@ -477,7 +483,9 @@ public class GUI2 implements ActionListener , PlayerObserver {
     public void displayStats(Game game) {
         System.out.println("initializingTheStatsDisplay");
 
-        money1 = new JLabel("hi"); // Setting positions for money labels
+
+
+        money1 = new JLabel(""); // Setting positions for money labels
         money2 = new JLabel("hi");
         money3 = new JLabel("hi");
         money4 = new JLabel("hi");

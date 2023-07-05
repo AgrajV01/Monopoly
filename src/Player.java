@@ -67,10 +67,12 @@ public class Player {
         this.onUtility = null;
         inJail = false;
         this.gui = gui; // gui object is passed to constructor, we can print to textArea from this class
+
     }
 
     public void subscribe(PlayerObserver p){
         subscribers.add(p);
+        notifyObservers();
     }
 
     public void notifyObservers(){

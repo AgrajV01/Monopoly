@@ -20,6 +20,12 @@ public class GUI2 implements ActionListener , PlayerObserver {
     private JLayeredPane layeredPane;
     private JLabel diceLabel1;
     private JLabel diceLabel2;
+
+    private JLabel money1; // for player stats
+    private JLabel money2;
+    private JLabel money3;
+    private JLabel money4;
+
     private JTextArea text;;
     private static final int DISTPLAYERS = 20;
     private static final int DISTCARDS = DISTPLAYERS/4;
@@ -43,6 +49,34 @@ public class GUI2 implements ActionListener , PlayerObserver {
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
         frame.add(layeredPane);
+    }
+
+    public void setMoney1(int money) {
+
+        String moneyString = String.valueOf(money);
+        money1.setText(moneyString);
+
+    }
+
+    public void setMoney2(int money) {
+
+        String moneyString = String.valueOf(money);
+        money2.setText(moneyString);
+
+    }
+
+    public void setMoney3(int money) {
+
+        String moneyString = String.valueOf(money);
+        money3.setText(moneyString);
+
+    }
+
+    public void setMoney4(int money) {
+
+        String moneyString = String.valueOf(money);
+        money4.setText(moneyString);
+
     }
 
     public void setBackdrop(String fileName) {
@@ -321,7 +355,7 @@ public class GUI2 implements ActionListener , PlayerObserver {
 
         boardImage.setBounds(0, 0+MOVEUP, 1000, 1000);
 
-        layeredPane.add(boardImage, new Integer(1));
+        layeredPane.add(boardImage, new Integer(1)); // 1 is lowest layer
 
         setBackdrop(black);
 
@@ -364,6 +398,12 @@ public class GUI2 implements ActionListener , PlayerObserver {
     public void displayStats(Game game) {
         System.out.println("initializingTheStatsDisplay");
 
+        money1 = new JLabel("hi"); // Setting positions for money labels
+        money2 = new JLabel("hi");
+        money3 = new JLabel("hi");
+        money4 = new JLabel("hi");
+
+
         for(int i = 1; i < game.getNumPlayers()+1; i++) {
 
             int hShift = 0; // for display positioning
@@ -376,6 +416,8 @@ public class GUI2 implements ActionListener , PlayerObserver {
 
             JLabel statDisplay = new JLabel(resizedIcon);
 
+
+
             if( i > 2 ) // for setting display position
                 vShift = 250;
             else vShift = 0;
@@ -387,7 +429,32 @@ public class GUI2 implements ActionListener , PlayerObserver {
             statDisplay.setBounds(950 + hShift, -50 + vShift, 250, 400);
 
 
+
             layeredPane.add(statDisplay, new Integer(6)); // add to layeredPane on lower layer
+
+            if(i == 1) { // set money1 and so on
+                money1.setBounds(1100 + hShift, 100+vShift, 100, 100);
+                layeredPane.add(money1, new Integer(7));
+
+            }
+
+            else if(i == 2) { // set money1 and so on
+                money2.setBounds(1100 + hShift, 100+vShift, 100, 100);
+                layeredPane.add(money2, new Integer(7));
+
+            }
+
+            else if(i == 3) { // set money1 and so on
+                money3.setBounds(1100 + hShift, 100+vShift, 100, 100);
+                layeredPane.add(money3, new Integer(7));
+
+            }
+
+            else if(i == 4) { // set money1 and so on
+                money4.setBounds(1100 + hShift, 100+vShift, 100, 100);
+                layeredPane.add(money4, new Integer(7));
+
+            }
 
         }
 
@@ -466,7 +533,7 @@ public class GUI2 implements ActionListener , PlayerObserver {
 
     }
 
-    public void displayTextBox(Game game) {
+    public void displayTextBox(Game game) { // textbox picture
 
         System.out.println("placing text box");
 
@@ -489,7 +556,7 @@ public class GUI2 implements ActionListener , PlayerObserver {
 
     }
 
-    public void displayTextArea() {
+    public void displayTextArea() { // text output
 
         text = new JTextArea();
         text.setBounds(950,555, 300, 125);

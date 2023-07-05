@@ -44,6 +44,8 @@ public class Game {
         board.getPosition(position).action(players.get(currentPlayer));
     }
 
+
+
     /*
         public void buyCurrentCity() {
             int position = players.get(currentPlayer).getPosition();
@@ -58,6 +60,7 @@ public class Game {
     }
 
     public void makeMove(Die roll) {
+        System.out.println("Current player is " + getCurrentPlayerIndex());
         players.get(currentPlayer).move(roll.diceOne+ roll.diceTwo);
         System.out.println("\nYou rolled a " + (roll.diceOne + roll.diceTwo));
 

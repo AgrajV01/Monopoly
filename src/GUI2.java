@@ -260,17 +260,7 @@ public class GUI2 implements ActionListener , PlayerObserver {
         endTurnButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                setOkButton(game);
-                if (buyCityButton != null) {
-                    game.cleanProperty();
-                    layeredPane.remove(buyCityButton);
-                    buyCityButton = null;
-                } else if (buyUtilityButton != null) {
-                    game.cleanProperty();
-                    layeredPane.remove(buyUtilityButton);
-                    buyUtilityButton = null;
-                }
-                nextTurn(game);
+                // to do
             }
         });
     }

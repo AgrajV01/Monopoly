@@ -165,15 +165,15 @@ public class GUI2 implements ActionListener , PlayerObserver {
                     }
                     frame.repaint();
                 }
-                if (game.getPrevPlayer().getOnCity() != null)
-                    setBuyCityButton(game);
-                else if (game.getPrevPlayer().getOnUtility() != null)
-                    setBuyUtilityButton(game);
-                setOkButton(game);
             }
         });
         timer.setRepeats(false);
         timer.start();
+        if (game.getPrevPlayer().getOnCity() != null)
+            setBuyCityButton(game);
+        else if (game.getPrevPlayer().getOnUtility() != null)
+            setBuyUtilityButton(game);
+        setOkButton(game);
     }
 
     public void setBuyCityButton(Game game) {

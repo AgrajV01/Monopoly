@@ -17,9 +17,11 @@ public class Main {
 
         GameFactory factory = new CustomGameFactory(numPlayers, numOfAiPlayers, cash, boardStyle, a);
         Game game = new Game(factory, a);
-
+/*
         for(int i = 0;i < 4;i++)
             System.out.println(game.players.get(i).getType());
+            
+ */
 
 
         Random random = new Random();

@@ -27,6 +27,12 @@ public class GUI2 implements ActionListener , PlayerObserver {
     private JLabel money3;
     private JLabel money4;
 
+    private JLabel property1;
+    private JLabel property2;
+    private JLabel property3;
+    private JLabel property4;
+
+
     private JTextArea text;;
     private static final int DISTPLAYERS = 20;
     private static final int DISTCARDS = DISTPLAYERS/4;
@@ -77,6 +83,38 @@ public class GUI2 implements ActionListener , PlayerObserver {
 
         String moneyString = String.valueOf(money);
         money4.setText(moneyString);
+
+    }
+
+    public void setProperty1(int size) {
+
+
+        String numProperties = String.valueOf(size);
+        property1.setText(numProperties);
+
+    }
+
+    public void setProperty2(int size) {
+
+
+        String numProperties = String.valueOf(size);
+        property2.setText(numProperties);
+
+    }
+
+    public void setProperty3(int size) {
+
+
+        String numProperties = String.valueOf(size);
+        property3.setText(numProperties);
+
+    }
+
+    public void setProperty4(int size) {
+
+
+        String numProperties = String.valueOf(size);
+        property4.setText(numProperties);
 
     }
 
@@ -490,6 +528,13 @@ public class GUI2 implements ActionListener , PlayerObserver {
         money3 = new JLabel("hi");
         money4 = new JLabel("hi");
 
+        property1 = new JLabel("hi"); // Setting position for property number labels
+        property2 = new JLabel("hi");
+        property3 = new JLabel("hi");
+        property4 = new JLabel("hi");
+
+
+
 
         for(int i = 1; i < game.getNumPlayers()+1; i++) {
 
@@ -522,24 +567,33 @@ public class GUI2 implements ActionListener , PlayerObserver {
             if(i == 1) { // set money1 and so on
                 money1.setBounds(1100 + hShift, 100+vShift, 100, 100);
                 layeredPane.add(money1, new Integer(7));
+                property1.setBounds(1120 + hShift, 155+vShift, 100, 100);
+                layeredPane.add(property1, new Integer(7));
 
             }
 
             else if(i == 2) { // set money1 and so on
                 money2.setBounds(1100 + hShift, 100+vShift, 100, 100);
                 layeredPane.add(money2, new Integer(7));
+                property2.setBounds(1120 + hShift, 155+vShift, 100, 100);
+                layeredPane.add(property2, new Integer(7));
+
 
             }
 
             else if(i == 3) { // set money1 and so on
                 money3.setBounds(1100 + hShift, 100+vShift, 100, 100);
                 layeredPane.add(money3, new Integer(7));
+                property3.setBounds(1120 + hShift, 155+vShift, 100, 100);
+                layeredPane.add(property3, new Integer(7));
 
             }
 
             else if(i == 4) { // set money1 and so on
                 money4.setBounds(1100 + hShift, 100+vShift, 100, 100);
                 layeredPane.add(money4, new Integer(7));
+                property4.setBounds(1120 + hShift, 155+vShift, 100, 100);
+                layeredPane.add(property4, new Integer(7));
 
             }
 
@@ -728,23 +782,30 @@ public class GUI2 implements ActionListener , PlayerObserver {
         if (name.contains("1")) {
 
             setMoney1(p.getMoney());
+            setProperty1(p.getOwnedCities().size() + p.getOwnedUtilities().size());
+
+
 
 
         }else if (name.contains("2")){
 
             setMoney2(p.getMoney());
+            setProperty2(p.getOwnedCities().size() + p.getOwnedUtilities().size());
+
 
         }
 
         else if (name.contains("3")){
 
             setMoney3(p.getMoney());
+            setProperty3(p.getOwnedCities().size() + p.getOwnedUtilities().size());
 
         }
 
         else {
 
             setMoney4(p.getMoney());
+            setProperty4(p.getOwnedCities().size() + p.getOwnedUtilities().size());
 
         }
 

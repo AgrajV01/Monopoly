@@ -8,14 +8,19 @@ public class Main {
     public static void main(String[] args) {
         // Create the game
         int numPlayers = 4;
-        int numOfAiPlayers = 1;
+        int numOfAiPlayers = 2;
         int cash = 2000;
         String boardStyle = "Classic";
+
 
         GUI2 a = new GUI2(); // must add to the factory
 
         GameFactory factory = new CustomGameFactory(numPlayers, numOfAiPlayers, cash, boardStyle, a);
         Game game = new Game(factory, a);
+
+        for(int i = 0;i < 4;i++)
+            System.out.println(game.players.get(i).getType());
+
 
         Random random = new Random();
 

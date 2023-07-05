@@ -55,18 +55,25 @@ public class GUI2 implements ActionListener , PlayerObserver {
 
     public void setOkButton(Game game) {
         button = new JButton("Roll");
-        button.setBounds(460,550+MOVEUP, 80, 25);
+        button.setBounds(460, 550 + MOVEUP, 80, 25);
 
         layeredPane.add(button, new Integer(5));
 
         button.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                if(isAnimating) return;
+                if (isAnimating) return;
 
                 die.roll();
-                layeredPane.remove(diceLabel1);
-                layeredPane.remove(diceLabel2);
+
+                if (diceLabel1 != null) {
+                    layeredPane.remove(diceLabel1);
+                    diceLabel1 = null;
+                }
+                if (diceLabel2 != null) {
+                    layeredPane.remove(diceLabel2);
+                    diceLabel2 = null;
+                }
 
                 game.makeMove(die);
 
@@ -75,16 +82,16 @@ public class GUI2 implements ActionListener , PlayerObserver {
                 JLabel currentPlayerIcon = playerIcons.get(game.getPrevPlayerIndex());
 
                 Point newPosition = new Point(boardPositions[currentPlayerPosition]);
-                int yOffset = 70/game.getNumPlayers();
+                int yOffset = 70 / game.getNumPlayers();
                 int xOffset = yOffset;
-                if(currentPlayerPosition < 11)
-                    newPosition.y += yOffset*game.getPrevPlayerIndex();
-                else if(currentPlayerPosition < 21)
-                    newPosition.x -= xOffset*game.getPrevPlayerIndex();
-                else if(currentPlayerPosition < 31)
-                    newPosition.y -= yOffset*game.getPrevPlayerIndex();
+                if (currentPlayerPosition < 11)
+                    newPosition.y += yOffset * game.getPrevPlayerIndex();
+                else if (currentPlayerPosition < 21)
+                    newPosition.x -= xOffset * game.getPrevPlayerIndex();
+                else if (currentPlayerPosition < 31)
+                    newPosition.y -= yOffset * game.getPrevPlayerIndex();
                 else
-                    newPosition.x += xOffset*game.getPrevPlayerIndex();
+                    newPosition.x += xOffset * game.getPrevPlayerIndex();
                 animateMovement(currentPlayerIcon, newPosition, 15);
 
                 // Display new dice values
@@ -93,23 +100,81 @@ public class GUI2 implements ActionListener , PlayerObserver {
                     game.cleanProperty();
                     layeredPane.remove(buyCityButton);
                     buyCityButton = null;
-                    layeredPane.revalidate();
-                    layeredPane.repaint();
-                }
-                else if (buyUtilityButton != null) {
+                } else if (buyUtilityButton != null) {
                     game.cleanProperty();
                     layeredPane.remove(buyUtilityButton);
                     buyUtilityButton = null;
-                    layeredPane.revalidate();
-                    layeredPane.repaint();
                 }
-                if(game.getPrevPlayer().getOnCity() != null)
-                    setBuyCityButton(game);
-                else if(game.getPrevPlayer().getOnUtility() != null)
-                    setBuyUtilityButton(game);
+                layeredPane.remove(button);
+                button = null;
+                layeredPane.revalidate();
+                layeredPane.repaint();
+                nextTurn(game);
                 frame.repaint();
             }
         });
+    }
+
+    private void nextTurn(Game game) {
+        Timer timer = new Timer(1200, new ActionListener() { // delay for 2 seconds
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                if (!game.getCurrentPlayer().getType().equals("Player")) {
+                    die.roll();
+                    if (diceLabel1 != null) {
+                        layeredPane.remove(diceLabel1);
+                        diceLabel1 = null;
+                    }
+                    if (diceLabel2 != null) {
+                        layeredPane.remove(diceLabel2);
+                        diceLabel2 = null;
+                    }
+
+                    game.makeMove(die);
+
+                    int currentPlayerPosition = game.getPrevPlayer().getPosition();
+
+                    JLabel currentPlayerIcon = playerIcons.get(game.getPrevPlayerIndex());
+
+                    Point newPosition = new Point(boardPositions[currentPlayerPosition]);
+                    int yOffset = 70 / game.getNumPlayers();
+                    int xOffset = yOffset;
+                    if (currentPlayerPosition < 11)
+                        newPosition.y += yOffset * game.getPrevPlayerIndex();
+                    else if (currentPlayerPosition < 21)
+                        newPosition.x -= xOffset * game.getPrevPlayerIndex();
+                    else if (currentPlayerPosition < 31)
+                        newPosition.y -= yOffset * game.getPrevPlayerIndex();
+                    else
+                        newPosition.x += xOffset * game.getPrevPlayerIndex();
+                    animateMovement(currentPlayerIcon, newPosition, 15);
+
+                    // Display new dice values
+                    displayDice();
+                    if (game.getPrevPlayer().getOnCity() != null) {
+                        System.out.println(game.getPrevPlayer().getName() + " initially has $" + game.getPrevPlayer().getMoney());
+                        game.getPrevPlayer().buyCity(game.getPrevPlayer().getOnCity());
+                        System.out.println("This city is available for purchase at a price of " + game.getPrevPlayer().getOnCity().getPrice());
+                        System.out.println("After Purchasing, the balance amount you have is " + game.getPrevPlayer().getMoney());
+                        game.cleanProperty();
+                    } else if (game.getPrevPlayer().getOnUtility() != null) {
+                        System.out.println(game.getPrevPlayer().getName() + " initially has $" + game.getPrevPlayer().getMoney());
+                        game.getPrevPlayer().buyUtility(game.getPrevPlayer().getOnUtility());
+                        System.out.println("This utility is available for purchase at a price of " + game.getPrevPlayer().getOnUtility().getPrice());
+                        System.out.println("After Purchasing, the balance amount you have is " + game.getPrevPlayer().getMoney());
+                        game.cleanProperty();
+                    }
+                    frame.repaint();
+                }
+            }
+        });
+        timer.setRepeats(false);
+        timer.start();
+        if (game.getPrevPlayer().getOnCity() != null)
+            setBuyCityButton(game);
+        else if (game.getPrevPlayer().getOnUtility() != null)
+            setBuyUtilityButton(game);
+        setOkButton(game);
     }
 
     public void setBuyCityButton(Game game) {
@@ -198,7 +263,7 @@ public class GUI2 implements ActionListener , PlayerObserver {
 
         Timer timer = new Timer(delay, null);
         timer.addActionListener(new ActionListener() {
-            int speed = 15;
+            int speed = 10;
             @Override
             public void actionPerformed(ActionEvent e) {
                 int dx = newPosition.x - piece.getX();
@@ -243,17 +308,6 @@ public class GUI2 implements ActionListener , PlayerObserver {
         setBackdrop(black);
     }
 
-    private void aiTurn(){
-        button.doClick();
-
-        if(buyCityButton != null) {
-            buyCityButton.doClick();
-        }
-        else if(buyUtilityButton != null) {
-            buyUtilityButton.doClick();
-        }
-    }
-
     public void initializeTheBoard(Game game) {
         System.out.println("initializingTheBoard");
 
@@ -269,8 +323,6 @@ public class GUI2 implements ActionListener , PlayerObserver {
 
         layeredPane.add(boardImage, new Integer(1));
 
-        setOkButton(game);
-
         setBackdrop(black);
 
         displayBackground();
@@ -281,6 +333,8 @@ public class GUI2 implements ActionListener , PlayerObserver {
         displayTextArea();
         displayCards(5,6);
         displayDice();
+
+        nextTurn(game);
 
         frame.setVisible(true);
     }

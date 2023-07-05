@@ -1,3 +1,7 @@
+/**
+ * The Utility class represents a type of property on the game board.
+ * It extends the Space class and defines specific actions that occur when a player lands on this type of property.
+ */
 public class Utility extends Space{
     private int price;
     private int rent;

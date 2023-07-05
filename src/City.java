@@ -1,3 +1,7 @@
+/**
+ * The City class represents a city space in a game. It extends the Space class and provides additional
+ * functionality specific to cities.
+ */
 public class City extends Space {
     private int price;
     private int rent;

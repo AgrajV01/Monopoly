@@ -1,6 +1,9 @@
 import java.util.ArrayList;
 import java.util.List;
-
+/**
+ * The CustomGameFactory class implements the GameFactory interface and provides a custom game setup
+ * by specifying the number of players, AI players, starting money, and board style.
+ */
 public class CustomGameFactory implements GameFactory {
     private int numPlayers;
     private int money;
@@ -29,14 +32,23 @@ public class CustomGameFactory implements GameFactory {
     @Override
     public List<Player> createPlayers() {
         List<Player> players = new ArrayList<>();
-        for(int i=0; i<(numPlayers-numOfAiPlayers); i++) {
+        /*for(int i=0; i<(numPlayers-numOfAiPlayers); i++) {
             String name = "Player " + i;
             players.add(new Player(name, money, gui)); // passing gui to Players for textArea
         }
         for(int i=0; i<numOfAiPlayers; i++) {
             String name = "AI " + i;
+<<<<<<< HEAD
             players.add(new AI(name, money, gui));
         }
+=======
+            players.add(new AI(name, money));
+        }*/
+        players.add(new Player("Player 1", money));
+        players.add(new AI("AI 1 ", money));
+        players.add(new Player("Player 2", money));
+        players.add(new AI("AI 2", money));
+>>>>>>> 5bf51eee5d3b14d788934cad824faf50b4460624
         return players;
     }
 

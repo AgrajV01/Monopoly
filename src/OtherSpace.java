@@ -1,3 +1,7 @@
+/**
+ * The OtherSpace class represents a type of space on the game board that is not a property.
+ * It extends the Space class and defines specific actions that occur when a player lands on this type of space.
+ */
 public class OtherSpace extends Space {
 
     OtherSpace(String name) {

@@ -1,9 +1,11 @@
 import java.util.List;
-
+/**
+ * The Game class represents a game instance with players, a board, and dice.
+ */
 public class Game {
     private Board board;
     private Die die;
-    private static List<Player> players;
+    public static List<Player> players;
     private int currentPlayer, numOfPlayers;
     private GUI2 gui;
 
@@ -126,6 +128,7 @@ public class Game {
                 .sorted((p1, p2) -> Integer.compare(calculateTotalValue(p2), calculateTotalValue(p1)))
                 .forEach(p -> System.out.println(p.getName() + "-- Total Value(Including properties and money): "
                         + calculateTotalValue(p)));
+        System.exit(0);
     }
     private static Player getPlayerWithHighestValue() {
         Player winner = players.get(0);

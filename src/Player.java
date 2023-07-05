@@ -170,12 +170,12 @@ public class Player {
     }
     private void playerbankrupted(){
         System.out.println(name + " is Bankrupted!");
-<<<<<<< HEAD
+
         gui.getTextArea().setText(name + " is Bankrupted!");
         //Game.gameOver();
-=======
+
         Game.gameOver();
->>>>>>> 5bf51eee5d3b14d788934cad824faf50b4460624
+
         notifyGameOver();
     }
 

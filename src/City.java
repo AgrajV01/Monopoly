@@ -43,6 +43,7 @@ public class City extends Space {
     @Override
     public void action(Player player) {
         System.out.println("You have landed on: " + this.name);
+        gui.getTextArea().setText("You have landed on: " + this.name);
         if (isAvailable()) {
             // Purchase City? option appears on GUI
             if(player.getMoney() >= this.price) {
@@ -50,8 +51,11 @@ public class City extends Space {
             }
             else{
                 System.out.println("This city is available for purchase at a price of " + price);
+                gui.getTextArea().append("This city is available for purchase at a price of " + price + ".");
                 System.out.println(player.getName() + " has $" + player.getMoney());
+                gui.getTextArea().append(" " + player.getName() + " has $" + player.getMoney() +".");
                 System.out.println("Insufficient funds to buy the Property");
+                gui.getTextArea().append(" Insufficient funds to buy the Property");
             }
             /*
             System.out.println("This city is available for purchase at a price of $" + price);

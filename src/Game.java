@@ -5,16 +5,18 @@ public class Game {
     private Die die;
     private static List<Player> players;
     private int currentPlayer, numOfPlayers;
+    private GUI2 gui;
 
     public void cleanProperty(){
         for (Player p : players)
             p.nullCityUtility();
     }
 
-    public Game(GameFactory factory) {
-        this.board = factory.createBoard();
+    public Game(GameFactory factory, GUI2 gui) {
+        this.board = factory.createBoard(gui);
         this.players = factory.createPlayers();
-        board = new Board();
+        this.gui = gui;
+        board = new Board(gui);
         die = new Die();
         currentPlayer = 0; // Player 1 starts the game
         numOfPlayers = factory.getNumPlayers();

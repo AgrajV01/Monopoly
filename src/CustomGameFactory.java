@@ -17,8 +17,13 @@ public class CustomGameFactory implements GameFactory {
     }
 
     @Override
+    public Board createBoard(GUI2 gui) {
+        return null;
+    }
+
+    @Override
     public Board createBoard() {
-        return new Board();
+        return new Board(gui);
     }
 
     @Override

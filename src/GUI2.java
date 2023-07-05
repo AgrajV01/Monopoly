@@ -115,7 +115,7 @@ public class GUI2 implements ActionListener , PlayerObserver {
     }
 
     private void nextTurn(Game game) {
-        Timer timer = new Timer(500, new ActionListener() { // delay for 2 seconds
+        Timer timer = new Timer(1200, new ActionListener() { // delay for 2 seconds
             @Override
             public void actionPerformed(ActionEvent e) {
                 if (!game.getCurrentPlayer().getType().equals("Player")) {
@@ -262,7 +262,7 @@ public class GUI2 implements ActionListener , PlayerObserver {
 
         Timer timer = new Timer(delay, null);
         timer.addActionListener(new ActionListener() {
-            int speed = 60;
+            int speed = 10;
             @Override
             public void actionPerformed(ActionEvent e) {
                 int dx = newPosition.x - piece.getX();

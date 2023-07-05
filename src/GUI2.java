@@ -8,6 +8,7 @@ import java.util.Random;
 import java.util.List;
 
 public class GUI2 implements ActionListener , PlayerObserver {
+    private int movesMade = 0;
     private JButton buyUtilityButton, endTurnButton, buyCityButton;
     private Point[] boardPositions;
     private static Die die = new Die();
@@ -88,6 +89,17 @@ public class GUI2 implements ActionListener , PlayerObserver {
     }
 
     public void setOkButton(Game game) {
+        movesMade++;
+
+        JButton quit = new JButton("Quit");
+        quit.setBounds(710, 135, 70, 50);
+        layeredPane.add(quit, new Integer(5));
+        quit.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                System.exit(0);
+            }
+        });
 
         button = new JButton("Roll");
         button.setBounds(460, 550 + MOVEUP, 80, 25);
@@ -202,6 +214,7 @@ public class GUI2 implements ActionListener , PlayerObserver {
             public void actionPerformed(ActionEvent e) {
 
                 if (!game.getCurrentPlayer().getType().equals("Player")) {
+                    movesMade++;
                     die.roll();
                     if (diceLabel1 != null) {
                         layeredPane.remove(diceLabel1);
@@ -253,7 +266,10 @@ public class GUI2 implements ActionListener , PlayerObserver {
         });
 
         timer.setRepeats(false);
-        timer.start();
+        if (movesMade > 0) timer.start();
+        else {
+            setOkButton(game);
+        }
 
         //setOkButton(game);
     }

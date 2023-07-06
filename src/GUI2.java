@@ -25,6 +25,11 @@ public class GUI2 implements ActionListener , PlayerObserver {
     private JLabel diceLabel1;
     private JLabel diceLabel2;
 
+    private PlayerStats p1;
+    private PlayerStats p2;
+    private PlayerStats p3;
+    private PlayerStats p4;
+
 //    private JLabel money1; // for player stats
 //    private JLabel money2;
 //    private JLabel money3;
@@ -556,51 +561,51 @@ public class GUI2 implements ActionListener , PlayerObserver {
             layeredPane.add(PlayerMenuPrototype.statDisplay, new Integer(6)); // add to layeredPane on lower layer
 
             if(i == 1) { // set money1 and so on
-                PlayerStats player1 = PlayerMenuPrototype.clone();
+                p1 = PlayerMenuPrototype.clone();
                 // money1.setBounds(1100 + hShift, 100+vShift, 100, 100);
                 // layeredPane.add(money1, new Integer(7));
                 // property1.setBounds(1120 + hShift, 155+vShift, 100, 100);
                 // layeredPane.add(property1, new Integer(7));
-                player1.setMoneyBounds(1100 + hShift, 100+vShift, 100, 100 );
-                layeredPane.add(player1.getMoneyLabel(), new Integer(7));
-                player1.setPropertyBounds(1120 + hShift, 155+vShift, 100, 100);
-                layeredPane.add(player1.getPropertyLabel(), new Integer(7));
+                p1.setMoneyBounds(1100 + hShift, 100+vShift, 100, 100 );
+                layeredPane.add(p1.getMoneyLabel(), new Integer(7));
+                p1.setPropertyBounds(1120 + hShift, 155+vShift, 100, 100);
+                layeredPane.add(p1.getPropertyLabel(), new Integer(7));
             }
 
             else if(i == 2) { // set money1 and so on
-                PlayerStats player2 = PlayerMenuPrototype.clone();
+                p2 = PlayerMenuPrototype.clone();
 //                money2.setBounds(1100 + hShift, 100+vShift, 100, 100);
 //                layeredPane.add(money2, new Integer(7));
 //                property2.setBounds(1120 + hShift, 155+vShift, 100, 100);
 //                layeredPane.add(property2, new Integer(7));
-                player2.setMoneyBounds(1100 + hShift, 100+vShift, 100, 100 );
-                layeredPane.add(player2.getMoneyLabel(), new Integer(7));
-                player2.setPropertyBounds(1120 + hShift, 155+vShift, 100, 100);
-                layeredPane.add(player2.getPropertyLabel(), new Integer(7));
+                p2.setMoneyBounds(1100 + hShift, 100+vShift, 100, 100 );
+                layeredPane.add(p2.getMoneyLabel(), new Integer(7));
+                p2.setPropertyBounds(1120 + hShift, 155+vShift, 100, 100);
+                layeredPane.add(p2.getPropertyLabel(), new Integer(7));
             }
 
             else if(i == 3) { // set money1 and so on
-                PlayerStats player3 = PlayerMenuPrototype.clone();
+                 p3 = PlayerMenuPrototype.clone();
 //                money3.setBounds(1100 + hShift, 100+vShift, 100, 100);
 //                layeredPane.add(money3, new Integer(7));
 //                property3.setBounds(1120 + hShift, 155+vShift, 100, 100);
 //                layeredPane.add(property3, new Integer(7));
-                player3.setMoneyBounds(1100 + hShift, 100+vShift, 100, 100 );
-                layeredPane.add(player3.getMoneyLabel(), new Integer(7));
-                player3.setPropertyBounds(1120 + hShift, 155+vShift, 100, 100);
-                layeredPane.add(player3.getPropertyLabel(), new Integer(7));
+                p3.setMoneyBounds(1100 + hShift, 100+vShift, 100, 100 );
+                layeredPane.add(p3.getMoneyLabel(), new Integer(7));
+                p3.setPropertyBounds(1120 + hShift, 155+vShift, 100, 100);
+                layeredPane.add(p3.getPropertyLabel(), new Integer(7));
             }
 
             else if(i == 4) { // set money1 and so on
-                PlayerStats player4 = PlayerMenuPrototype.clone();
+                 p4 = PlayerMenuPrototype.clone();
 //                money4.setBounds(1100 + hShift, 100+vShift, 100, 100);
 //                layeredPane.add(money4, new Integer(7));
 //                property4.setBounds(1120 + hShift, 155+vShift, 100, 100);
 //                layeredPane.add(property4, new Integer(7));
-                player4.setMoneyBounds(1100 + hShift, 100+vShift, 100, 100 );
-                layeredPane.add(player4.getMoneyLabel(), new Integer(7));
-                player4.setPropertyBounds(1120 + hShift, 155+vShift, 100, 100);
-                layeredPane.add(player4.getPropertyLabel(), new Integer(7));
+                p4.setMoneyBounds(1100 + hShift, 100+vShift, 100, 100 );
+                layeredPane.add(p4.getMoneyLabel(), new Integer(7));
+                p4.setPropertyBounds(1120 + hShift, 155+vShift, 100, 100);
+                layeredPane.add(p4.getPropertyLabel(), new Integer(7));
             }
         }
         frame.setVisible(true); // must come at the very end
@@ -751,7 +756,6 @@ public class GUI2 implements ActionListener , PlayerObserver {
         String name = p.getName();
 
         if (name.contains("1")) {
-            PlayerStats p1 = PlayerMenuPrototype.clone();
             p1.setMoneyLabel(p.getMoney());
             p1.setPropertyLabel(p.getOwnedCities().size() + p.getOwnedUtilities().size());
             //setMoney1(p.getMoney());
@@ -759,21 +763,18 @@ public class GUI2 implements ActionListener , PlayerObserver {
 
         }
         else if (name.contains("2")){
-            PlayerStats p2 = PlayerMenuPrototype.clone();
             p2.setMoneyLabel(p.getMoney());
             p2.setPropertyLabel(p.getOwnedCities().size() + p.getOwnedUtilities().size());
 //            setMoney2(p.getMoney());
 //            setProperty2(p.getOwnedCities().size() + p.getOwnedUtilities().size());
         }
         else if (name.contains("3")){
-            PlayerStats p3 = PlayerMenuPrototype.clone();
             p3.setMoneyLabel(p.getMoney());
             p3.setPropertyLabel(p.getOwnedCities().size() + p.getOwnedUtilities().size());
 //            setMoney3(p.getMoney());
 //            setProperty3(p.getOwnedCities().size() + p.getOwnedUtilities().size());
         }
         else {
-            PlayerStats p4 = PlayerMenuPrototype.clone();
             p4.setMoneyLabel(p.getMoney());
             p4.setPropertyLabel(p.getOwnedCities().size() + p.getOwnedUtilities().size());
 //            setMoney4(p.getMoney());

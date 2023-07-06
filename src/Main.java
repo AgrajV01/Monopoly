@@ -12,7 +12,6 @@ public class Main {
         int cash = 2000;
         String boardStyle = "Classic";
 
-
         GUI2 a = new GUI2(); // must add to the factory
 
         GameFactory factory = new CustomGameFactory(numPlayers, numOfAiPlayers, cash, boardStyle, a);
@@ -23,13 +22,8 @@ public class Main {
             System.out.println(game.players.get(i).getType());
             
  */
-
-
         Random random = new Random();
-
-
         a.initializeTheBoard(game);
-
         game.subscribeToPlayers(a);
     }
 }

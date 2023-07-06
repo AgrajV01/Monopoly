@@ -3,18 +3,17 @@ import java.awt.*;
 public class PlayerStats extends PlayerStatMenu{
 
 
-	public PlayerStats(){
-
-		super();
+	public PlayerStats(int i){
+		super(i);
 	}
 	
 	public PlayerStats clone(){
-		return new PlayerStats();	
+		return new PlayerStats(int i);
 	}
 
-	public void initializeImage(int i){
-		originalIcon = new ImageIcon(getClass().getResource("S" + i + ".png")); // get StatDisplay image
-	}
+//	public void initializeImage(int i){
+//		originalIcon = new ImageIcon(getClass().getResource("S" + i + ".png")); // get StatDisplay image
+//	}
 
 	public void setMoneyLabel(int money) {
 
@@ -26,4 +25,12 @@ public class PlayerStats extends PlayerStatMenu{
         String numProperties = String.valueOf(size);
         propertyLabel.setText(numProperties);
     }
+    public JLabel getMoneyLabel() {
+        return super.moneyLabel;
+    }
+
+    public JLabel getPropertyLabel() {
+        return super.propertyLabel;
+    }
+}
 }

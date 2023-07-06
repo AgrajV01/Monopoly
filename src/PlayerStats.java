@@ -8,7 +8,7 @@ public class PlayerStats extends PlayerStatMenu{
 	}
 	
 	public PlayerStats clone(){
-		return new PlayerStats(int i);
+		return this;
 	}
 
 //	public void initializeImage(int i){
@@ -33,4 +33,4 @@ public class PlayerStats extends PlayerStatMenu{
         return super.propertyLabel;
     }
 }
-}
+

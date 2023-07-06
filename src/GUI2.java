@@ -766,16 +766,16 @@ public class GUI2 implements ActionListener , PlayerObserver {
 //            setProperty2(p.getOwnedCities().size() + p.getOwnedUtilities().size());
         }
         else if (name.contains("3")){
-            PlayerStats p2 = PlayerMenuPrototype.clone();
-            p2.setMoneyLabel(p.getMoney());
-            p2.setPropertyLabel(p.getOwnedCities().size() + p.getOwnedUtilities().size());
+            PlayerStats p3 = PlayerMenuPrototype.clone();
+            p3.setMoneyLabel(p.getMoney());
+            p3.setPropertyLabel(p.getOwnedCities().size() + p.getOwnedUtilities().size());
 //            setMoney3(p.getMoney());
 //            setProperty3(p.getOwnedCities().size() + p.getOwnedUtilities().size());
         }
         else {
-            PlayerStats p2 = PlayerMenuPrototype.clone();
-            p2.setMoneyLabel(p.getMoney());
-            p2.setPropertyLabel(p.getOwnedCities().size() + p.getOwnedUtilities().size());
+            PlayerStats p4 = PlayerMenuPrototype.clone();
+            p4.setMoneyLabel(p.getMoney());
+            p4.setPropertyLabel(p.getOwnedCities().size() + p.getOwnedUtilities().size());
 //            setMoney4(p.getMoney());
 //            setProperty4(p.getOwnedCities().size() + p.getOwnedUtilities().size());
         }

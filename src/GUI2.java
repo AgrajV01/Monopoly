@@ -8,6 +8,9 @@ import java.util.Random;
 import java.util.List;
 
 public class GUI2 implements ActionListener , PlayerObserver {
+
+
+
     private int movesMade = 0;
     private JButton buyUtilityButton, endTurnButton, buyCityButton;
     private Point[] boardPositions;
@@ -22,15 +25,21 @@ public class GUI2 implements ActionListener , PlayerObserver {
     private JLabel diceLabel1;
     private JLabel diceLabel2;
 
-    private JLabel money1; // for player stats
-    private JLabel money2;
-    private JLabel money3;
-    private JLabel money4;
+    private PlayerStats p1;
+    private PlayerStats p2;
+    private PlayerStats p3;
+    private PlayerStats p4;
 
-    private JLabel property1;
-    private JLabel property2;
-    private JLabel property3;
-    private JLabel property4;
+//    private JLabel money1; // for player stats
+//    private JLabel money2;
+//    private JLabel money3;
+//    private JLabel money4;
+//
+//    private JLabel property1;
+//    private JLabel property2;
+//    private JLabel property3;
+//    private JLabel property4;
+    private PlayerStats PlayerMenuPrototype;
 
 
     private JTextArea text;;
@@ -57,7 +66,7 @@ public class GUI2 implements ActionListener , PlayerObserver {
 
         frame.add(layeredPane);
     }
-
+/*
     public void setMoney1(int money) {
 
         String moneyString = String.valueOf(money);
@@ -117,6 +126,8 @@ public class GUI2 implements ActionListener , PlayerObserver {
         property4.setText(numProperties);
 
     }
+
+ */
 
 
     public void setBackdrop(String fileName) {
@@ -473,14 +484,10 @@ public class GUI2 implements ActionListener , PlayerObserver {
 
         layeredPane.add(boardImage, new Integer(1)); // 1 is lowest layer
 
-
-
         setBackdrop(black);
 
         displayBackground();
         displayPlayers(game);
-
-
         displayStats(game);
         displayMan(game);
         displayTextBox(game);
@@ -521,8 +528,7 @@ public class GUI2 implements ActionListener , PlayerObserver {
     public void displayStats(Game game) {
         System.out.println("initializingTheStatsDisplay");
 
-
-
+/*
         money1 = new JLabel(""); // Setting positions for money labels
         money2 = new JLabel("hi");
         money3 = new JLabel("hi");
@@ -533,22 +539,15 @@ public class GUI2 implements ActionListener , PlayerObserver {
         property3 = new JLabel("hi");
         property4 = new JLabel("hi");
 
-
-
+ */
 
         for(int i = 1; i < game.getNumPlayers()+1; i++) {
 
             int hShift = 0; // for display positioning
             int vShift = 0;
 
-            ImageIcon originalIcon = new ImageIcon(getClass().getResource("S" + i + ".png")); // get StatDisplay image
-            Image originalImage = originalIcon.getImage();
-            Image resizedImage = originalImage.getScaledInstance(150, 200, Image.SCALE_SMOOTH);
-            ImageIcon resizedIcon = new ImageIcon(resizedImage);
-
-            JLabel statDisplay = new JLabel(resizedIcon);
-
-
+            // set bounds for all player menus
+            PlayerMenuPrototype = new PlayerStats(i);
 
             if( i > 2 ) // for setting display position
                 vShift = 250;
@@ -558,52 +557,60 @@ public class GUI2 implements ActionListener , PlayerObserver {
                 hShift = 200;
             else hShift = 0;
 
-            statDisplay.setBounds(950 + hShift, -50 + vShift, 250, 400);
-
-
-
-            layeredPane.add(statDisplay, new Integer(6)); // add to layeredPane on lower layer
+            PlayerMenuPrototype.setStatDisplay(950 + hShift, -50 + vShift, 250, 400);
+            layeredPane.add(PlayerMenuPrototype.statDisplay, new Integer(6)); // add to layeredPane on lower layer
 
             if(i == 1) { // set money1 and so on
-                money1.setBounds(1100 + hShift, 100+vShift, 100, 100);
-                layeredPane.add(money1, new Integer(7));
-                property1.setBounds(1120 + hShift, 155+vShift, 100, 100);
-                layeredPane.add(property1, new Integer(7));
-
+                p1 = PlayerMenuPrototype.clone();
+                // money1.setBounds(1100 + hShift, 100+vShift, 100, 100);
+                // layeredPane.add(money1, new Integer(7));
+                // property1.setBounds(1120 + hShift, 155+vShift, 100, 100);
+                // layeredPane.add(property1, new Integer(7));
+                p1.setMoneyBounds(1100 + hShift, 100+vShift, 100, 100 );
+                layeredPane.add(p1.getMoneyLabel(), new Integer(7));
+                p1.setPropertyBounds(1120 + hShift, 155+vShift, 100, 100);
+                layeredPane.add(p1.getPropertyLabel(), new Integer(7));
             }
 
             else if(i == 2) { // set money1 and so on
-                money2.setBounds(1100 + hShift, 100+vShift, 100, 100);
-                layeredPane.add(money2, new Integer(7));
-                property2.setBounds(1120 + hShift, 155+vShift, 100, 100);
-                layeredPane.add(property2, new Integer(7));
-
-
+                p2 = PlayerMenuPrototype.clone();
+//                money2.setBounds(1100 + hShift, 100+vShift, 100, 100);
+//                layeredPane.add(money2, new Integer(7));
+//                property2.setBounds(1120 + hShift, 155+vShift, 100, 100);
+//                layeredPane.add(property2, new Integer(7));
+                p2.setMoneyBounds(1100 + hShift, 100+vShift, 100, 100 );
+                layeredPane.add(p2.getMoneyLabel(), new Integer(7));
+                p2.setPropertyBounds(1120 + hShift, 155+vShift, 100, 100);
+                layeredPane.add(p2.getPropertyLabel(), new Integer(7));
             }
 
             else if(i == 3) { // set money1 and so on
-                money3.setBounds(1100 + hShift, 100+vShift, 100, 100);
-                layeredPane.add(money3, new Integer(7));
-                property3.setBounds(1120 + hShift, 155+vShift, 100, 100);
-                layeredPane.add(property3, new Integer(7));
-
+                 p3 = PlayerMenuPrototype.clone();
+//                money3.setBounds(1100 + hShift, 100+vShift, 100, 100);
+//                layeredPane.add(money3, new Integer(7));
+//                property3.setBounds(1120 + hShift, 155+vShift, 100, 100);
+//                layeredPane.add(property3, new Integer(7));
+                p3.setMoneyBounds(1100 + hShift, 100+vShift, 100, 100 );
+                layeredPane.add(p3.getMoneyLabel(), new Integer(7));
+                p3.setPropertyBounds(1120 + hShift, 155+vShift, 100, 100);
+                layeredPane.add(p3.getPropertyLabel(), new Integer(7));
             }
 
             else if(i == 4) { // set money1 and so on
-                money4.setBounds(1100 + hShift, 100+vShift, 100, 100);
-                layeredPane.add(money4, new Integer(7));
-                property4.setBounds(1120 + hShift, 155+vShift, 100, 100);
-                layeredPane.add(property4, new Integer(7));
-
+                 p4 = PlayerMenuPrototype.clone();
+//                money4.setBounds(1100 + hShift, 100+vShift, 100, 100);
+//                layeredPane.add(money4, new Integer(7));
+//                property4.setBounds(1120 + hShift, 155+vShift, 100, 100);
+//                layeredPane.add(property4, new Integer(7));
+                p4.setMoneyBounds(1100 + hShift, 100+vShift, 100, 100 );
+                layeredPane.add(p4.getMoneyLabel(), new Integer(7));
+                p4.setPropertyBounds(1120 + hShift, 155+vShift, 100, 100);
+                layeredPane.add(p4.getPropertyLabel(), new Integer(7));
             }
-
         }
-
         frame.setVisible(true); // must come at the very end
 
     }
-
-
 
     public void displayCards(int chance, int chest) {
         System.out.println("adding cards");
@@ -648,11 +655,7 @@ public class GUI2 implements ActionListener , PlayerObserver {
         ImageIcon resizedIcon = new ImageIcon(resizedImage);
 
         JLabel manDisplay = new JLabel(resizedIcon);
-
-
-
         manDisplay.setBounds(1000, 450, 700, 500);
-
 
         //same thing for text box (figure this out tomorrow)
         layeredPane.add(manDisplay, new Integer(5)); // add to layeredPane on lower layer
@@ -666,12 +669,8 @@ public class GUI2 implements ActionListener , PlayerObserver {
 
         textDisplay.setBounds(900, 400, 700, 500);
 
-
         // now for text
-
-
         frame.setVisible(true);
-
     }
 
     public void displayTextBox(Game game) { // textbox picture
@@ -686,15 +685,10 @@ public class GUI2 implements ActionListener , PlayerObserver {
 
         JLabel textDisplay = new JLabel(resizedIcon);
 
-
-
         textDisplay.setBounds(750, 400, 700, 500);
-
 
         //same thing for text box (figure this out tomorrow)
         layeredPane.add(textDisplay, new Integer(5)); // add to layeredPane on lower layer
-
-
     }
 
     public void displayTextArea() { // text output
@@ -702,23 +696,16 @@ public class GUI2 implements ActionListener , PlayerObserver {
         text = new JTextArea();
         text.setBounds(950,555, 300, 125);
 
-
         text.setText("Press Roll to Begin!");
 
         text.setLineWrap(true);
         text.setWrapStyleWord(true);
-
         layeredPane.add(text, new Integer(6)); // add to layeredPane on lower layer
-
         frame.setVisible(true);
-
-
     }
 
     public JTextArea getTextArea() { // for passing private data member
-
         return text;
-
     }
 
     public void displayBackground() {
@@ -732,10 +719,6 @@ public class GUI2 implements ActionListener , PlayerObserver {
         ImageIcon resizedIcon = new ImageIcon(resizedImage);
 
         JLabel backDisplay = new JLabel(resizedIcon);
-
-
-
-
 
         backDisplay.setBounds(0, 0, 1500, 1000);
 
@@ -756,17 +739,10 @@ public class GUI2 implements ActionListener , PlayerObserver {
 
             }
         }); // "this" refers to "this class" and using an action method within it
-
         panel.add(rollButton);
-
-        setBackdrop(black);
-
-
+        setBackdrop(black)
         frame.setVisible(true); // must come at the very end
-
-
     }*/
-
 
     public void onGameOver(){
         image = new ImageIcon(getClass().getResource("bankrupcy.png"));
@@ -780,42 +756,35 @@ public class GUI2 implements ActionListener , PlayerObserver {
         String name = p.getName();
 
         if (name.contains("1")) {
-
-            setMoney1(p.getMoney());
-            setProperty1(p.getOwnedCities().size() + p.getOwnedUtilities().size());
-
-
-
-
-        }else if (name.contains("2")){
-
-            setMoney2(p.getMoney());
-            setProperty2(p.getOwnedCities().size() + p.getOwnedUtilities().size());
-
+            p1.setMoneyLabel(p.getMoney());
+            p1.setPropertyLabel(p.getOwnedCities().size() + p.getOwnedUtilities().size());
+            //setMoney1(p.getMoney());
+            //setProperty1(p.getOwnedCities().size() + p.getOwnedUtilities().size());
 
         }
-
+        else if (name.contains("2")){
+            p2.setMoneyLabel(p.getMoney());
+            p2.setPropertyLabel(p.getOwnedCities().size() + p.getOwnedUtilities().size());
+//            setMoney2(p.getMoney());
+//            setProperty2(p.getOwnedCities().size() + p.getOwnedUtilities().size());
+        }
         else if (name.contains("3")){
-
-            setMoney3(p.getMoney());
-            setProperty3(p.getOwnedCities().size() + p.getOwnedUtilities().size());
-
+            p3.setMoneyLabel(p.getMoney());
+            p3.setPropertyLabel(p.getOwnedCities().size() + p.getOwnedUtilities().size());
+//            setMoney3(p.getMoney());
+//            setProperty3(p.getOwnedCities().size() + p.getOwnedUtilities().size());
         }
-
         else {
-
-            setMoney4(p.getMoney());
-            setProperty4(p.getOwnedCities().size() + p.getOwnedUtilities().size());
-
+            p4.setMoneyLabel(p.getMoney());
+            p4.setPropertyLabel(p.getOwnedCities().size() + p.getOwnedUtilities().size());
+//            setMoney4(p.getMoney());
+//            setProperty4(p.getOwnedCities().size() + p.getOwnedUtilities().size());
         }
-
     }
 
     @Override
     public void actionPerformed(ActionEvent e) {
-
         frame.dispose();
-
     }
 
 }

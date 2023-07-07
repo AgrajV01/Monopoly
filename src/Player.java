@@ -10,9 +10,14 @@ import java.util.Scanner;
  */
 public class Player {
     private String name;
+    private City onCity;
+    private Utility onUtility;
     private int money;
     private int position;
+    private int positionDiff;
+    private boolean isBankrupted;
     private List<City> ownedCities;
+    private GUI2 gui; // added this to be able to print elements on screen
 
     private List<Utility> ownedUtilities;
 
@@ -20,20 +25,54 @@ public class Player {
     private int jailCards; // number of get out of jail free cards this player has
 
     private List<PlayerObserver> subscribers;
+    public void nullCityUtility(){
+        this.onCity = null;
+        this.onUtility = null;
+    }
+    public void setOnCity(City onCity){
+        this.onCity = onCity;
+    }
+    public String getType(){
+        return "Player";
+    }
+    public City getOnCity(){
+        return onCity;
+    }
 
-    public Player(String name, int money) {
+    public void setOnUtility(Utility onUtility){
+        this.onUtility = onUtility;
+    }
+
+    public Utility getOnUtility(){
+        return onUtility;
+    }
+
+    public List<Utility> getOwnedUtilities() {
+        return ownedUtilities;
+    }
+
+
+    //
+    public Player(String name, int money, GUI2 gui) {
         this.name = name;
         this.money = money; // Starting money in Monopoly
         this.position = 0; // Starting at 'GO'
+        this.positionDiff = 0;
         this.ownedCities = new ArrayList<>();
         this.ownedUtilities = new ArrayList<>();
         this.subscribers = new ArrayList<>();
         this.jailCards = 0;
+        this.isBankrupted = false;
+        this.onCity = null;
+        this.onUtility = null;
         inJail = false;
+        this.gui = gui; // gui object is passed to constructor, we can print to textArea from this class
+
     }
 
     public void subscribe(PlayerObserver p){
         subscribers.add(p);
+        notifyObservers();
     }
 
     public void notifyObservers(){
@@ -56,6 +95,8 @@ public class Player {
         return money;
     }
 
+
+
     public void setMoney(int money) {
         this.money = money;
     }
@@ -64,6 +105,13 @@ public class Player {
         return position;
     }
 
+    public int getPositionDiff() { return positionDiff; }
+    public boolean getIsBankrupted(){
+        return isBankrupted;
+    }
+    public void setIsBankrupted(boolean ans){
+        isBankrupted = ans;
+    }
     public void setPosition(int position) { this.position = position; }
 
     public void sendToJail() {
@@ -77,9 +125,11 @@ public class Player {
     public void move(int steps) {
         int temp = position;
         position = Math.floorMod(position + steps, 40);  // Assuming the board size is 40
+        positionDiff = Math.abs(position - temp);
 
         if (steps > 0 && position < temp) {
-            System.out.println("You have passed Go! You collect 200$");
+            System.out.println("You have passed Go! You collect 200$.");
+            gui.getTextArea().setText("You have passed Go! You collect 200$.");
             money += 200;
         }
         notifyObservers();
@@ -89,6 +139,7 @@ public class Player {
     public void buyCity(City city) {
         if(city.getPrice() > money) {
             System.out.println("Not enough money to buy this city");
+            gui.getTextArea().setText("Not enough money to buy this city");
             return;
         }
         money -= city.getPrice();
@@ -100,6 +151,7 @@ public class Player {
     public void buyUtility(Utility utility) {
         if (utility.getPrice() > money) {
             System.out.println("Not enough money to buy this utility");
+            gui.getTextArea().setText("Not enough money to buy this utility");
             return;
         }
         money -= utility.getPrice();
@@ -112,18 +164,27 @@ public class Player {
         if(money >= rent) {
             money -= rent;
         } else {
+            /*
             System.out.println("Not enough money to pay rent. Transferring assets and going bankrupt.");
             for(City city : ownedCities) {
                 city.getOwner().receiveRent(city.getPrice());
                 city.setOwner(null);
             }
+             */
+            money =0;
             playerbankrupted();
             return;
         }
         notifyObservers();
     }
     private void playerbankrupted(){
-        System.out.println("Player " + name + " is Bankrupted!");
+        System.out.println(name + " is Bankrupted!");
+
+        gui.getTextArea().setText(name + " is Bankrupted!");
+        //Game.gameOver();
+
+        Game.gameOver();
+
         notifyGameOver();
     }
 
@@ -147,12 +208,19 @@ public class Player {
     public boolean wantToBuyUtility(Utility utility) {
         Scanner scanner = new Scanner(System.in);
         System.out.println("Current Money: $" + money);
+        gui.getTextArea().setText("Current Money: $" + money + ".");
         System.out.println("Do you want to buy " + utility.getName() + " for $" + utility.getPrice() + "? (Y/N)");
+        gui.getTextArea().append(" Do you want to buy " + utility.getName() + " for $" + utility.getPrice() + "? (Y/N)");
+
         String input = scanner.nextLine().trim().toLowerCase();
+
+
+
 
         if (input.equals("y")) {
             int remainingMoney = money - utility.getPrice();
             System.out.println("Remaining Money: $" + remainingMoney);
+            gui.getTextArea().setText("Remaining Money: $" + remainingMoney);
             return true;
         } else {
             return false;
@@ -161,16 +229,20 @@ public class Player {
     // displays the player's money before and after purchasing the city
     public boolean wantToBuyCity(City city){
         Scanner scanner = new Scanner(System.in);
-        System.out.println("Current Money: $" + money);
-        System.out.println("Do you want to buy " + city.getName() + " for $" + city.getPrice() + "? (Y/N)");
+        System.out.println("Current Money: $" + money +".");
+        gui.getTextArea().setText("Current Money: $" + money +".");
+        System.out.println(" Do you want to buy " + city.getName() + " for $" + city.getPrice() + "? (Y/N)");
+        gui.getTextArea().append(" Do you want to buy " + city.getName() + " for $" + city.getPrice() + "? (Y/N)");
         String input = scanner.nextLine().trim().toLowerCase();
 
         if (input.equals("y")) {
             int remainingMoney = money - city.getPrice();
             System.out.println("Remaining Money: $" + remainingMoney);
+            gui.getTextArea().setText("Remaining Money: $" + remainingMoney);
             return true;
         } else {
             return false;
         }
     }
+
 }

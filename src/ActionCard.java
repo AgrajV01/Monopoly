@@ -36,8 +36,8 @@ public class ActionCard extends Space {
                 System.out.println("You receive 100$ from the bank! Your balance is now: " + player.getMoney());
                 break;
             case 3:
-                player.payRent(150); // player pays taxes to the bank
                 System.out.println("You must pay 150$ to the bank! Your balance is now: " + player.getMoney());
+                player.payRent(150); // player pays taxes to the bank
                 break;
                 /*
             case 4:

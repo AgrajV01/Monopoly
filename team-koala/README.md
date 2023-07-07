@@ -1,15 +1,4 @@
-# Team Koala's Monopoly Game
+# team-koala
+CMPT 276 Summer 2023 Team Koala Project
 
-This project is a Java-based Monopoly game developed by Team Koala. 
-
-## Prerequisites
-
-* Java 20
-* Maven
-
-## Building
-
-To build the project, navigate to the project root directory and run:
-
-```bash
-mvn clean install
+Most up to date version, runnable in IntelliJ IDEA environment

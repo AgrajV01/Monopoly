@@ -142,7 +142,7 @@ public class GUI2 implements ActionListener , PlayerObserver {
         movesMade++;
 
         JButton quit = new JButton("Quit");
-        quit.setBounds(710, 135, 70, 50);
+        quit.setBounds(690, 135, 70, 50);
         layeredPane.add(quit, new Integer(5));
         quit.addActionListener(new ActionListener() {
             @Override
@@ -152,7 +152,7 @@ public class GUI2 implements ActionListener , PlayerObserver {
         });
 
         button = new JButton("Roll");
-        button.setBounds(460, 550 + MOVEUP, 80, 25);
+        button.setBounds(440, 550 + MOVEUP, 120, 25);
 
         layeredPane.add(button, new Integer(5));
 
@@ -326,7 +326,7 @@ public class GUI2 implements ActionListener , PlayerObserver {
 
     public void setBuyCityButton(Game game) {
         buyCityButton = new JButton("Buy City");
-        buyCityButton.setBounds(460,520+MOVEUP, 80, 25);
+        buyCityButton.setBounds(440,520+MOVEUP, 120, 25);
 
         layeredPane.add(buyCityButton, new Integer(5));
 

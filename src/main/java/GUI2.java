@@ -142,7 +142,7 @@ public class GUI2 implements ActionListener , PlayerObserver {
         movesMade++;
 
         JButton quit = new JButton("Quit");
-        quit.setBounds(680, 135, 70, 50);
+        quit.setBounds(690, 135, 70, 50);
         layeredPane.add(quit, new Integer(5));
         quit.addActionListener(new ActionListener() {
             @Override

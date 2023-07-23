@@ -2,14 +2,20 @@
  * The City class represents a city space in a game. It extends the Space class and provides additional
  * functionality specific to cities.
  */
+
+enum propertyColor {
+    BROWN, LBLUE, PURPLE, ORANGE, RED, YELLOW, GREEN, DBLUE
+}
 public class City extends Space {
     private int price;
     private int rent;
     private int houseCost;
+    private int numHouses = 0;
     private Player owner;
     private GUI2 gui;
+    private propertyColor color;
 
-    public City(String name, int price, int rent, int houseCost, GUI2 gui) {
+    public City(String name, int price, int rent, int houseCost, GUI2 gui, propertyColor color) {
         this.isProperty = true;
         this.name = name;
         this.price = price;
@@ -17,6 +23,7 @@ public class City extends Space {
         this.houseCost = houseCost;
         this.owner = null; // Initially, no one owns the city.
         this.gui = gui;
+        this.color = color;
     }
 
     public String getName() {
@@ -26,10 +33,26 @@ public class City extends Space {
     public int getPrice() {
         return price;
     }
-
+    public int getHouseCost() { return houseCost; }
     public int getRent() {
         return rent;
     }
+    public void addHouses(int count) {
+        if (numHouses == 0) {
+            rent *= 5;
+            if (count > 1) {
+                rent *= 2 * (count - 1);
+            }
+        }
+
+        else {
+            rent *= count * 2;
+        }
+
+        numHouses += count;
+    }
+
+    public propertyColor getColor() { return color; }
 
     public Player getOwner() {
         return owner;
@@ -48,6 +71,7 @@ public class City extends Space {
     public void action(Player player) {
         System.out.println("You have landed on: " + this.name);
         gui.getTextArea().setText("You have landed on: " + this.name);
+        // if property is available to be purchased
         if (isAvailable()) {
             // Purchase City? option appears on GUI
             if(player.getMoney() >= this.price) {
@@ -71,7 +95,8 @@ public class City extends Space {
             }
             */
         }
-        else {
+        // if property is owned by another player
+        else if (getOwner() != player) {
             System.out.println("This property is owned by: " + owner.getName());
             gui.getTextArea().setText("This property is owned by: " + owner.getName());
             //player.payRent(rent);
@@ -93,12 +118,28 @@ public class City extends Space {
                 System.out.println(player.getName() + " has  $" + player.getMoney());
                 gui.getTextArea().append(player.getName() + " has  $" + player.getMoney() + ". ");
                 System.out.println("Insufficient funds! The Player is Bankrupted!");
-                gui.getTextArea().append("Insufficient funds! The Player is Bankrupted1");
+                gui.getTextArea().append("Insufficient funds! The Player is Bankrupted!");
                 int bal = this.price - player.getMoney();
                 player.payRent(this.price -bal);
                 owner.receiveRent(this.price -bal);
                 player.setIsBankrupted(true);
                 //Game.gameOver();
+            }
+        }
+        // if property is owned by current player
+        else {
+            if (player.ownsCurrentSet(this)) {
+                if (numHouses < 4) {
+                    gui.getTextArea().append("Would you like to build houses on this property?");
+                }
+
+                else {
+                    gui.getTextArea().append("Would you like to build a hotel on this property?");
+                }
+            }
+
+            else {
+                gui.getTextArea().setText("You own this property!");
             }
         }
     }

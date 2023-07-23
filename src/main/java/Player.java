@@ -245,4 +245,23 @@ public class Player {
         }
     }
 
+    public boolean ownsCurrentSet(City city) {
+        int numOwned = 0;
+        for (City i : ownedCities) {
+            if (i.getColor() == city.getColor()) ++numOwned;
+        }
+        return (city.getColor() == propertyColor.BROWN || city.getColor() == propertyColor.DBLUE) ? numOwned == 2 : numOwned == 3;
+    }
+
+    public void buyHouse(City city, int count) {
+        if (city.getHouseCost() * count > money) {
+            gui.getTextArea().append("You cannot afford that many houses!");
+        }
+
+        else {
+            payRent(city.getHouseCost() * count);
+            city.addHouses(count);
+        }
+    }
+
 }

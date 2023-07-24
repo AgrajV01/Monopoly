@@ -264,4 +264,8 @@ public class Player {
         }
     }
 
+    public void makeDecision() {
+        return;
+    }
+
 }

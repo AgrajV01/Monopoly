@@ -69,7 +69,8 @@ public class Game {
 
         // if current player is not an AI, call the action() function
         // otherwise, call the AI makeDecision() function later
-        if (getCurrentPlayer().getType().equals("Player")) board.getPosition(position).action(getCurrentPlayer());
+        //if (getCurrentPlayer().getType().equals("Player"))
+        board.getPosition(position).action(getCurrentPlayer());
 
 /*
         if(board.getPosition(position) instanceof City) {

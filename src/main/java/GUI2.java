@@ -292,12 +292,14 @@ public class GUI2 implements ActionListener , PlayerObserver {
                     if (game.getPrevPlayer().getOnCity() != null) {
                         System.out.println(game.getPrevPlayer().getName() + " initially has $" + game.getPrevPlayer().getMoney());
                         game.getPrevPlayer().buyCity(game.getPrevPlayer().getOnCity());
+                        //getTextArea().append("\n" + game.getPrevPlayer().getName() + " has purchased " + game.getPrevPlayer().getOnCity().name + " for " + game.getPrevPlayer().getOnCity().getPrice() + "$");
                         System.out.println("This city is available for purchase at a price of " + game.getPrevPlayer().getOnCity().getPrice());
                         System.out.println("After Purchasing, the balance amount you have is " + game.getPrevPlayer().getMoney());
                         game.cleanProperty();
                     } else if (game.getPrevPlayer().getOnUtility() != null) {
                         System.out.println(game.getPrevPlayer().getName() + " initially has $" + game.getPrevPlayer().getMoney());
                         game.getPrevPlayer().buyUtility(game.getPrevPlayer().getOnUtility());
+                        //getTextArea().append("\n" + game.getPrevPlayer().getName() + " has purchased " + game.getPrevPlayer().getOnUtility().name + " for " + game.getPrevPlayer().getOnUtility().getPrice() + "$");
                         System.out.println("This utility is available for purchase at a price of " + game.getPrevPlayer().getOnUtility().getPrice());
                         System.out.println("After Purchasing, the balance amount you have is " + game.getPrevPlayer().getMoney());
                         game.cleanProperty();

@@ -54,7 +54,7 @@ public class Utility extends Space{
     @Override
     public void action(Player player) {
         System.out.println("You have landed on: " + this.name);
-        gui.getTextArea().setText("You have landed on: " + this.name + ".");
+        gui.getTextArea().append(player.getName() + " has landed on: " + this.name + ".");
         if (isAvailable()) {
             // Purchase City? option appears on GUI
             if(player.getMoney() >= this.price) {
@@ -92,7 +92,10 @@ public class Utility extends Space{
             if(player.getMoney() >= this.rent) {
                 int rent = this.rent;
                 System.out.println("Rent to be paid: $" + rent);
-                gui.getTextArea().append(" Rent to be paid: $" + rent + ". ");
+                gui.getTextArea().append("\n" + player.getName() + " must pay " + owner.getName() + " " + rent + "$");
+                player.payRent(rent);
+                owner.receiveRent(rent);
+                /*
                 System.out.println(player.getName() + " initially has $" + player.getMoney());
                 gui.getTextArea().append(player.getName() + " initially has $" + player.getMoney());
                 player.payRent(rent);
@@ -101,6 +104,8 @@ public class Utility extends Space{
                 gui.getTextArea().append(" Amount left after paying rent is: $" + player.getMoney());
                 System.out.println("After receiving the rent, Owner(" + owner.getName() + ") has $" + owner.getMoney());
                 gui.getTextArea().append(". After receiving the rent, Owner(" + owner.getName() + ") has $" + owner.getMoney() + ".");
+
+                 */
             }
             else{
                 System.out.println(player.getName() + " has  $" + player.getMoney());

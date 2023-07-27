@@ -30,6 +30,7 @@ public class Game {
         }
     }
 
+    // unused
     public void rollDiceAndMove() {
         int roll = die.roll();
         players.get(currentPlayer).move(roll);
@@ -60,9 +61,8 @@ public class Game {
     }
 
     public void makeMove(Die roll) {
-        System.out.println("Current player is " + getCurrentPlayerIndex());
+        gui.getTextArea().setText(getCurrentPlayer().getName() + " rolled a " + (roll.diceOne + roll.diceTwo) + "\n");
         players.get(currentPlayer).move(roll.diceOne+ roll.diceTwo);
-        System.out.println("\nYou rolled a " + (roll.diceOne + roll.diceTwo));
 
         // Check if player's new position is a city and it's owned by someone else
         int position = players.get(currentPlayer).getPosition();

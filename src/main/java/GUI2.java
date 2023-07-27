@@ -139,6 +139,8 @@ public class GUI2 implements ActionListener , PlayerObserver {
     }
 
     public void setOkButton(Game game) {
+        // clears text box
+        //getTextArea().setText("");
         movesMade++;
 
         JButton quit = new JButton("Quit");
@@ -209,41 +211,22 @@ public class GUI2 implements ActionListener , PlayerObserver {
                 button = null;
                 layeredPane.revalidate();
                 layeredPane.repaint();
-                // test
-                if (game.getPrevPlayer().getType().equals("Player")) { // if current player is not AI
 
+                // TO DO: create setButtons function instead of checking for each individually
+
+                // if current player is not AI
+                if (game.getPrevPlayer().getType().equals("Player")) {
+
+                    // city and utility buttons will be set accordingly
                     if (game.getPrevPlayer().getOnCity() != null)
                         setBuyCityButton(game);
                     else if (game.getPrevPlayer().getOnUtility() != null)
-                        setBuyUtilityButton(game);                  // city and utility buttons will be set accordingly
+                        setBuyUtilityButton(game);
+
+                    // end button will only be created if current player is not AI
+                    setEndTurnButton(game);
 
 
-                    endTurnButton = new JButton("End turn");
-                    endTurnButton.setBounds(440, 550 + MOVEUP, 120, 25);
-
-                    layeredPane.add(endTurnButton, new Integer(5));
-                    endTurnButton.addActionListener(new ActionListener() {
-                        @Override
-                        public void actionPerformed(ActionEvent e) {
-                            layeredPane.remove(endTurnButton);
-
-                            if (buyCityButton != null) {
-                                game.cleanProperty();
-                                layeredPane.remove(buyCityButton);
-                                buyCityButton = null;
-                            } else if (buyUtilityButton != null) {
-                                game.cleanProperty();
-                                layeredPane.remove(buyUtilityButton);
-                                buyUtilityButton = null;
-                            }
-
-                            endTurnButton = null;
-                            layeredPane.revalidate();
-                            frame.repaint();
-                            nextTurn(game);
-                        }
-                    });
-                                                                    // end button will only be created if current player is not AI
                 }
                 else {
                     layeredPane.remove(endTurnButton);
@@ -252,13 +235,14 @@ public class GUI2 implements ActionListener , PlayerObserver {
                     frame.repaint();
                     nextTurn(game);
                 }
-                // test
-
             }
         });
     }
 
     private void nextTurn(Game game) {
+        // clears text box
+        //getTextArea().setText("");
+
         Timer timer = new Timer(1200, new ActionListener() { // delay for 2 seconds
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -296,6 +280,8 @@ public class GUI2 implements ActionListener , PlayerObserver {
 
                     // Display new dice values
                     displayDice();
+
+                    // TO CHANGE (AI decision making)
                     if (game.getPrevPlayer().getOnCity() != null) {
                         System.out.println(game.getPrevPlayer().getName() + " initially has $" + game.getPrevPlayer().getMoney());
                         game.getPrevPlayer().buyCity(game.getPrevPlayer().getOnCity());
@@ -320,8 +306,6 @@ public class GUI2 implements ActionListener , PlayerObserver {
         else {
             setOkButton(game);
         }
-
-        //setOkButton(game);
     }
 
     public void setBuyCityButton(Game game) {
@@ -337,6 +321,7 @@ public class GUI2 implements ActionListener , PlayerObserver {
                 game.getPrevPlayer().buyCity(game.getPrevPlayer().getOnCity());
                 System.out.println("This city is available for purchase at a price of " + game.getPrevPlayer().getOnCity().getPrice());
                 System.out.println("After Purchasing, the balance amount you have is " + game.getPrevPlayer().getMoney());
+                getTextArea().append("\n" + game.getPrevPlayer().getName() + " has purchased " + game.getPrevPlayer().getOnCity().name + " for " + game.getPrevPlayer().getOnCity().getPrice() + "$");
                 game.cleanProperty();
                 layeredPane.remove(buyCityButton);
                 frame.repaint();
@@ -357,6 +342,7 @@ public class GUI2 implements ActionListener , PlayerObserver {
                 game.getPrevPlayer().buyUtility(game.getPrevPlayer().getOnUtility());
                 System.out.println("This utility is available for purchase at a price of " + game.getPrevPlayer().getOnUtility().getPrice());
                 System.out.println("After Purchasing, the balance amount you have is " + game.getPrevPlayer().getMoney());
+                getTextArea().append("\n" + game.getPrevPlayer().getName() + " has purchased " + game.getPrevPlayer().getOnUtility().name + " for " + game.getPrevPlayer().getOnUtility().getPrice() + "$");
                 game.cleanProperty();
                 layeredPane.remove(buyUtilityButton);
                 frame.repaint();
@@ -364,18 +350,33 @@ public class GUI2 implements ActionListener , PlayerObserver {
         });
     }
 
-    public boolean setEndTurnButton(Game game) {
+
+    public void setEndTurnButton(Game game) {
         endTurnButton = new JButton("End turn");
-        endTurnButton.setBounds(440,550+MOVEUP, 120, 25);
+        endTurnButton.setBounds(440, 550 + MOVEUP, 120, 25);
 
         layeredPane.add(endTurnButton, new Integer(5));
-            endTurnButton.addActionListener(new ActionListener() {
-                @Override
-                public void actionPerformed(ActionEvent e) {
-                    // to do
+        endTurnButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                layeredPane.remove(endTurnButton);
+
+                if (buyCityButton != null) {
+                    game.cleanProperty();
+                    layeredPane.remove(buyCityButton);
+                    buyCityButton = null;
+                } else if (buyUtilityButton != null) {
+                    game.cleanProperty();
+                    layeredPane.remove(buyUtilityButton);
+                    buyUtilityButton = null;
                 }
-            });
-        return true;
+
+                endTurnButton = null;
+                layeredPane.revalidate();
+                frame.repaint();
+                nextTurn(game);
+            }
+        });
     }
     public void displayPoints(Point[] points) {
         for (Point point : points) {

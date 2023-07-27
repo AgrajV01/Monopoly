@@ -5,38 +5,44 @@ import java.util.Random;
  * when a player lands on an action card space.
  */
 public class ActionCard extends Space {
+    public static final int CC1 = 2;
+    public static final int CC2 = 17;
+    public static final int CC3 = 33;
     private Random random;
 
-    public ActionCard(String name) {
+    private GUI2 gui;
+
+    public ActionCard(String name, GUI2 gui) {
         random = new Random();
         this.name = name;
         this.isProperty = false;
+        this.gui = gui;
     }
     @Override
     public void action(Player player) {
-        if (player.getPosition() == 2 || player.getPosition() == 17 || player.getPosition() == 33) {
-            System.out.println("You have landed on Community Chest!");
+        if (player.getPosition() == CC1 || player.getPosition() == CC2 || player.getPosition() == CC3) {
+            gui.getTextArea().append(player.getName() + " has landed on Community Chest!\n");
         }
         else {
-            System.out.println("You have landed on Chance!");
+            gui.getTextArea().append(player.getName() + " has landed on Chance!\n");
         }
         int cardType = random.nextInt(4);
 
         switch (cardType) {
             case 0:
                 player.setJailCards(player.getJailCards() + 1); // gives player a jail card
-                System.out.println("You receive 1 get out of jail free card!");
+                gui.getTextArea().append(player.getName() + " receives 1 get out of jail free card!");
                 break;
             case 1:
                 player.sendToJail(); // sends player to jail
-                System.out.println("Oh no! You go to jail!");
+                gui.getTextArea().append("Oh no!" + player.getName() + " goes to jail!");
                 break;
             case 2:
                 player.receiveRent(100); // player receives money from the bank
-                System.out.println("You receive 100$ from the bank! Your balance is now: " + player.getMoney());
+                gui.getTextArea().append(player.getName() + " receives 100$ from the bank! New balance: " + player.getMoney());
                 break;
             case 3:
-                System.out.println("You must pay 150$ to the bank! Your balance is now: " + player.getMoney());
+                gui.getTextArea().append(player.getName() + " must pay 150$ to the bank! New balance: " + player.getMoney());
                 player.payRent(150); // player pays taxes to the bank
                 break;
                 /*

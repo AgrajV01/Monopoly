@@ -29,6 +29,8 @@ public class MainMenu {
         setSettingsButton(factory);
         setRulesButton();
         setQuitButton();
+
+        frame.setVisible(true);
     }
     GameFactory defaultSettings(GUI2 a){
         int numPlayers = 4;
@@ -52,6 +54,8 @@ public class MainMenu {
                 Random random = new Random();
                 a.initializeTheBoard(game);
                 game.subscribeToPlayers(a);
+
+                frame.dispose();
             }
         });
     }
@@ -66,6 +70,8 @@ public class MainMenu {
             @Override
             public void actionPerformed(ActionEvent e) {
                 //To Do
+
+                frame.dispose();
             }
         });
     }
@@ -134,7 +140,7 @@ public class MainMenu {
 
         layeredPane.add(quitButton, new Integer(1));
 
-        rulesButton.addActionListener(new ActionListener() {
+        quitButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 System.exit(0);

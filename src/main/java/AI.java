@@ -9,4 +9,12 @@ public class AI extends Player{
     public String getType(){
         return "AI";
     }
+    // to implement: AI decision making master function
+    public void makeDecision() {
+        float probability = 0.8f;
+
+        if (ownsCurrentSet(getOnCity())) {
+
+        }
+    }
 }

@@ -282,6 +282,13 @@ public class GUI2 implements ActionListener , PlayerObserver {
                     displayDice();
 
                     // TO CHANGE (AI decision making)
+                    /* REPLACEMENT CODE
+                    if (game.getPrevPlayer().getOnCity() != null) {
+                        game.getPrevPlayer().makeDecision();
+                    }
+
+                     */
+                    
                     if (game.getPrevPlayer().getOnCity() != null) {
                         System.out.println(game.getPrevPlayer().getName() + " initially has $" + game.getPrevPlayer().getMoney());
                         game.getPrevPlayer().buyCity(game.getPrevPlayer().getOnCity());

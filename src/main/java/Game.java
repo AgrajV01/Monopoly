@@ -67,7 +67,9 @@ public class Game {
         // Check if player's new position is a city and it's owned by someone else
         int position = players.get(currentPlayer).getPosition();
 
-        board.getPosition(position).action(getCurrentPlayer());
+        // if current player is not an AI, call the action() function
+        // otherwise, call the AI makeDecision() function later
+        if (getCurrentPlayer().getType().equals("Player")) board.getPosition(position).action(getCurrentPlayer());
 
 /*
         if(board.getPosition(position) instanceof City) {
@@ -83,7 +85,7 @@ public class Game {
 
         // Switch the turn to the next player
         for(Player pl : players) {
-            if (pl.getIsBankrupted() == true)
+            if (pl.getIsBankrupted())
                 return;
         }
         switchTurn();

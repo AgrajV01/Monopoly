@@ -124,17 +124,19 @@ public class Player {
 
         // Notify the player about being sent to jail before the delay
         System.out.println(name + " is being sent to jail!");
-        gui.getTextArea().setText(name + " is being sent to jail!");
+        //gui.getTextArea().setText(name + " is being sent to jail!");
 
         // Introduce a delay of 2 seconds (2000 milliseconds) before sending the player to jail
-        int delayMilliseconds = 2000;
+        int delayMilliseconds = 0;
         Timer timer = new Timer(delayMilliseconds, (ActionEvent e) -> {
 
             // Notify the player again after the delay
             System.out.println(name + " has been sent to jail!");
-            gui.getTextArea().setText(name + " has been sent to jail!");
+            //gui.getTextArea().setText(name + " has been sent to jail!");
         });
-        setPosition(10);
+
+
+        //setPosition(10);
         inJail = true;
 
         // Start the timer
@@ -152,7 +154,7 @@ public class Player {
 
         if (steps > 0 && position < temp) {
             System.out.println("You have passed Go! You collect 200$.");
-            gui.getTextArea().setText("You have passed Go! You collect 200$.");
+            gui.getTextArea().setText("You have passed Go! You collect 200$\n");
             money += 200;
         }
         notifyObservers();

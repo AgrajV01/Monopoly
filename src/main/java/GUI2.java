@@ -12,7 +12,7 @@ public class GUI2 implements ActionListener , PlayerObserver {
 
 
     private int movesMade = 0;
-    private JButton buyUtilityButton, endTurnButton, buyCityButton;
+    private JButton buyUtilityButton, endTurnButton, buyCityButton, buyHouseButton, quitButton;
     private Point[] boardPositions;
     private static Die die = new Die();
     private boolean isAnimating = false;
@@ -143,15 +143,8 @@ public class GUI2 implements ActionListener , PlayerObserver {
         //getTextArea().setText("");
         movesMade++;
 
-        JButton quit = new JButton("Quit");
-        quit.setBounds(710, 135, 70, 50);
-        layeredPane.add(quit, new Integer(5));
-        quit.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                System.exit(0);
-            }
-        });
+        // create quit button
+        setQuitButton(game);
 
         button = new JButton("Roll");
         button.setBounds(460, 550 + MOVEUP, 80, 25);
@@ -174,27 +167,15 @@ public class GUI2 implements ActionListener , PlayerObserver {
                     diceLabel2 = null;
                 }
 
+                // TO DO: add conditional situation in case player is in jail (they cannot move unless they pay or roll doubles)
+
                 game.makeMove(die);
-
-                int currentPlayerPosition = game.getPrevPlayer().getPosition();
-
-                JLabel currentPlayerIcon = playerIcons.get(game.getPrevPlayerIndex());
-
-                Point newPosition = new Point(boardPositions[currentPlayerPosition]);
-                int yOffset = 70 / game.getNumPlayers();
-                int xOffset = yOffset;
-                if (currentPlayerPosition < 11)
-                    newPosition.y += yOffset * game.getPrevPlayerIndex();
-                else if (currentPlayerPosition < 21)
-                    newPosition.x -= xOffset * game.getPrevPlayerIndex();
-                else if (currentPlayerPosition < 31)
-                    newPosition.y -= yOffset * game.getPrevPlayerIndex();
-                else
-                    newPosition.x += xOffset * game.getPrevPlayerIndex();
-                animateMovement(currentPlayerIcon, newPosition, 15);
 
                 // Display new dice values
                 displayDice();
+
+                // logic for movement animation
+                moveOnBoard(game);
                 /*
                 if (buyCityButton != null) {
                     game.cleanProperty();
@@ -218,14 +199,18 @@ public class GUI2 implements ActionListener , PlayerObserver {
                 if (game.getPrevPlayer().getType().equals("Player")) {
 
                     // city and utility buttons will be set accordingly
-                    if (game.getPrevPlayer().getOnCity() != null)
+                    if (game.getPrevPlayer().getOnCity() != null && game.getPrevPlayer().getOnCity().isAvailable())
                         setBuyCityButton(game);
-                    else if (game.getPrevPlayer().getOnUtility() != null)
+
+                    else if (game.getPrevPlayer().getOnUtility() != null && game.getPrevPlayer().getOnUtility().isAvailable())
                         setBuyUtilityButton(game);
+
+                    if (game.getPrevPlayer().getOnCity() != null && game.getPrevPlayer().ownsCurrentSet(game.getPrevPlayer().getOnCity())) {
+                        setBuyHouseButton(game);
+                    }
 
                     // end button will only be created if current player is not AI
                     setEndTurnButton(game);
-
 
                 }
                 else {
@@ -261,25 +246,11 @@ public class GUI2 implements ActionListener , PlayerObserver {
 
                     game.makeMove(die);
 
-                    int currentPlayerPosition = game.getPrevPlayer().getPosition();
-
-                    JLabel currentPlayerIcon = playerIcons.get(game.getPrevPlayerIndex());
-
-                    Point newPosition = new Point(boardPositions[currentPlayerPosition]);
-                    int yOffset = 70 / game.getNumPlayers();
-                    int xOffset = yOffset;
-                    if (currentPlayerPosition < 11)
-                        newPosition.y += yOffset * game.getPrevPlayerIndex();
-                    else if (currentPlayerPosition < 21)
-                        newPosition.x -= xOffset * game.getPrevPlayerIndex();
-                    else if (currentPlayerPosition < 31)
-                        newPosition.y -= yOffset * game.getPrevPlayerIndex();
-                    else
-                        newPosition.x += xOffset * game.getPrevPlayerIndex();
-                    animateMovement(currentPlayerIcon, newPosition, 15);
-
                     // Display new dice values
                     displayDice();
+
+                    // logic for movement animation
+                    moveOnBoard(game);
 
                     // TO CHANGE (AI decision making)
                     /* REPLACEMENT CODE
@@ -314,6 +285,52 @@ public class GUI2 implements ActionListener , PlayerObserver {
         if (movesMade > 0) timer.start();
         else {
             setOkButton(game);
+        }
+    }
+
+    public void moveOnBoard(Game game) {
+        int currentPlayerPosition = game.getPrevPlayer().getPosition();
+
+        JLabel currentPlayerIcon = playerIcons.get(game.getPrevPlayerIndex());
+
+        Point newPosition = new Point(boardPositions[currentPlayerPosition]);
+        int yOffset = 70 / game.getNumPlayers();
+        int xOffset = yOffset;
+        if (currentPlayerPosition < 11)
+            newPosition.y += yOffset * game.getPrevPlayerIndex();
+        else if (currentPlayerPosition < 21)
+            newPosition.x -= xOffset * game.getPrevPlayerIndex();
+        else if (currentPlayerPosition < 31)
+            newPosition.y -= yOffset * game.getPrevPlayerIndex();
+        else
+            newPosition.x += xOffset * game.getPrevPlayerIndex();
+        animateMovement(currentPlayerIcon, newPosition, 15);
+
+        if (game.getPrevPlayer().getJailState()) {
+            //System.out.println(game.getPrevPlayer().getPosition());
+            game.getPrevPlayer().setPosition(10);
+            newPosition = new Point(boardPositions[game.getPrevPlayer().getPosition()]);
+            //System.out.println(game.getPrevPlayer().getPosition());
+
+            if (currentPlayerPosition < 11)
+                newPosition.y += yOffset * game.getPrevPlayerIndex();
+            else if (currentPlayerPosition < 21)
+                newPosition.x -= xOffset * game.getPrevPlayerIndex();
+            else if (currentPlayerPosition < 31)
+                newPosition.y -= yOffset * game.getPrevPlayerIndex();
+            else
+                newPosition.x += xOffset * game.getPrevPlayerIndex();
+
+            Timer timer = new Timer(1500, null);
+            Point finalNewPosition = newPosition;
+            timer.addActionListener(new ActionListener() {
+                @Override
+                public void actionPerformed(ActionEvent e) {
+                    animateMovement(currentPlayerIcon, finalNewPosition, 15);
+                }
+            });
+            timer.setRepeats(false);
+            timer.start();
         }
     }
 
@@ -359,6 +376,24 @@ public class GUI2 implements ActionListener , PlayerObserver {
         });
     }
 
+    public void setBuyHouseButton(Game game) {
+        buyHouseButton = new JButton("Buy house");
+        buyHouseButton.setBounds(440, 520 + MOVEUP, 120, 25);
+
+        layeredPane.add(buyHouseButton, new Integer(5));
+
+        buyHouseButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                // find out how many houses can be purchased (max houses on a city - number of existing houses on city)
+                int possibleHouses = City.MAXHOUSES - game.getPrevPlayer().getOnCity().getNumHouses();
+                setBuyNumOfHousesButton(game, possibleHouses);
+            }
+        });
+    }
+
+    public void setBuyNumOfHousesButton(Game game, int count) {
+    }
 
     public void setEndTurnButton(Game game) {
         endTurnButton = new JButton("End turn");
@@ -387,6 +422,24 @@ public class GUI2 implements ActionListener , PlayerObserver {
             }
         });
     }
+
+    public void setQuitButton(Game game) {
+        quitButton = new JButton("Quit");
+        quitButton.setBounds(710, 135, 70, 50);
+        layeredPane.add(quitButton, new Integer(5));
+        quitButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                System.exit(0);
+            }
+        });
+    }
+
+    // TO DO: create master function to handle button creation
+    public void setButtons(Game game) {
+
+    }
+
     public void displayPoints(Point[] points) {
         for (Point point : points) {
             JLabel pointLabel = new JLabel();

@@ -1,8 +1,12 @@
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.util.ArrayList;
 import java.util.List;
 import java.lang.Math;
 import java.util.Scanner;
-
+import javax.swing.Timer;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 /**
  * The Player class represents a player in the Monopoly game.
  * It holds information about the player's name, money, position, owned cities,
@@ -115,8 +119,27 @@ public class Player {
     public void setPosition(int position) { this.position = position; }
 
     public void sendToJail() {
+//        setPosition(10);
+//        inJail = true;
+
+        // Notify the player about being sent to jail before the delay
+        System.out.println(name + " is being sent to jail!");
+        gui.getTextArea().setText(name + " is being sent to jail!");
+
+        // Introduce a delay of 2 seconds (2000 milliseconds) before sending the player to jail
+        int delayMilliseconds = 2000;
+        Timer timer = new Timer(delayMilliseconds, (ActionEvent e) -> {
+
+            // Notify the player again after the delay
+            System.out.println(name + " has been sent to jail!");
+            gui.getTextArea().setText(name + " has been sent to jail!");
+        });
         setPosition(10);
         inJail = true;
+
+        // Start the timer
+        timer.setRepeats(false);
+        timer.start();
     }
     public List<City> getOwnedCities() {
         return ownedCities;

@@ -29,6 +29,11 @@ public class Player {
     private int jailCards; // number of get out of jail free cards this player has
 
     private List<PlayerObserver> subscribers;
+
+    public GUI2 getGui() {
+        return gui;
+    }
+
     public void nullCityUtility(){
         this.onCity = null;
         this.onUtility = null;
@@ -151,7 +156,7 @@ public class Player {
         int temp = position;
         position = Math.floorMod(position + steps, 40);  // Assuming the board size is 40
         positionDiff = Math.abs(position - temp);
-
+        inJail = false; // remove this line once the jail delay is set correctly
         if (steps > 0 && position < temp) {
             System.out.println("You have passed Go! You collect 200$.");
             gui.getTextArea().setText("You have passed Go! You collect 200$\n");
@@ -204,12 +209,10 @@ public class Player {
     }
     private void playerbankrupted(){
         System.out.println(name + " is Bankrupted!");
-
         gui.getTextArea().setText(name + " is Bankrupted!");
         //Game.gameOver();
 
         Game.gameOver();
-
         notifyGameOver();
     }
 
@@ -236,11 +239,7 @@ public class Player {
         gui.getTextArea().setText("Current Money: $" + money + ".");
         System.out.println("Do you want to buy " + utility.getName() + " for $" + utility.getPrice() + "? (Y/N)");
         gui.getTextArea().append(" Do you want to buy " + utility.getName() + " for $" + utility.getPrice() + "? (Y/N)");
-
         String input = scanner.nextLine().trim().toLowerCase();
-
-
-
 
         if (input.equals("y")) {
             int remainingMoney = money - utility.getPrice();
@@ -289,8 +288,8 @@ public class Player {
         }
     }
 
-    public void makeDecision() {
-        return;
+    public boolean makeDecision() {
+        return true;
     }
 
 }

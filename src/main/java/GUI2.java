@@ -9,7 +9,7 @@ import java.util.List;
 
 public class GUI2 implements ActionListener , PlayerObserver {
 
-
+    private boolean tutor = false;
 
     private int movesMade = 0;
     private JButton buyUtilityButton, endTurnButton, buyCityButton;
@@ -56,7 +56,7 @@ public class GUI2 implements ActionListener , PlayerObserver {
     String _6 = "6.png";
 
 
-    public GUI2() {// initializes panel and frame
+    public GUI2(boolean tutor) {// initializes panel and frame
         layeredPane = new JLayeredPane(); // create the layered pane
         layeredPane.setPreferredSize(new Dimension(1500, 1000)); // set size
 
@@ -65,6 +65,8 @@ public class GUI2 implements ActionListener , PlayerObserver {
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
         frame.add(layeredPane);
+
+        this.tutor = tutor; // sets the tutorial mode on or off
     }
 /*
     public void setMoney1(int money) {
@@ -330,7 +332,9 @@ public class GUI2 implements ActionListener , PlayerObserver {
                 game.getPrevPlayer().buyCity(game.getPrevPlayer().getOnCity());
                 System.out.println("This city is available for purchase at a price of " + game.getPrevPlayer().getOnCity().getPrice());
                 System.out.println("After Purchasing, the balance amount you have is " + game.getPrevPlayer().getMoney());
-                getTextArea().append("\n" + game.getPrevPlayer().getName() + " has purchased " + game.getPrevPlayer().getOnCity().name + " for " + game.getPrevPlayer().getOnCity().getPrice() + "$");
+                getTextArea().setText(game.getPrevPlayer().getName() + " has purchased " + game.getPrevPlayer().getOnCity().name + " for " + game.getPrevPlayer().getOnCity().getPrice() + "$");
+                if(tutor)
+                    getTextArea().append("\nPress the End Turn button to continue.");
                 game.cleanProperty();
                 layeredPane.remove(buyCityButton);
                 frame.repaint();
@@ -705,8 +709,11 @@ public class GUI2 implements ActionListener , PlayerObserver {
 
         text = new JTextArea();
         text.setBounds(950,555, 300, 125);
-
-        text.setText("Press Roll to Begin!");
+        if(tutor)
+            text.setText("Welcome to Tutorial Mode! Buy properties to collect rent money " +
+                    "from your opponents when they land on a space you own. The game ends " +
+                    "when all players except one go bankrupt! \n\n");
+        text.append("Press Roll to Begin!");
 
         text.setLineWrap(true);
         text.setWrapStyleWord(true);
@@ -716,6 +723,9 @@ public class GUI2 implements ActionListener , PlayerObserver {
 
     public JTextArea getTextArea() { // for passing private data member
         return text;
+    }
+    public boolean getTutor() {
+        return tutor;
     }
 
     public void displayBackground() {

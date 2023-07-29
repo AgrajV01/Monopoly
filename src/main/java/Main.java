@@ -12,7 +12,7 @@ public class Main {
         int cash = 2000;
         String boardStyle = "Classic";
 
-        GUI2 a = new GUI2(); // must add to the factory
+        GUI2 a = new GUI2(true); // must add to the factory
 
         GameFactory factory = new CustomGameFactory(numPlayers, numOfAiPlayers, cash, boardStyle, a);
         Game game = new Game(factory, a);

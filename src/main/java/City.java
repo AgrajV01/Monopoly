@@ -69,10 +69,16 @@ public class City extends Space {
 
     @Override
     public void action(Player player) {
-        System.out.println(player.getName() + " has landed on: " + this.name);
+
         gui.getTextArea().append(player.getName() + " has landed on: " + this.name);
+
         // if property is available to be purchased
         if (isAvailable()) {
+            if(gui.getTutor())
+                gui.getTextArea().append("\nThe Buy City button" +
+                        " gives you the option to purchase" +
+                        " this city. When your opponents land on your city, they will pay you rent. " +
+                        "(amount increases when more buildings are placed.)");
             // Purchase City? option appears on GUI
             if(player.getMoney() >= this.price) {
                 player.setOnCity(this);
@@ -97,13 +103,13 @@ public class City extends Space {
         }
         // if property is owned by another player
         else if (getOwner() != player) {
-            System.out.println("This property is owned by: " + owner.getName());
+
             gui.getTextArea().setText("This property is owned by: " + owner.getName());
             //player.payRent(rent);
             //owner.receiveRent(rent);
             if(player.getMoney() >= this.rent) {
                 int rent = this.rent;
-                System.out.println("Rent to be paid: $" + rent);
+
                 gui.getTextArea().append("\n" + player.getName() + " must pay " + owner.getName() + " " + rent + "$");
                 player.payRent(rent);
                 owner.receiveRent(rent);
@@ -120,10 +126,13 @@ public class City extends Space {
                  */
             }
             else{
-                System.out.println(player.getName() + " has  $" + player.getMoney());
+
                 gui.getTextArea().append(player.getName() + " has  $" + player.getMoney() + ". ");
-                System.out.println("Insufficient funds! The Player is Bankrupted!");
+
                 gui.getTextArea().append("Insufficient funds! The Player is Bankrupted!");
+                if(gui.getTutor())
+                    gui.getTextArea().append("\nOnce bankrupted, the player is eliminated! Remember, " +
+                            "the last player remaining wins");
                 int bal = this.price - player.getMoney();
                 player.payRent(this.price -bal);
                 owner.receiveRent(this.price -bal);
@@ -136,6 +145,9 @@ public class City extends Space {
             if (player.ownsCurrentSet(this)) {
                 if (numHouses < 4) {
                     gui.getTextArea().append("Would you like to build houses on this property?");
+                    if(gui.getTutor())
+                        gui.getTextArea().append("\n The more houses on the property, the more rent is charged" +
+                                "\n once you have four houses on a property you can buy a hotel");
                 }
 
                 else {

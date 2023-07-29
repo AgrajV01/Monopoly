@@ -21,10 +21,18 @@ public class ActionCard extends Space {
     @Override
     public void action(Player player) {
         if (player.getPosition() == CC1 || player.getPosition() == CC2 || player.getPosition() == CC3) {
-            gui.getTextArea().append(player.getName() + " has landed on Community Chest!\n");
+            gui.getTextArea().append(player.getName() + " has landed on Community Chest!");
+            if(gui.getTutor())
+                gui.getTextArea().append("\nCommunity Chest cards involve finances. " +
+                        "They will either give you money or take it away!\n");
+
         }
         else {
-            gui.getTextArea().append(player.getName() + " has landed on Chance!\n");
+            gui.getTextArea().append(player.getName() + " has landed on Chance!");
+            if(gui.getTutor())
+                gui.getTextArea().append("\nChance Chest cards involve board movement. " +
+                        "They can send you somewhere good or bad!\n");
+
         }
         int cardType = random.nextInt(4);
 
@@ -32,6 +40,9 @@ public class ActionCard extends Space {
             case 0:
                 player.setJailCards(player.getJailCards() + 1); // gives player a jail card
                 gui.getTextArea().append(player.getName() + " receives 1 get out of jail free card!");
+                if(gui.getTutor())
+                    gui.getTextArea().append("\nUse these cards to get out of Jail!");
+
                 break;
             case 1:
                 player.sendToJail(); // sends player to jail

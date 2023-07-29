@@ -123,7 +123,7 @@ public class Player {
 //        inJail = true;
 
         // Notify the player about being sent to jail before the delay
-        System.out.println(name + " is being sent to jail!");
+
         gui.getTextArea().setText(name + " is being sent to jail!");
 
         // Introduce a delay of 2 seconds (2000 milliseconds) before sending the player to jail
@@ -131,7 +131,7 @@ public class Player {
         Timer timer = new Timer(delayMilliseconds, (ActionEvent e) -> {
 
             // Notify the player again after the delay
-            System.out.println(name + " has been sent to jail!");
+
             gui.getTextArea().setText(name + " has been sent to jail!");
         });
         setPosition(10);
@@ -151,8 +151,8 @@ public class Player {
         positionDiff = Math.abs(position - temp);
 
         if (steps > 0 && position < temp) {
-            System.out.println("You have passed Go! You collect 200$.");
-            gui.getTextArea().setText("You have passed Go! You collect 200$.");
+
+            gui.getTextArea().setText("You have passed Go! You collect 200$.\n");
             money += 200;
         }
         notifyObservers();
@@ -161,8 +161,11 @@ public class Player {
 
     public void buyCity(City city) {
         if(city.getPrice() > money) {
-            System.out.println("Not enough money to buy this city");
+
             gui.getTextArea().setText("Not enough money to buy this city");
+            if(gui.getTutor())
+                gui.getTextArea().append("\nYou can earn more money by collecting rent, " +
+                        "passing go, or drawing community chest cards!\n");
             return;
         }
         money -= city.getPrice();
@@ -173,8 +176,12 @@ public class Player {
 
     public void buyUtility(Utility utility) {
         if (utility.getPrice() > money) {
-            System.out.println("Not enough money to buy this utility");
+
             gui.getTextArea().setText("Not enough money to buy this utility");
+            if(gui.getTutor())
+                gui.getTextArea().append("\nYou can earn more money by collecting rent, " +
+                        "passing go, or drawing community chest cards!");
+
             return;
         }
         money -= utility.getPrice();
@@ -230,9 +237,9 @@ public class Player {
     // displays the player's money before and after purchasing the utility
     public boolean wantToBuyUtility(Utility utility) {
         Scanner scanner = new Scanner(System.in);
-        System.out.println("Current Money: $" + money);
+
         gui.getTextArea().setText("Current Money: $" + money + ".");
-        System.out.println("Do you want to buy " + utility.getName() + " for $" + utility.getPrice() + "? (Y/N)");
+
         gui.getTextArea().append(" Do you want to buy " + utility.getName() + " for $" + utility.getPrice() + "? (Y/N)");
 
         String input = scanner.nextLine().trim().toLowerCase();
@@ -242,7 +249,7 @@ public class Player {
 
         if (input.equals("y")) {
             int remainingMoney = money - utility.getPrice();
-            System.out.println("Remaining Money: $" + remainingMoney);
+
             gui.getTextArea().setText("Remaining Money: $" + remainingMoney);
             return true;
         } else {
@@ -252,9 +259,9 @@ public class Player {
     // displays the player's money before and after purchasing the city
     public boolean wantToBuyCity(City city){
         Scanner scanner = new Scanner(System.in);
-        System.out.println("Current Money: $" + money +".");
+
         gui.getTextArea().setText("Current Money: $" + money +".");
-        System.out.println(" Do you want to buy " + city.getName() + " for $" + city.getPrice() + "? (Y/N)");
+
         gui.getTextArea().append(" Do you want to buy " + city.getName() + " for $" + city.getPrice() + "? (Y/N)");
         String input = scanner.nextLine().trim().toLowerCase();
 
@@ -279,6 +286,9 @@ public class Player {
     public void buyHouse(City city, int count) {
         if (city.getHouseCost() * count > money) {
             gui.getTextArea().append("You cannot afford that many houses!");
+            if(gui.getTutor())
+                gui.getTextArea().append("\nYou can earn more money by collecting rent, " +
+                        "passing go, or drawing community chest cards!");
         }
 
         else {

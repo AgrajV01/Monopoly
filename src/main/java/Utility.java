@@ -56,18 +56,27 @@ public class Utility extends Space{
         System.out.println("You have landed on: " + this.name);
         gui.getTextArea().append(player.getName() + " has landed on: " + this.name + ".");
         if (isAvailable()) {
+            if(gui.getTutor())
+                gui.getTextArea().append("\nThe Buy Utility" +
+                        " gives you the option to purchase " +
+                        "this utility. When your opponents land on it, they must pay you rent. " +
+                        "(4x sum of roll if one utility owned, 10x sum of roll if both owned)");
             // Purchase City? option appears on GUI
             if(player.getMoney() >= this.price) {
                 player.setOnUtility(this);
             }
             else{
-                System.out.println("This utility is available for purchase at a price of " + price);
+
                 gui.getTextArea().append(" This utility is available for purchase at a price of " + price + ".");
-                System.out.println(player.getName() + " has $" + player.getMoney());
+
                 gui.getTextArea().append(player.getName() + " has $" + player.getMoney() + ".");
 
-                System.out.println("Insufficient funds to buy the Property");
+
                 gui.getTextArea().append("Insufficient funds to buy the Property.");
+
+                if(gui.getTutor())
+                    gui.getTextArea().append("\nYou can earn more money by collecting rent, " +
+                            "passing go, or drawing community chest cards!");
             }
             /*
             // Purchase City? option appears on the terminal after entering Y/N, the player pieces move

@@ -21,25 +21,34 @@ public class OtherSpace extends Space {
     @Override
     public void action(Player player) {
         if (player.getPosition() == GO) {
-            System.out.println("Go square!");
+
             gui.getTextArea().append("Go square!");
+            if(gui.getTutor())
+                gui.getTextArea().append("\nEvery time a player passes or lands on the go square, " +
+                        "they get $200!");
         }
         else if (player.getPosition() == INCOMETAX) {
-            System.out.println("Income Tax!\n");
+
             gui.getTextArea().append("Income Tax!\n");
-            System.out.println(player.getName() + " must pay $200");
+
             gui.getTextArea().append(player.getName() + " must pay $200");
+
+            if(gui.getTutor())
+                gui.getTextArea().append("\nYou landed on an tax space. The money you pay will go to " +
+                        "the bank!\n");
             player.payRent(200);
         }
         else if (player.getPosition() == JAIL) {
             if (!player.getJailState()) {
 
-                System.out.println("Visiting jail!");
+
                 gui.getTextArea().append(player.getName() + " is visiting jail!");
+                if(gui.getTutor())
+                    gui.getTextArea().append("\nJail rules do not apply when visiting.");
             }
             else {
                 if (player.getJailCards() > 0) {
-                    System.out.println("You use a get out of jail free card");
+
                     gui.getTextArea().append(player.getName() + " uses a get out of jail free card");
 
                 }
@@ -54,13 +63,18 @@ public class OtherSpace extends Space {
             gui.getTextArea().append("Free parking!");
         }
         else if (player.getPosition() == GOTOJAIL) {
-            System.out.println("Oh no! Go to jail!");
+
             gui.getTextArea().append("Oh no! Go to jail!");
+            if(gui.getTutor())
+                gui.getTextArea().append("\n Jail Rules"); // need to know specific rules for this
             player.sendToJail();
         } else if (player.getPosition() == LUXTAX) {
-            System.out.println("Luxury Tax!");
+
             gui.getTextArea().append("Luxury Tax!");
-            System.out.println(player.getName() + " Must pay $100");
+            if(gui.getTutor())
+                gui.getTextArea().append("\nYou landed on an tax space. The money you pay will go to " +
+                        "the bank! \n");
+
             gui.getTextArea().append(player.getName() + " Must pay $100");
             player.payRent(100);
         }

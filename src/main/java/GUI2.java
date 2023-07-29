@@ -574,7 +574,7 @@ public class GUI2 implements ActionListener , PlayerObserver {
 
         //setOkButton(game);
         nextTurn(game);
-
+        //setBuildHouseButton(game);
         frame.setVisible(true);
     }
 
@@ -833,6 +833,7 @@ public class GUI2 implements ActionListener , PlayerObserver {
         if (name.contains("1")) {
             p1.setMoneyLabel(p.getMoney());
             p1.setPropertyLabel(p.getOwnedCities().size() + p.getOwnedUtilities().size());
+            //p1.setNumHousesBuilt(p1.getNumHousesBuilt());
             //setMoney1(p.getMoney());
             //setProperty1(p.getOwnedCities().size() + p.getOwnedUtilities().size());
 
@@ -840,18 +841,21 @@ public class GUI2 implements ActionListener , PlayerObserver {
         else if (name.contains("2")){
             p2.setMoneyLabel(p.getMoney());
             p2.setPropertyLabel(p.getOwnedCities().size() + p.getOwnedUtilities().size());
+//            p2.setNumHousesBuilt(p2.getNumHousesBuilt());
 //            setMoney2(p.getMoney());
 //            setProperty2(p.getOwnedCities().size() + p.getOwnedUtilities().size());
         }
         else if (name.contains("3")){
             p3.setMoneyLabel(p.getMoney());
             p3.setPropertyLabel(p.getOwnedCities().size() + p.getOwnedUtilities().size());
+//            p3.setNumHousesBuilt(p3.getNumHousesBuilt());
 //            setMoney3(p.getMoney());
 //            setProperty3(p.getOwnedCities().size() + p.getOwnedUtilities().size());
         }
         else {
             p4.setMoneyLabel(p.getMoney());
             p4.setPropertyLabel(p.getOwnedCities().size() + p.getOwnedUtilities().size());
+//            p4.setNumHousesBuilt(p4.getNumHousesBuilt());
 //            setMoney4(p.getMoney());
 //            setProperty4(p.getOwnedCities().size() + p.getOwnedUtilities().size());
         }
@@ -861,5 +865,41 @@ public class GUI2 implements ActionListener , PlayerObserver {
     public void actionPerformed(ActionEvent e) {
         frame.dispose();
     }
+    /*
+    public void setBuildHouseButton(Game game) {
+        JButton buildHouseButton = new JButton("Build House");
+        buildHouseButton.setBounds(440, 550 + MOVEUP, 120, 25);
+
+        layeredPane.add(buildHouseButton, new Integer(5));
+
+        buildHouseButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                Player currentPlayer = game.getCurrentPlayer();
+                City currentCity = currentPlayer.getOnCity();
+
+                if (currentCity != null && currentCity.isAvailable() && currentPlayer.ownsCurrentSet(currentCity)) {
+                    int currentHouses = currentCity.getNumHouses();
+                    int maxHouses = City.MAXHOUSES;
+
+                    if (currentHouses < maxHouses) {
+                        // Allow the player to build a house
+                        currentPlayer.buyHouse(currentCity, currentCity.getNumHouses());
+                        currentCity.incrementNumOfHouses();
+
+                        // Update the player's stats display
+                        onPlayerState(currentPlayer);
+
+                        // Redraw the board to show the newly built house
+                        frame.repaint();
+                    }
+                }
+            }
+        });
+    }
+
+     */
+
+
 
 }

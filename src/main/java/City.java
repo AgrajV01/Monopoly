@@ -7,6 +7,7 @@ enum propertyColor {
     BROWN, LBLUE, PURPLE, ORANGE, RED, YELLOW, GREEN, DBLUE
 }
 public class City extends Space {
+    public static final int MAXHOUSES = 4;
     private int price;
     private int rent;
     private int houseCost;
@@ -37,6 +38,12 @@ public class City extends Space {
     public int getRent() {
         return rent;
     }
+    public int getNumHouses() { return numHouses; }
+
+    public void incrementNumOfHouses() {
+        this.numHouses++;
+    }
+
     public void addHouses(int count) {
         if (numHouses == 0) {
             rent *= 5;
@@ -44,7 +51,6 @@ public class City extends Space {
                 rent *= 2 * (count - 1);
             }
         }
-
         else {
             rent *= count * 2;
         }

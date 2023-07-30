@@ -29,6 +29,11 @@ public class Player {
     private int jailCards; // number of get out of jail free cards this player has
 
     private List<PlayerObserver> subscribers;
+
+    public GUI2 getGui() {
+        return gui;
+    }
+
     public void nullCityUtility(){
         this.onCity = null;
         this.onUtility = null;
@@ -124,17 +129,23 @@ public class Player {
 
         // Notify the player about being sent to jail before the delay
 
+
         gui.getTextArea().setText(name + " is being sent to jail!");
 
+
         // Introduce a delay of 2 seconds (2000 milliseconds) before sending the player to jail
-        int delayMilliseconds = 2000;
+        int delayMilliseconds = 0;
         Timer timer = new Timer(delayMilliseconds, (ActionEvent e) -> {
 
             // Notify the player again after the delay
 
+
             gui.getTextArea().setText(name + " has been sent to jail!");
+
         });
-        setPosition(10);
+
+
+        //setPosition(10);
         inJail = true;
 
         // Start the timer
@@ -149,10 +160,15 @@ public class Player {
         int temp = position;
         position = Math.floorMod(position + steps, 40);  // Assuming the board size is 40
         positionDiff = Math.abs(position - temp);
-
+        inJail = false; // remove this line once the jail delay is set correctly
         if (steps > 0 && position < temp) {
+<<<<<<< HEAD
 
             gui.getTextArea().setText("You have passed Go! You collect 200$.\n");
+=======
+            System.out.println("You have passed Go! You collect 200$.");
+            gui.getTextArea().setText("You have passed Go! You collect 200$\n");
+>>>>>>> 274e61babb011ff7e4f9da1666dc17acb7467d65
             money += 200;
         }
         notifyObservers();
@@ -209,12 +225,10 @@ public class Player {
     }
     private void playerbankrupted(){
         System.out.println(name + " is Bankrupted!");
-
         gui.getTextArea().setText(name + " is Bankrupted!");
         //Game.gameOver();
 
         Game.gameOver();
-
         notifyGameOver();
     }
 
@@ -241,11 +255,7 @@ public class Player {
         gui.getTextArea().setText("Current Money: $" + money + ".");
 
         gui.getTextArea().append(" Do you want to buy " + utility.getName() + " for $" + utility.getPrice() + "? (Y/N)");
-
         String input = scanner.nextLine().trim().toLowerCase();
-
-
-
 
         if (input.equals("y")) {
             int remainingMoney = money - utility.getPrice();
@@ -297,8 +307,8 @@ public class Player {
         }
     }
 
-    public void makeDecision() {
-        return;
+    public boolean makeDecision() {
+        return true;
     }
 
 }

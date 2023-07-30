@@ -34,7 +34,8 @@ public class ActionCard extends Space {
                         "They can send you somewhere good or bad!\n");
 
         }
-        int cardType = random.nextInt(4);
+        //int cardType = random.nextInt(4);
+        int cardType = 1;
 
         switch (cardType) {
             case 0:
@@ -46,7 +47,7 @@ public class ActionCard extends Space {
                 break;
             case 1:
                 player.sendToJail(); // sends player to jail
-                gui.getTextArea().append("Oh no!" + player.getName() + " goes to jail!");
+                gui.getTextArea().append("Oh no! " + player.getName() + " goes to jail!");
                 break;
             case 2:
                 player.receiveRent(100); // player receives money from the bank

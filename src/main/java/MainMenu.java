@@ -127,25 +127,88 @@ public class MainMenu {
     public void showRulesDialog() {
         JDialog rulesDialog = new JDialog();
         rulesDialog.setTitle("Monopoly Rules");
-        rulesDialog.setLayout(null);
+        rulesDialog.setLayout(new BorderLayout());
         rulesDialog.setSize(800, 600);
         rulesDialog.setLocationRelativeTo(null);
 
+        Color darkerBlue = new Color(0, 85, 160);  // Darker blue color
+
         JTextArea rulesText = new JTextArea();
-        rulesText.setText("Monopoly rules go here...");
-        rulesText.setBounds(10, 10, 770, 480);
+        rulesText.setText(
+                "Monopoly Game Rules:\n\n" +
+
+                        "• Setup:\n" +
+                        "   - Each player selects a token and places it on the 'Go' space.\n" +
+                        "   - Players are given starting money: two each of $500s, $100s, $50s; and six $20s.\n\n" +
+
+                        "• On Your Turn:\n" +
+                        "   - Roll two six-sided dice and move your token that number of spaces.\n" +
+                        "   - If you roll doubles, you get another turn. However, rolling doubles three times in a row sends you to jail.\n\n" +
+
+                        "• Buying Property:\n" +
+                        "   - If you land on an unowned property, you may buy it for the price listed on its card.\n" +
+                        "   - If you choose not to buy it, it remains unowned.\n\n" +
+
+                        "• Paying Rent:\n" +
+                        "   - If you land on a property owned by another player, you must pay them rent based on the property's deed card.\n\n" +
+
+                        "• Special Spaces:\n" +
+                        "   - 'Go to Jail': Move your token to the Jail space and do not collect $200.\n" +
+                        "   - 'Free Parking': Nothing happens. Consider it a free space.\n" +
+                        "   - 'Income Tax': Pay the bank $200 or 10% of your total cash (excluding properties), whichever you prefer.\n" +
+                        "   - 'Luxury Tax': Pay the bank $100.\n\n" +
+
+                        "• Houses & Hotels:\n" +
+                        "   - Before buying houses or hotels, you must own all the properties in its color group.\n" +
+                        "   - Houses must be built evenly. For instance, you can't have three houses on one property and one on another in the same group.\n\n" +
+
+                        "• Going Bankrupt:\n" +
+                        "   - If you owe more money than you can pay either to another player or the Bank, you are declared bankrupt.\n" +
+                        "   - If your debt is to another player, you give them everything you have, and they can choose to auction off any of your properties.\n" +
+                        "   - If you're in debt to the Bank, everything you have is returned to the Bank and all properties you own are returned to the Bank's title deed card pile.\n\n" +
+
+                        "• Winning:\n" +
+                        "   - The game ends when all but one player has gone bankrupt. The remaining player wins the game.\n\n" +
+
+                        "Note: Trading between players is not allowed in this version."
+        );
         rulesText.setWrapStyleWord(true);
         rulesText.setLineWrap(true);
         rulesText.setCaretPosition(0);
         rulesText.setEditable(false);
+        rulesText.setFont(new Font("Arial", Font.PLAIN, 16));
+        rulesText.setMargin(new Insets(20, 20, 20, 20));
+        rulesText.setForeground(Color.WHITE);
+        rulesText.setBackground(darkerBlue);
+
         JScrollPane rulesScrollPane = new JScrollPane(rulesText);
+        rulesScrollPane.setBorder(null);
+        rulesScrollPane.setViewportBorder(null);
+        rulesScrollPane.setBackground(darkerBlue);
+
+        // Styling the scrollbar (remains unchanged)
+        JScrollBar scrollBar = rulesScrollPane.getVerticalScrollBar();
+        scrollBar.setPreferredSize(new Dimension(15, Integer.MAX_VALUE));
+        scrollBar.setBackground(new Color(0, 76, 153));
+        scrollBar.setUI(new javax.swing.plaf.basic.BasicScrollBarUI() {
+            @Override
+            protected void configureScrollBarColors() {
+                this.thumbColor = new Color(0, 128, 255);
+                this.trackColor = new Color(0, 76, 153);
+            }
+        });
 
         JButton gotItButton = new JButton("Got It!");
-        gotItButton.setBounds(350,500, 100, 50);
+        styleButton(gotItButton);
         gotItButton.addActionListener(e -> rulesDialog.dispose());
 
-        rulesDialog.add(rulesScrollPane);
-        rulesDialog.add(gotItButton);
+        JPanel bottomPanel = new JPanel(new FlowLayout(FlowLayout.CENTER));
+        bottomPanel.setBackground(darkerBlue);
+        bottomPanel.add(gotItButton);
+
+        rulesDialog.getContentPane().setBackground(darkerBlue);
+        rulesDialog.add(rulesScrollPane, BorderLayout.CENTER);
+        rulesDialog.add(bottomPanel, BorderLayout.SOUTH);
         rulesDialog.setVisible(true);
     }
 

@@ -131,7 +131,7 @@ public class MainMenu {
         rulesDialog.setSize(800, 600);
         rulesDialog.setLocationRelativeTo(null);
 
-        Color darkerBlue = new Color(0, 85, 160);  // Darker blue color
+        Color darkerBlue = new Color(0, 90, 160);  // Darker blue color
 
         JTextArea rulesText = new JTextArea();
         rulesText.setText(

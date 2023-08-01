@@ -12,7 +12,7 @@ public class MainMenu {
     private static JButton quitButton;
     private static JFrame frame;
     private static JLayeredPane layeredPane;
-    MainMenu(){
+    MainMenu(boolean tutor){
         layeredPane = new JLayeredPane(); // create the layered pane
         layeredPane.setPreferredSize(new Dimension(1500, 1000)); // set size
 
@@ -22,7 +22,7 @@ public class MainMenu {
 
         frame.add(layeredPane);
 
-        GUI2 a = new GUI2(); // must add to the factory
+        GUI2 a = new GUI2(true); // must add to the factory
         GameFactory factory = defaultSettings(a);
         setNewGameButton(factory, a);
         setLoadGameButton(factory, a);

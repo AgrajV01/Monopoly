@@ -409,6 +409,7 @@ public class GUI2 implements ActionListener , PlayerObserver {
     }
 
     public void setBuyNumOfHousesButton(Game game, int count) {
+
     }
 
     public void setEndTurnButton(Game game) {

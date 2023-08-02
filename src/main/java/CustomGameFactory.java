@@ -30,7 +30,7 @@ public class CustomGameFactory implements GameFactory {
     }
 
     @Override
-    public List<Player> createPlayers() {
+    public List<Player> createPlayers(Game game) {
         List<Player> players = new ArrayList<>();
         /*for(int i=0; i<(numPlayers-numOfAiPlayers); i++) {
             String name = "Player " + i;
@@ -45,9 +45,9 @@ public class CustomGameFactory implements GameFactory {
             players.add(new AI(name, money));
         }*/
         players.add(new Player("Player 1", money, gui)); // ensure that each player/AI has unique number for ID
-        players.add(new AI("AI 2 ", money, gui));
+        players.add(new AI("AI 2 ", money, gui, game));
         players.add(new Player("Player 3", money, gui));
-        players.add(new AI("AI 4", money, gui));
+        players.add(new AI("AI 4", money, gui, game));
 
         return players;
     }

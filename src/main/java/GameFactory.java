@@ -5,7 +5,7 @@ public interface GameFactory {
 
     Board createBoard();
 
-    List<Player> createPlayers();
+    List<Player> createPlayers(Game game);
     int getNumPlayers();
     int getNumOfAiPlayers();
 }

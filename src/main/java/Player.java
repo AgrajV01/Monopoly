@@ -289,6 +289,14 @@ public class Player {
         return (city.getColor() == propertyColor.BROWN || city.getColor() == propertyColor.DBLUE) ? numOwned == 2 : numOwned == 3;
     }
 
+    public boolean ownsSameColor(City city) {
+        for (City i : ownedCities) {
+            if (i.getColor() == city.getColor()) return true;
+        }
+
+        return false;
+    }
+
     public void buyHouse(City city, int count) {
         if (city.getHouseCost() * count > money) {
             gui.getTextArea().append("You cannot afford that many houses!");

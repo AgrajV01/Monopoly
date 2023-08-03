@@ -289,6 +289,14 @@ public class Player {
         return (city.getColor() == propertyColor.BROWN || city.getColor() == propertyColor.DBLUE) ? numOwned == 2 : numOwned == 3;
     }
 
+    public boolean ownsSameColor(City city) {
+        for (City i : ownedCities) {
+            if (i.getColor() == city.getColor()) return true;
+        }
+
+        return false;
+    }
+
     public void buyHouse(City city, int count) {
         if (city.getHouseCost() * count > money) {
             gui.getTextArea().append("You cannot afford that many houses!");
@@ -300,6 +308,21 @@ public class Player {
         else {
             payRent(city.getHouseCost() * count);
             city.addHouses(count);
+        }
+    }
+
+    public void buyHotel(City city) {
+        // if price of hotel (5 houses - # of current houses) exceeds player balance
+        if ((city.getHouseCost() * 5) - (city.getHouseCost() * city.getNumHouses()) > money) {
+            gui.getTextArea().append("You cannot afford a hotel!");
+            if(gui.getTutor())
+                gui.getTextArea().append("\nYou can earn more money by collecting rent, " +
+                        "passing go, or drawing community chest cards!");
+        }
+
+        else {
+            payRent((city.getHouseCost() * 5) - (city.getHouseCost() * city.getNumHouses()));
+            city.addHotel();
         }
     }
 

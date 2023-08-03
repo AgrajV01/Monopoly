@@ -548,12 +548,12 @@ public class GUI2 implements ActionListener , PlayerObserver {
         setBackdrop(black);
     }
 
-    public void initializeTheBoard(Game game) {
+    public void initializeTheBoard(Game game, GameFactory factory) {
         System.out.println("initializingTheBoard");
 
         setBoardPositions();
 
-        ImageIcon icon = new ImageIcon(getClass().getResource("board.png"));
+        ImageIcon icon = new ImageIcon(getClass().getResource(factory.getBoardStyle()+".png"));
         Image image = icon.getImage();
         image = image.getScaledInstance(820, -1, Image.SCALE_SMOOTH);
         icon = new ImageIcon(image);

@@ -94,7 +94,7 @@ public class MainMenu {
         styleButton(newGameButton);
         newGameButton.addActionListener(e -> {
             Game game = new Game(factory, a);
-            a.initializeTheBoard(game);
+            a.initializeTheBoard(game, factory);
             game.subscribeToPlayers(a);
 
             frame.dispose();
@@ -113,9 +113,63 @@ public class MainMenu {
     public void setSettingsButton(GameFactory factory) {
         settingsButton = new JButton("Settings");
         styleButton(settingsButton);
-        settingsButton.addActionListener(e -> {
-            // To Do
+        settingsButton.addActionListener(e -> showSettingsDialog(factory));
+    }
+
+    public void showSettingsDialog(GameFactory factory) {
+        JDialog settingsDialog = new JDialog();
+        settingsDialog.setTitle("Game Settings");
+        settingsDialog.setLayout(new BorderLayout());
+        settingsDialog.setSize(800, 600);
+        settingsDialog.setLocationRelativeTo(null);
+
+        Color darkerBlue = new Color(0, 90, 160);  // Darker blue color
+
+        // Assuming GameFactory has getter methods to retrieve the current settings
+        int currentNumPlayers = factory.getNumPlayers();
+        int currentNumOfAiPlayers = factory.getNumOfAiPlayers();
+        int currentCash = factory.getCash();
+        String currentBoardStyle = factory.getBoardStyle();
+
+        // List of available board styles
+        String[] boardStyles = {
+                "Classic", "Bass-Fishing", "Breaking-Bad", "Chtulhu", "David Bowie",
+                "Gay", "Ketchup", "Sponge Bob", "Ted Lasso", "Ukraine"
+        };
+        JComboBox<String> boardStyleSelection = new JComboBox<>(boardStyles);
+        boardStyleSelection.setSelectedItem(currentBoardStyle);  // set the current style as selected
+
+        JTextField cashInput = new JTextField(String.valueOf(currentCash));
+
+        // Layout for the settings, for simplicity, just using a basic grid for now:
+        JPanel settingsPanel = new JPanel(new GridLayout(0, 2));
+        settingsPanel.add(new JLabel("Board Style: "));
+        settingsPanel.add(boardStyleSelection);  // Add JComboBox to the settings panel
+
+        settingsPanel.add(new JLabel("Starting Cash: "));
+        settingsPanel.add(cashInput);
+        settingsPanel.setBackground(darkerBlue);
+
+        JButton applyButton = new JButton("Apply");
+        applyButton.addActionListener(e -> {
+            // Logic to apply the settings
+            factory.setCash(Integer.parseInt(cashInput.getText()));
+            factory.setBoardStyle((String) boardStyleSelection.getSelectedItem());  // set selected board style
+            settingsDialog.dispose();
         });
+
+        JButton leaveButton = new JButton("Leave");
+        leaveButton.addActionListener(e -> settingsDialog.dispose());
+
+        JPanel buttonPanel = new JPanel(new FlowLayout(FlowLayout.CENTER));
+        buttonPanel.add(applyButton);
+        buttonPanel.add(leaveButton);
+        buttonPanel.setBackground(darkerBlue);
+
+        settingsDialog.getContentPane().setBackground(darkerBlue);
+        settingsDialog.add(settingsPanel, BorderLayout.CENTER);
+        settingsDialog.add(buttonPanel, BorderLayout.SOUTH);
+        settingsDialog.setVisible(true);
     }
 
     public void setRulesButton() {

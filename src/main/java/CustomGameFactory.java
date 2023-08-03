@@ -9,7 +9,7 @@ public class CustomGameFactory implements GameFactory {
     private int money;
     private String boardStyle;
     private int numOfAiPlayers;
-    private GUI2 gui; // added gui data member
+    private GUI2 gui;
 
     public CustomGameFactory(int numPlayers, int numOfAiPlayers, int cash, String boardStyle, GUI2 gui) {
         this.numPlayers = numPlayers;
@@ -32,18 +32,6 @@ public class CustomGameFactory implements GameFactory {
     @Override
     public List<Player> createPlayers() {
         List<Player> players = new ArrayList<>();
-        /*for(int i=0; i<(numPlayers-numOfAiPlayers); i++) {
-            String name = "Player " + i;
-            players.add(new Player(name, money, gui)); // passing gui to Players for textArea
-        }
-        for(int i=0; i<numOfAiPlayers; i++) {
-            String name = "AI " + i;
-<<<<<<< HEAD
-            players.add(new AI(name, money, gui));
-        }
-=======
-            players.add(new AI(name, money));
-        }*/
         players.add(new Player("Player 1", money, gui)); // ensure that each player/AI has unique number for ID
         players.add(new AI("AI 2 ", money, gui));
         players.add(new Player("Player 3", money, gui));
@@ -61,4 +49,20 @@ public class CustomGameFactory implements GameFactory {
         return numOfAiPlayers;
     }
 
+    public int getCash() {
+        return money;
+    }
+
+    public void setCash(int cash) {
+        this.money = cash;
+    }
+
+    @Override
+    public String getBoardStyle() {
+        return null;
+    }
+
+    public void setBoardStyle(String style) {
+        this.boardStyle = style;
+    }
 }

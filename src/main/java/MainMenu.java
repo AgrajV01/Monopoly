@@ -15,6 +15,7 @@ public class MainMenu {
     private static JFrame frame;
     private static JLayeredPane layeredPane;
     private JLabel bgLabel;
+    private GameFactory factory;
 
     MainMenu(boolean tutor) {
         layeredPane = new JLayeredPane();
@@ -42,11 +43,12 @@ public class MainMenu {
         frame.setResizable(true);
 
         GUI2 a = new GUI2(true);
-        GameFactory factory = defaultSettings(a);
+        factory = new CustomGameFactory(4,2,2000,"Classic", a);
+        //defaultSettings();
 
-        setNewGameButton(factory, a);
-        setLoadGameButton(factory, a);
-        setSettingsButton(factory);
+        setNewGameButton(a);
+        setLoadGameButton(a);
+        setSettingsButton();
         setRulesButton();
         setQuitButton();
 
@@ -80,16 +82,14 @@ public class MainMenu {
         frame.setVisible(true);
     }
 
-    GameFactory defaultSettings(GUI2 a) {
-        int numPlayers = 4;
-        int numOfAiPlayers = 2;
-        int cash = 2000;
-        String boardStyle = "Classic";
-
-        return new CustomGameFactory(numPlayers, numOfAiPlayers, cash, boardStyle, a);
+    void defaultSettings() {
+        factory.setNumPlayers(4);
+        factory.setNumOfAiPlayers(2);
+        factory.setCash(2000);
+        factory.setBoardStyle("Classic");
     }
 
-    public void setNewGameButton(GameFactory factory, GUI2 a) {
+    public void setNewGameButton(GUI2 a) {
         newGameButton = new JButton("New Game");
         styleButton(newGameButton);
         newGameButton.addActionListener(e -> {
@@ -101,7 +101,7 @@ public class MainMenu {
         });
     }
 
-    public void setLoadGameButton(GameFactory factory, GUI2 a) {
+    public void setLoadGameButton(GUI2 a) {
         loadGameButton = new JButton("Load Game");
         styleButton(loadGameButton);
         loadGameButton.addActionListener(e -> {
@@ -110,13 +110,14 @@ public class MainMenu {
         });
     }
 
-    public void setSettingsButton(GameFactory factory) {
+    public void setSettingsButton() {
         settingsButton = new JButton("Settings");
         styleButton(settingsButton);
-        settingsButton.addActionListener(e -> showSettingsDialog(factory));
+        settingsButton.addActionListener(e -> showSettingsDialog());
     }
 
-    public void showSettingsDialog(GameFactory factory) {
+    public void showSettingsDialog() {
+        System.out.println("boardStyleSelection: " + factory.getBoardStyle());
         JDialog settingsDialog = new JDialog();
         settingsDialog.setTitle("Game Settings");
         settingsDialog.setLayout(new BorderLayout());
@@ -137,7 +138,7 @@ public class MainMenu {
                 "Gay", "Ketchup", "Sponge Bob", "Ted Lasso", "Ukraine"
         };
         JComboBox<String> boardStyleSelection = new JComboBox<>(boardStyles);
-        boardStyleSelection.setSelectedItem(currentBoardStyle);  // set the current style as selected
+        boardStyleSelection.setSelectedItem(currentBoardStyle);
 
         JTextField cashInput = new JTextField(String.valueOf(currentCash));
 
@@ -154,9 +155,11 @@ public class MainMenu {
         applyButton.addActionListener(e -> {
             // Logic to apply the settings
             factory.setCash(Integer.parseInt(cashInput.getText()));
-            factory.setBoardStyle((String) boardStyleSelection.getSelectedItem());  // set selected board style
+            factory.setBoardStyle((String) boardStyleSelection.getSelectedItem());
             settingsDialog.dispose();
         });
+
+        System.out.println("boardStyleSelection: " + factory.getBoardStyle());
 
         JButton leaveButton = new JButton("Leave");
         leaveButton.addActionListener(e -> settingsDialog.dispose());
@@ -275,16 +278,7 @@ public class MainMenu {
     private void styleButton(JButton button) {
         button.setBackground(new Color(0, 102, 204));
         button.setForeground(Color.WHITE);
-
-        // Set custom font if available, fallback to Arial otherwise
-        try {
-            Font customFont = Font.createFont(Font.TRUETYPE_FONT, getClass().getResourceAsStream("MonopolyHandwritten.ttf")).deriveFont(20f);
-            GraphicsEnvironment ge = GraphicsEnvironment.getLocalGraphicsEnvironment();
-            ge.registerFont(customFont);
-            button.setFont(customFont);
-        } catch (Exception e) {
-            button.setFont(new Font("Arial", Font.BOLD, 20));
-        }
+        button.setFont(new Font("Dialog", Font.BOLD, 20));
 
         button.setPreferredSize(new Dimension(320, 50));
         button.setFocusPainted(false);

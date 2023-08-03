@@ -7,7 +7,7 @@ import java.util.List;
 public class CustomGameFactory implements GameFactory {
     private int numPlayers;
     private int money;
-    private String boardStyle;
+    private String boardStyle = "Classic";
     private int numOfAiPlayers;
     private GUI2 gui;
 
@@ -15,7 +15,7 @@ public class CustomGameFactory implements GameFactory {
         this.numPlayers = numPlayers;
         this.numOfAiPlayers = numOfAiPlayers;
         this.money = cash;
-        this.boardStyle = boardStyle;
+        this.boardStyle = new String(boardStyle);
         this.gui = gui; // added gui into contructor
     }
 
@@ -44,9 +44,15 @@ public class CustomGameFactory implements GameFactory {
     public int getNumPlayers(){
         return numPlayers;
     }
+    public void setNumPlayers(int numPlayers){
+        this.numPlayers = numPlayers;
+    }
     @Override
     public int getNumOfAiPlayers(){
         return numOfAiPlayers;
+    }
+    public void setNumOfAiPlayers(int numOfAiPlayers){
+        this.numOfAiPlayers = numOfAiPlayers;
     }
 
     public int getCash() {
@@ -59,7 +65,7 @@ public class CustomGameFactory implements GameFactory {
 
     @Override
     public String getBoardStyle() {
-        return null;
+        return boardStyle;
     }
 
     public void setBoardStyle(String style) {

@@ -555,7 +555,11 @@ public class GUI2 implements ActionListener , PlayerObserver {
 
         setBoardPositions();
 
-        ImageIcon icon = new ImageIcon(getClass().getResource(factory.getBoardStyle()+".png"));
+        String imagePath = factory.getBoardStyle() + ".png";
+        System.out.println("Attempting to load image from: " + imagePath);
+        System.out.println("Board Style from Factory: " + factory.getBoardStyle());
+        ImageIcon icon = new ImageIcon(getClass().getResource(imagePath));
+
         Image image = icon.getImage();
         image = image.getScaledInstance(820, -1, Image.SCALE_SMOOTH);
         icon = new ImageIcon(image);

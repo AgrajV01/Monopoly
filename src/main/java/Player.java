@@ -19,6 +19,7 @@ public class Player {
     private int money;
     private int position;
     private int positionDiff;
+    private int consecutiveMoves;
     private boolean isBankrupted;
     private List<City> ownedCities;
     private GUI2 gui; // added this to be able to print elements on screen
@@ -67,6 +68,7 @@ public class Player {
         this.money = money; // Starting money in Monopoly
         this.position = 0; // Starting at 'GO'
         this.positionDiff = 0;
+        consecutiveMoves = 0;
         this.ownedCities = new ArrayList<>();
         this.ownedUtilities = new ArrayList<>();
         this.subscribers = new ArrayList<>();
@@ -115,6 +117,8 @@ public class Player {
     }
 
     public int getPositionDiff() { return positionDiff; }
+    public int getConsecutiveMoves() { return consecutiveMoves; }
+    public void setConsecutiveMoves(int count) { consecutiveMoves = count; }
     public boolean getIsBankrupted(){
         return isBankrupted;
     }
@@ -157,6 +161,8 @@ public class Player {
     }
 
     public void move(int steps) {
+        consecutiveMoves++;
+
         int temp = position;
         position = Math.floorMod(position + steps, 40);  // Assuming the board size is 40
         positionDiff = Math.abs(position - temp);

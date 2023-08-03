@@ -3,7 +3,7 @@ import java.util.List;
  * The Game class represents a game instance with players, a board, and dice.
  */
 public class Game {
-    public static final int STARTMONEY = 2000;
+    public static int STARTMONEY;
     private Board board;
     private Die die;
     public static List<Player> players;
@@ -16,6 +16,7 @@ public class Game {
     }
 
     public Game(GameFactory factory, GUI2 gui) {
+        STARTMONEY = factory.getCash();
         this.board = factory.createBoard(gui);
         this.players = factory.createPlayers(this);
         this.gui = gui;
@@ -65,6 +66,8 @@ public class Game {
         gui.getTextArea().setText(getCurrentPlayer().getName() + " rolled a " + (roll.diceOne + roll.diceTwo) + "\n");
         players.get(currentPlayer).move(roll.diceOne+ roll.diceTwo);
 
+        if (roll.isDouble()) gui.getTextArea().append(getCurrentPlayer().getName() + " rolled a doubles! They can roll again\n");
+
         // Check if player's new position is a city and it's owned by someone else
         int position = players.get(currentPlayer).getPosition();
 
@@ -90,7 +93,9 @@ public class Game {
             if (pl.getIsBankrupted())
                 return;
         }
-        switchTurn();
+
+        // switch turns if the player did not roll doubles
+        // switchTurn();
     }
 
 

@@ -1,5 +1,6 @@
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 import java.lang.Math;
@@ -7,6 +8,7 @@ import java.util.Scanner;
 import javax.swing.Timer;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import com.fasterxml.jackson.databind.ObjectMapper;
 /**
  * The Player class represents a player in the Monopoly game.
  * It holds information about the player's name, money, position, owned cities,
@@ -59,6 +61,35 @@ public class Player {
 
     public List<Utility> getOwnedUtilities() {
         return ownedUtilities;
+    }
+
+    public void saveState(String path) {
+
+        ObjectMapper mapper = new ObjectMapper();
+
+        String saveString = mapper.writeValueAsString(this);
+    }
+
+    public void loadState(String path) {
+
+        ObjectMapper mapper = new ObjectMapper();
+
+        Player savedPlayer = mapper.readValue(new File(), Player.class);
+    }
+
+    public Player(Player o) {
+        this.name = o.name;
+        this.money = o.money; // Starting money in Monopoly
+        this.position = o.position; // Starting at 'GO'
+        this.positionDiff = o.positionDiff;
+        consecutiveMoves = 0;
+        this.ownedCities = o.ownedCities;
+        this.ownedUtilities = o.ownedUtilities;
+        this.jailCards = o.jailCards;
+        this.isBankrupted = o.isBankrupted;
+        this.onCity = o.onCity;
+        this.onUtility = o.onUtility;
+        inJail = false;
     }
 
 

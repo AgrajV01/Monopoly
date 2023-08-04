@@ -161,6 +161,11 @@ public class Player {
     }
 
     public void move(int steps) {
+        if (inJail) {
+            inJail = false;
+            consecutiveMoves = 0;
+        }
+
         consecutiveMoves++;
 
         int temp = position;

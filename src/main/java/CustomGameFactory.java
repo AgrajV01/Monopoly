@@ -34,31 +34,31 @@ public class CustomGameFactory implements GameFactory {
         List<Player> players = new ArrayList<>();
         switch(numOfAiPlayers) {
             case 0:
-                players.add(new Player("Player 1", money, gui));
+                players.add(new Player("Player 1", money, gui)); // ensure that each player/AI has unique number for ID
                 players.add(new Player("Player 2", money, gui));
                 players.add(new Player("Player 3", money, gui));
                 players.add(new Player("Player 4", money, gui));
                 break;
             case 1:
-                players.add(new Player("Player 1", money, gui));
+                players.add(new Player("Player 1", money, gui)); // ensure that each player/AI has unique number for ID
                 players.add(new Player("Player 2", money, gui));
                 players.add(new Player("Player 3", money, gui));
                 players.add(new AI("AI 4", money, gui, game));
                 break;
             case 2:
-                players.add(new Player("Player 1", money, gui));
+                players.add(new Player("Player 1", money, gui)); // ensure that each player/AI has unique number for ID
                 players.add(new AI("AI 2", money, gui, game));
                 players.add(new Player("Player 3", money, gui));
                 players.add(new AI("AI 4", money, gui, game));
                 break;
             case 3:
-                players.add(new Player("Player 1", money, gui));
+                players.add(new Player("Player 1", money, gui)); // ensure that each player/AI has unique number for ID
                 players.add(new AI("AI 2", money, gui, game));
                 players.add(new AI("AI 3", money, gui, game));
                 players.add(new AI("AI 4", money, gui, game));
                 break;
             case 4:
-                players.add(new AI("AI 1", money, gui, game));
+                players.add(new AI("AI 1", money, gui, game)); // ensure that each player/AI has unique number for ID
                 players.add(new AI("AI 2", money, gui, game));
                 players.add(new AI("AI 3", money, gui, game));
                 players.add(new AI("AI 4", money, gui, game));

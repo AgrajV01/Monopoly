@@ -32,11 +32,36 @@ public class CustomGameFactory implements GameFactory {
     @Override
     public List<Player> createPlayers(Game game) {
         List<Player> players = new ArrayList<>();
-        players.add(new Player("Player 1", money, gui)); // ensure that each player/AI has unique number for ID
-        players.add(new AI("AI 2 ", money, gui, game));
-        players.add(new Player("Player 3", money, gui));
-        players.add(new AI("AI 4", money, gui, game));
-
+        switch(numOfAiPlayers) {
+            case 1:
+                players.add(new Player("Player 1", money, gui));
+                players.add(new Player("Player 2", money, gui));
+                players.add(new Player("Player 3", money, gui));
+                players.add(new AI("AI 4", money, gui, game));
+                break;
+            case 2:
+                players.add(new Player("Player 1", money, gui));
+                players.add(new AI("AI 2", money, gui, game));
+                players.add(new Player("Player 3", money, gui));
+                players.add(new AI("AI 4", money, gui, game));
+                break;
+            case 3:
+                players.add(new Player("Player 1", money, gui));
+                players.add(new AI("AI 2", money, gui, game));
+                players.add(new AI("AI 3", money, gui, game));
+                players.add(new AI("AI 4", money, gui, game));
+                break;
+            case 4:
+                players.add(new AI("AI 1", money, gui, game));
+                players.add(new AI("AI 2", money, gui, game));
+                players.add(new AI("AI 3", money, gui, game));
+                players.add(new AI("AI 4", money, gui, game));
+                break;
+            default:
+                // Handle cases where numOfAiPlayers is not 1, 2, 3, or 4.
+                // You might want to throw an exception or provide a default behavior.
+                throw new IllegalArgumentException("Invalid number of AI players: " + numOfAiPlayers);
+        }
         return players;
     }
 

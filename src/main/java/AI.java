@@ -68,14 +68,14 @@ public class AI extends Player{
                 probability = 0.7f;
 
                 // if AI owns another city of this set
-                if (ownsSameColor(getOnCity())) probability += 0.2f;
+                if (getOnCity() != null && ownsSameColor(getOnCity())) probability += 0.2f;
             }
             case CAUTIOUS -> {
                 probability = 0.6f;
 
                 // if current AI is most poor player in the game
                 if (numOfRicherPlayers == game.getNumPlayers() - 1) probability -= 0.2f;
-                if (ownsSameColor(getOnCity())) probability += 0.1f;
+                if (getOnCity() != null && ownsSameColor(getOnCity())) probability += 0.1f;
             }
             default -> probability = 0.5f;
         }

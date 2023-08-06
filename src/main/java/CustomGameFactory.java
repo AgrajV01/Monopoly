@@ -33,6 +33,12 @@ public class CustomGameFactory implements GameFactory {
     public List<Player> createPlayers(Game game) {
         List<Player> players = new ArrayList<>();
         switch(numOfAiPlayers) {
+            case 0:
+                players.add(new Player("Player 1", money, gui));
+                players.add(new Player("Player 2", money, gui));
+                players.add(new Player("Player 3", money, gui));
+                players.add(new Player("Player 4", money, gui));
+                break;
             case 1:
                 players.add(new Player("Player 1", money, gui));
                 players.add(new Player("Player 2", money, gui));

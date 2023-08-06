@@ -173,7 +173,7 @@ public class MainMenu {
             }
         });
 
-        Integer[] aiPlayerOptions = {1, 2, 3, 4};  // AI players up to 4
+        Integer[] aiPlayerOptions = {0, 1, 2, 3, 4};  // AI players up to 4
         JComboBox<Integer> aiPlayersSelector = new JComboBox<>(aiPlayerOptions);
         aiPlayersSelector.setSelectedItem(currentNumOfAiPlayers);
         aiPlayersSelector.setFont(standardFont);

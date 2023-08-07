@@ -10,7 +10,7 @@ public class CustomGameFactory implements GameFactory {
     private String boardStyle = "Classic";
     private int numOfAiPlayers;
     private GUI2 gui;
-    private AIDifficulty difficulty;
+    private AIDifficulty difficulty = AIDifficulty.EASY;
 
     public CustomGameFactory(int numPlayers, int numOfAiPlayers, int cash, String boardStyle, GUI2 gui) {
         this.numPlayers = numPlayers;

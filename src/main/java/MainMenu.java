@@ -292,6 +292,13 @@ public class MainMenu {
                         "   - Each player receives a token and starts from the 'Go' space.\n" +
                         "   - Default starting amount for players: $2000 (modifiable in settings before starting).\n\n"+
 
+                        "• Number of AI players:\n" +
+                        "   - Default number of AI players: 2 (modifiable from 0-4 in settings before starting).\n\n"+
+
+                        "• AI Difficulty:\n" +
+                        "   - Default AI difficulty: EASY (modifiable to MEDIUM, or HARD in settings before starting).\n"+
+                        "   - AI players' decision-making probabilities are influenced by their chosen difficulty level.\n\n"+
+
                         "• On Your Turn:\n" +
                         "   - Roll two six-sided dice; the token automatically moves the rolled number of spaces.\n" +
                         "   - Rolling doubles grants an extra turn.\n\n" +

@@ -7,15 +7,15 @@ import java.util.List;
 public class CustomGameFactory implements GameFactory {
     private int numPlayers;
     private int money;
-    private String boardStyle;
+    private String boardStyle = "Classic";
     private int numOfAiPlayers;
-    private GUI2 gui; // added gui data member
+    private GUI2 gui;
 
     public CustomGameFactory(int numPlayers, int numOfAiPlayers, int cash, String boardStyle, GUI2 gui) {
         this.numPlayers = numPlayers;
         this.numOfAiPlayers = numOfAiPlayers;
         this.money = cash;
-        this.boardStyle = boardStyle;
+        this.boardStyle = new String(boardStyle);
         this.gui = gui; // added gui into contructor
     }
 
@@ -30,25 +30,44 @@ public class CustomGameFactory implements GameFactory {
     }
 
     @Override
-    public List<Player> createPlayers() {
+    public List<Player> createPlayers(Game game) {
         List<Player> players = new ArrayList<>();
-        /*for(int i=0; i<(numPlayers-numOfAiPlayers); i++) {
-            String name = "Player " + i;
-            players.add(new Player(name, money, gui)); // passing gui to Players for textArea
+        switch(numOfAiPlayers) {
+            case 0:
+                players.add(new Player("Player 1", money, gui)); // ensure that each player/AI has unique number for ID
+                players.add(new Player("Player 2", money, gui));
+                players.add(new Player("Player 3", money, gui));
+                players.add(new Player("Player 4", money, gui));
+                break;
+            case 1:
+                players.add(new Player("Player 1", money, gui)); // ensure that each player/AI has unique number for ID
+                players.add(new Player("Player 2", money, gui));
+                players.add(new Player("Player 3", money, gui));
+                players.add(new AI("AI 4", money, gui, game));
+                break;
+            case 2:
+                players.add(new Player("Player 1", money, gui)); // ensure that each player/AI has unique number for ID
+                players.add(new AI("AI 2", money, gui, game));
+                players.add(new Player("Player 3", money, gui));
+                players.add(new AI("AI 4", money, gui, game));
+                break;
+            case 3:
+                players.add(new Player("Player 1", money, gui)); // ensure that each player/AI has unique number for ID
+                players.add(new AI("AI 2", money, gui, game));
+                players.add(new AI("AI 3", money, gui, game));
+                players.add(new AI("AI 4", money, gui, game));
+                break;
+            case 4:
+                players.add(new AI("AI 1", money, gui, game)); // ensure that each player/AI has unique number for ID
+                players.add(new AI("AI 2", money, gui, game));
+                players.add(new AI("AI 3", money, gui, game));
+                players.add(new AI("AI 4", money, gui, game));
+                break;
+            default:
+                // Handle cases where numOfAiPlayers is not 1, 2, 3, or 4.
+                // You might want to throw an exception or provide a default behavior.
+                throw new IllegalArgumentException("Invalid number of AI players: " + numOfAiPlayers);
         }
-        for(int i=0; i<numOfAiPlayers; i++) {
-            String name = "AI " + i;
-<<<<<<< HEAD
-            players.add(new AI(name, money, gui));
-        }
-=======
-            players.add(new AI(name, money));
-        }*/
-        players.add(new Player("Player 1", money, gui)); // ensure that each player/AI has unique number for ID
-        players.add(new AI("AI 2 ", money, gui));
-        players.add(new Player("Player 3", money, gui));
-        players.add(new AI("AI 4", money, gui));
-
         return players;
     }
 
@@ -56,9 +75,31 @@ public class CustomGameFactory implements GameFactory {
     public int getNumPlayers(){
         return numPlayers;
     }
+    public void setNumPlayers(int numPlayers){
+        this.numPlayers = numPlayers;
+    }
     @Override
     public int getNumOfAiPlayers(){
         return numOfAiPlayers;
     }
+    public void setNumOfAiPlayers(int numOfAiPlayers){
+        this.numOfAiPlayers = numOfAiPlayers;
+    }
 
+    public int getCash() {
+        return money;
+    }
+
+    public void setCash(int cash) {
+        this.money = cash;
+    }
+
+    @Override
+    public String getBoardStyle() {
+        return boardStyle;
+    }
+
+    public void setBoardStyle(String style) {
+        this.boardStyle = style;
+    }
 }

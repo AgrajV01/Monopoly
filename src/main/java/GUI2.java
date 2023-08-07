@@ -148,36 +148,37 @@ public class GUI2 implements ActionListener , PlayerObserver {
         // create quit button
         setQuitButton(game);
 
-        button = new JButton("Roll");
-        button.setBounds(460, 550 + MOVEUP, 80, 25);
+        if (game.getCurrentPlayer().getType().equals("Player")) {
+            button = new JButton("Roll");
+            button.setBounds(460, 550 + MOVEUP, 80, 25);
 
-        layeredPane.add(button, new Integer(5));
+            layeredPane.add(button, new Integer(5));
 
-        button.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                if (isAnimating) return;
+            button.addActionListener(new ActionListener() {
+                @Override
+                public void actionPerformed(ActionEvent e) {
+                    if (isAnimating) return;
 
-                die.roll();
+                    die.roll();
 
-                if (diceLabel1 != null) {
-                    layeredPane.remove(diceLabel1);
-                    diceLabel1 = null;
-                }
-                if (diceLabel2 != null) {
-                    layeredPane.remove(diceLabel2);
-                    diceLabel2 = null;
-                }
+                    if (diceLabel1 != null) {
+                        layeredPane.remove(diceLabel1);
+                        diceLabel1 = null;
+                    }
+                    if (diceLabel2 != null) {
+                        layeredPane.remove(diceLabel2);
+                        diceLabel2 = null;
+                    }
 
-                // TO DO: add conditional situation in case player is in jail (they cannot move unless they pay or roll doubles)
+                    // TO DO: add conditional situation in case player is in jail (they cannot move unless they pay or roll doubles)
 
-                game.makeMove(die);
+                    game.makeMove(die);
 
-                // Display new dice values
-                displayDice();
+                    // Display new dice values
+                    displayDice();
 
-                // logic for movement animation
-                moveOnBoard(game);
+                    // logic for movement animation
+                    moveOnBoard(game);
                 /*
                 if (buyCityButton != null) {
                     game.cleanProperty();
@@ -190,40 +191,94 @@ public class GUI2 implements ActionListener , PlayerObserver {
                 }
 
                  */
-                layeredPane.remove(button);
-                button = null;
-                layeredPane.revalidate();
-                layeredPane.repaint();
+                    layeredPane.remove(button);
+                    button = null;
+                    layeredPane.revalidate();
+                    layeredPane.repaint();
 
-                // TO DO: create setButtons function instead of checking for each individually
+                    // TO DO: create setButtons function instead of checking for each individually
 
-                // if current player is not AI
-                if (game.getPrevPlayer().getType().equals("Player")) {
+                    // if current player is not AI
 
                     // city and utility buttons will be set accordingly
-                    if (game.getPrevPlayer().getOnCity() != null && game.getPrevPlayer().getOnCity().isAvailable())
+                    if (game.getCurrentPlayer().getOnCity() != null && game.getCurrentPlayer().getOnCity().isAvailable())
                         setBuyCityButton(game);
 
-                    else if (game.getPrevPlayer().getOnUtility() != null && game.getPrevPlayer().getOnUtility().isAvailable())
+                    else if (game.getCurrentPlayer().getOnUtility() != null && game.getCurrentPlayer().getOnUtility().isAvailable())
                         setBuyUtilityButton(game);
 
-                    if (game.getPrevPlayer().getOnCity() != null && game.getPrevPlayer().ownsCurrentSet(game.getPrevPlayer().getOnCity())) {
-                        setBuyHouseButton(game);
+                    // if player owns the entire property set they are on
+                    if (game.getCurrentPlayer().getOnCity() != null && game.getCurrentPlayer().ownsCurrentSet(game.getCurrentPlayer().getOnCity())) {
+
+                        // if houses/hotels are still able to be purchased on this property
+                        if (!game.getCurrentPlayer().getOnCity().getHasHotel()) setBuyHouseButton(game);
                     }
 
-                    // end button will only be created if current player is not AI
-                    setEndTurnButton(game);
+                    if (die.isDouble() && !game.getCurrentPlayer().getJailState()) {
+                        if (game.getCurrentPlayer().getConsecutiveMoves() >= 3) {
+                            System.out.println("Test");
+                            removeButtons(game);
+
+                            game.getCurrentPlayer().sendToJail();
+                            moveOnBoard(game);
+
+                            Timer timer = new Timer(2000, new ActionListener() {
+                                @Override
+                                public void actionPerformed(ActionEvent e) {
+                                    game.switchTurn();
+                                    nextTurn(game);
+                                }
+                            });
+
+                            timer.setRepeats(false);
+                            timer.start();
+                        }
+                        else {
+                            removeButtons(game);
+                            setOkButton(game);
+                        }
+                    }
+                    else {
+                        game.getCurrentPlayer().setConsecutiveMoves(0);
+                        // end button will only be created if current player is not AI
+                        setEndTurnButton(game);
+                        game.switchTurn();
+                    }
 
                 }
-                else {
-                    layeredPane.remove(endTurnButton);
-                    endTurnButton = null;
-                    layeredPane.revalidate();
-                    frame.repaint();
-                    nextTurn(game);
-                }
+
+            });
+        }
+
+        else {
+            if (endTurnButton != null) {
+                layeredPane.remove(endTurnButton);
+                endTurnButton = null;
             }
-        });
+            layeredPane.revalidate();
+            frame.repaint();
+            nextTurn(game);
+        }
+    }
+
+    private void removeButtons(Game game) {
+        if (buyHouseButton != null) {
+            game.cleanProperty();
+            layeredPane.remove(buyHouseButton);
+            buyHouseButton = null;
+        }
+
+        if (buyCityButton != null) {
+            game.cleanProperty();
+            layeredPane.remove(buyCityButton);
+            buyCityButton = null;
+        }
+
+        if (buyUtilityButton != null) {
+            game.cleanProperty();
+            layeredPane.remove(buyUtilityButton);
+            buyUtilityButton = null;
+        }
     }
 
     private void nextTurn(Game game) {
@@ -248,50 +303,94 @@ public class GUI2 implements ActionListener , PlayerObserver {
 
                     game.makeMove(die);
 
+
                     // Display new dice values
                     displayDice();
 
                     // logic for movement animation
                     moveOnBoard(game);
 
+
                     // TO CHANGE (AI decision making)
 //                    if (game.getPrevPlayer().getOnCity() != null) {
 //                        game.getPrevPlayer().makeDecision();
 //                    }
-                    boolean aiDecision = game.getPrevPlayer().makeDecision();
+                    if (game.getCurrentPlayer().getOnCity() != null || game.getCurrentPlayer().getOnUtility() != null) {
+
+                        boolean aiDecision = game.getCurrentPlayer().makeDecision();
 
 
-                    if (aiDecision && game.getPrevPlayer().getOnCity() != null) {
-                        System.out.println(game.getPrevPlayer().getName() + " initially has $" + game.getPrevPlayer().getMoney());
-                        game.getPrevPlayer().buyCity(game.getPrevPlayer().getOnCity());
-                        getTextArea().append("\n" + game.getPrevPlayer().getName() + " decided to purchase the property");
-                        getTextArea().append("\n" +"This city is available for purchase at a price of " + game.getPrevPlayer().getOnCity().getPrice());
-                        getTextArea().append("\n" +"After Purchasing, the balance amount you have is " + game.getPrevPlayer().getMoney());
-                        System.out.println("This city is available for purchase at a price of " + game.getPrevPlayer().getOnCity().getPrice());
-                        System.out.println("After Purchasing, the balance amount you have is " + game.getPrevPlayer().getMoney());
-                        game.cleanProperty();
-                    } else if (aiDecision && game.getPrevPlayer().getOnUtility() != null) {
-                        System.out.println(game.getPrevPlayer().getName() + " initially has $" + game.getPrevPlayer().getMoney());
-                        game.getPrevPlayer().buyUtility(game.getPrevPlayer().getOnUtility());
-                        //getTextArea().append("\n" + game.getPrevPlayer().getName() + " has purchased " + game.getPrevPlayer().getOnUtility().name + " for " + game.getPrevPlayer().getOnUtility().getPrice() + "$");
-                        getTextArea().append("\n" + game.getPrevPlayer().getName() + " decided to purchase the property");
-                        getTextArea().append("\n" +"This utility is available for purchase at a price of " + game.getPrevPlayer().getOnUtility().getPrice());
-                        getTextArea().append("\n" +"After Purchasing, the balance amount you have is " + game.getPrevPlayer().getMoney());
-                        System.out.println("This utility is available for purchase at a price of " + game.getPrevPlayer().getOnUtility().getPrice());
-                        System.out.println("After Purchasing, the balance amount you have is " + game.getPrevPlayer().getMoney());
-                        game.cleanProperty();
+                        if (aiDecision && game.getCurrentPlayer().getOnCity() != null) {
+                            System.out.println(game.getCurrentPlayer().getName() + " initially has $" + game.getCurrentPlayer().getMoney());
+                            game.getCurrentPlayer().buyCity(game.getCurrentPlayer().getOnCity());
+                            getTextArea().append("\n" + game.getCurrentPlayer().getName() + " decided to purchase the property");
+                            getTextArea().append("\n" + "This city is available for purchase at a price of " + game.getCurrentPlayer().getOnCity().getPrice());
+                            getTextArea().append("\n" + "After Purchasing, the balance amount you have is " + game.getCurrentPlayer().getMoney());
+                            System.out.println("This city is available for purchase at a price of " + game.getCurrentPlayer().getOnCity().getPrice());
+                            System.out.println("After Purchasing, the balance amount you have is " + game.getCurrentPlayer().getMoney());
+                            game.cleanProperty();
+                        } else if (aiDecision && game.getCurrentPlayer().getOnUtility() != null) {
+                            System.out.println(game.getCurrentPlayer().getName() + " initially has $" + game.getCurrentPlayer().getMoney());
+                            game.getCurrentPlayer().buyUtility(game.getCurrentPlayer().getOnUtility());
+                            //getTextArea().append("\n" + game.getCurrentPlayer()().getName() + " has purchased " + game.getCurrentPlayer()().getOnUtility().name + " for " + game.getCurrentPlayer()().getOnUtility().getPrice() + "$");
+                            getTextArea().append("\n" + game.getCurrentPlayer().getName() + " decided to purchase the property");
+                            getTextArea().append("\n" + "This utility is available for purchase at a price of " + game.getCurrentPlayer().getOnUtility().getPrice());
+                            getTextArea().append("\n" + "After Purchasing, the balance amount you have is " + game.getCurrentPlayer().getMoney());
+                            System.out.println("This utility is available for purchase at a price of " + game.getCurrentPlayer().getOnUtility().getPrice());
+                            System.out.println("After Purchasing, the balance amount you have is " + game.getCurrentPlayer().getMoney());
+                            game.cleanProperty();
+                        } else if (!aiDecision && game.getCurrentPlayer().getOnCity() != null) {
+                            System.out.println(game.getCurrentPlayer().getName() + " decided not to purchase the property");
+                            getTextArea().append("\n" + game.getCurrentPlayer().getName() + " decided not to purchase the property");
+                        } else if (!aiDecision && game.getCurrentPlayer().getOnUtility() != null) {
+                            System.out.println(game.getCurrentPlayer().getName() + " decided not to purchase the property");
+                            getTextArea().append("\n" + game.getCurrentPlayer().getName() + " decided not to purchase the property");
+                        }
+
                     }
-                    else if (!aiDecision && game.getPrevPlayer().getOnCity() != null){
-                        System.out.println(game.getPrevPlayer().getName() + " decided not to purchase the property");
-                        getTextArea().append("\n" +game.getPrevPlayer().getName() + " decided not to purchase the property");
+
+                    if (die.isDouble() && !game.getCurrentPlayer().getJailState()) {
+                        if (game.getCurrentPlayer().getConsecutiveMoves() >= 3) {
+                            System.out.println("Test");
+                            game.getCurrentPlayer().sendToJail();
+                            moveOnBoard(game);
+                            Timer timer3 = new Timer(2000, new ActionListener() {
+                                @Override
+                                public void actionPerformed(ActionEvent e) {
+                                    game.switchTurn();
+                                    setOkButton(game);
+                                }
+                            });
+
+                            timer3.setRepeats(false);
+                            timer3.start();
+                        }
+
+                        else {
+                            Timer timer2 = new Timer(2000, new ActionListener() {
+                                @Override
+                                public void actionPerformed(ActionEvent e) {
+                                    nextTurn(game);
+                                }
+                            });
+                            timer2.setRepeats(false);
+                            timer2.start();
+                        }
                     }
-                    else if(!aiDecision && game.getPrevPlayer().getOnUtility() != null){
-                        System.out.println(game.getPrevPlayer().getName() + " decided not to purchase the property");
-                        getTextArea().append("\n" +game.getPrevPlayer().getName() + " decided not to purchase the property");
+
+                    else {
+                        game.getCurrentPlayer().setConsecutiveMoves(0);
+                        /*
+                        layeredPane.remove(endTurnButton);
+                        endTurnButton = null;
+                        layeredPane.revalidate();
+
+                         */
+                        game.switchTurn();
+                        frame.repaint();
+                        setOkButton(game);
                     }
-                    frame.repaint();
                 }
-                setOkButton(game);
             }
         });
 
@@ -303,37 +402,40 @@ public class GUI2 implements ActionListener , PlayerObserver {
     }
 
     public void moveOnBoard(Game game) {
-        int currentPlayerPosition = game.getPrevPlayer().getPosition();
+        int currentPlayerPosition = game.getCurrentPlayer().getPosition();
 
-        JLabel currentPlayerIcon = playerIcons.get(game.getPrevPlayerIndex());
+        System.out.println("Sending player to " + currentPlayerPosition);
+
+        JLabel currentPlayerIcon = playerIcons.get(game.getCurrentPlayerIndex());
 
         Point newPosition = new Point(boardPositions[currentPlayerPosition]);
         int yOffset = 70 / game.getNumPlayers();
         int xOffset = yOffset;
         if (currentPlayerPosition < 11)
-            newPosition.y += yOffset * game.getPrevPlayerIndex();
+            newPosition.y += yOffset * game.getCurrentPlayerIndex();
         else if (currentPlayerPosition < 21)
-            newPosition.x -= xOffset * game.getPrevPlayerIndex();
+            newPosition.x -= xOffset * game.getCurrentPlayerIndex();
         else if (currentPlayerPosition < 31)
-            newPosition.y -= yOffset * game.getPrevPlayerIndex();
+            newPosition.y -= yOffset * game.getCurrentPlayerIndex();
         else
-            newPosition.x += xOffset * game.getPrevPlayerIndex();
+            newPosition.x += xOffset * game.getCurrentPlayerIndex();
         animateMovement(currentPlayerIcon, newPosition, 15);
 
-        if (game.getPrevPlayer().getJailState()) {
+        if (game.getCurrentPlayer().getJailState()) {
+            System.out.println("Current player: " + game.getCurrentPlayerIndex());
             //System.out.println(game.getPrevPlayer().getPosition());
-            game.getPrevPlayer().setPosition(10);
-            newPosition = new Point(boardPositions[game.getPrevPlayer().getPosition()]);
+            game.getCurrentPlayer().setPosition(10);
+            newPosition = new Point(boardPositions[game.getCurrentPlayer().getPosition()]);
             //System.out.println(game.getPrevPlayer().getPosition());
 
             if (currentPlayerPosition < 11)
-                newPosition.y += yOffset * game.getPrevPlayerIndex();
+                newPosition.y += yOffset * game.getCurrentPlayerIndex();
             else if (currentPlayerPosition < 21)
-                newPosition.x -= xOffset * game.getPrevPlayerIndex();
+                newPosition.x -= xOffset * game.getCurrentPlayerIndex();
             else if (currentPlayerPosition < 31)
-                newPosition.y -= yOffset * game.getPrevPlayerIndex();
+                newPosition.y -= yOffset * game.getCurrentPlayerIndex();
             else
-                newPosition.x += xOffset * game.getPrevPlayerIndex();
+                newPosition.x += xOffset * game.getCurrentPlayerIndex();
 
             Timer timer = new Timer(1500, null);
             Point finalNewPosition = newPosition;
@@ -357,11 +459,11 @@ public class GUI2 implements ActionListener , PlayerObserver {
         buyCityButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                System.out.println(game.getPrevPlayer().getName() + " initially has $" + game.getPrevPlayer().getMoney());
-                game.getPrevPlayer().buyCity(game.getPrevPlayer().getOnCity());
-                System.out.println("This city is available for purchase at a price of " + game.getPrevPlayer().getOnCity().getPrice());
-                System.out.println("After Purchasing, the balance amount you have is " + game.getPrevPlayer().getMoney());
-                getTextArea().setText(game.getPrevPlayer().getName() + " has purchased " + game.getPrevPlayer().getOnCity().name + " for " + game.getPrevPlayer().getOnCity().getPrice() + "$");
+                System.out.println(game.getCurrentPlayer().getName() + " initially has $" + game.getCurrentPlayer().getMoney());
+                game.getCurrentPlayer().buyCity(game.getCurrentPlayer().getOnCity());
+                System.out.println("This city is available for purchase at a price of " + game.getCurrentPlayer().getOnCity().getPrice());
+                System.out.println("After Purchasing, the balance amount you have is " + game.getCurrentPlayer().getMoney());
+                getTextArea().setText(game.getCurrentPlayer().getName() + " has purchased " + game.getCurrentPlayer().getOnCity().name + " for " + game.getCurrentPlayer().getOnCity().getPrice() + "$");
                 if(tutor)
                     getTextArea().append("\nPress the End Turn button to continue.");
                 game.cleanProperty();
@@ -380,11 +482,11 @@ public class GUI2 implements ActionListener , PlayerObserver {
         buyUtilityButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                System.out.println(game.getPrevPlayer().getName() + " initially has $" + game.getPrevPlayer().getMoney());
-                game.getPrevPlayer().buyUtility(game.getPrevPlayer().getOnUtility());
-                System.out.println("This utility is available for purchase at a price of " + game.getPrevPlayer().getOnUtility().getPrice());
-                System.out.println("After Purchasing, the balance amount you have is " + game.getPrevPlayer().getMoney());
-                getTextArea().append("\n" + game.getPrevPlayer().getName() + " has purchased " + game.getPrevPlayer().getOnUtility().name + " for " + game.getPrevPlayer().getOnUtility().getPrice() + "$");
+                System.out.println(game.getCurrentPlayer().getName() + " initially has $" + game.getCurrentPlayer().getMoney());
+                game.getCurrentPlayer().buyUtility(game.getCurrentPlayer().getOnUtility());
+                System.out.println("This utility is available for purchase at a price of " + game.getCurrentPlayer().getOnUtility().getPrice());
+                System.out.println("After Purchasing, the balance amount you have is " + game.getCurrentPlayer().getMoney());
+                getTextArea().append("\n" + game.getCurrentPlayer().getName() + " has purchased " + game.getCurrentPlayer().getOnUtility().name + " for " + game.getCurrentPlayer().getOnUtility().getPrice() + "$");
                 game.cleanProperty();
                 layeredPane.remove(buyUtilityButton);
                 frame.repaint();
@@ -393,7 +495,7 @@ public class GUI2 implements ActionListener , PlayerObserver {
     }
 
     public void setBuyHouseButton(Game game) {
-        buyHouseButton = new JButton("Buy house");
+        buyHouseButton = new JButton("Buy house/hotel");
         buyHouseButton.setBounds(440, 520 + MOVEUP, 120, 25);
 
         layeredPane.add(buyHouseButton, new Integer(5));
@@ -402,14 +504,13 @@ public class GUI2 implements ActionListener , PlayerObserver {
             @Override
             public void actionPerformed(ActionEvent e) {
                 // find out how many houses can be purchased (max houses on a city - number of existing houses on city)
-                int possibleHouses = City.MAXHOUSES - game.getPrevPlayer().getOnCity().getNumHouses();
-                setBuyNumOfHousesButton(game, possibleHouses);
+                int possibleHouses = City.MAXHOUSES - game.getCurrentPlayer().getOnCity().getNumHouses();
+
+                // TO DO: create 5 buttons (1, 2, 3, 4, hotel) and determine if hotel/houses are purchasable
             }
         });
     }
 
-    public void setBuyNumOfHousesButton(Game game, int count) {
-    }
 
     public void setEndTurnButton(Game game) {
         endTurnButton = new JButton("End turn");
@@ -419,6 +520,7 @@ public class GUI2 implements ActionListener , PlayerObserver {
         endTurnButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
+                System.out.println("Test");
                 layeredPane.remove(endTurnButton);
 
                 if (buyCityButton != null) {
@@ -548,12 +650,16 @@ public class GUI2 implements ActionListener , PlayerObserver {
         setBackdrop(black);
     }
 
-    public void initializeTheBoard(Game game) {
+    public void initializeTheBoard(Game game, GameFactory factory) {
         System.out.println("initializingTheBoard");
 
         setBoardPositions();
 
-        ImageIcon icon = new ImageIcon(getClass().getResource("board.png"));
+        String imagePath = factory.getBoardStyle() + ".png";
+        System.out.println("Attempting to load image from: " + imagePath);
+        System.out.println("Board Style from Factory: " + factory.getBoardStyle());
+        ImageIcon icon = new ImageIcon(getClass().getResource(imagePath));
+
         Image image = icon.getImage();
         image = image.getScaledInstance(820, -1, Image.SCALE_SMOOTH);
         icon = new ImageIcon(image);

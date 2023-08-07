@@ -189,6 +189,21 @@ public class MainMenu {
             }
         });
 
+        String[] aiDifficultyOptions = {"Easy", "Medium", "Hard"};
+        JComboBox<String> aiDifficultySelector = new JComboBox<>(aiDifficultyOptions);
+        aiDifficultySelector.setFont(standardFont);
+        aiDifficultySelector.setBackground(inputBackground);
+        aiDifficultySelector.setForeground(inputForeground);
+        aiDifficultySelector.setPreferredSize(new Dimension(200, 30));
+        aiDifficultySelector.addFocusListener(new FocusAdapter() {
+            public void focusGained(FocusEvent e) {
+                aiDifficultySelector.setBackground(focusColor);
+            }
+            public void focusLost(FocusEvent e) {
+                aiDifficultySelector.setBackground(inputBackground);
+            }
+        });
+
         JLabel boardStyleLabel = new JLabel("Board Style: ");
         boardStyleLabel.setFont(labelFont);
         boardStyleLabel.setForeground(Color.WHITE);
@@ -211,6 +226,16 @@ public class MainMenu {
 
         settingsPanel.setBackground(darkerBlue);
         settingsPanel.setBorder(BorderFactory.createEmptyBorder(20, 20, 20, 20));
+
+        String currentDifficulty = factory.getAIDifficulty();
+        aiDifficultySelector.setSelectedItem(currentDifficulty);
+
+        JLabel aiDifficultyLabel = new JLabel("AI Difficulty Level: ");
+        aiDifficultyLabel.setFont(labelFont);
+        aiDifficultyLabel.setForeground(Color.WHITE);
+
+        settingsPanel.add(aiDifficultyLabel);
+        settingsPanel.add(aiDifficultySelector);
 
         JButton applyButton = new JButton("Apply");
         styleButton(applyButton);

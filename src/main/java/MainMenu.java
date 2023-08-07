@@ -250,7 +250,7 @@ public class MainMenu {
             factory.setCash(Integer.parseInt(cashInput.getText()));
             factory.setBoardStyle((String) boardStyleSelection.getSelectedItem());
             factory.setNumOfAiPlayers((Integer) aiPlayersSelector.getSelectedItem());
-            factory.setAIDifficulty((String) aiDifficultySelector.getSelectedItem());  // Add this setter in GameFactory
+            factory.setAIDifficulty((String) aiDifficultySelector.getSelectedItem());
             settingsDialog.dispose();
         });
 

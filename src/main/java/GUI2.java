@@ -216,7 +216,7 @@ public class GUI2 implements ActionListener , PlayerObserver {
 
                     if (die.isDouble() && !game.getCurrentPlayer().getJailState()) {
                         if (game.getCurrentPlayer().getConsecutiveMoves() >= 3) {
-                            System.out.println("Test");
+                            //System.out.println("Test");
                             removeButtons(game);
 
                             game.getCurrentPlayer().sendToJail();
@@ -234,7 +234,7 @@ public class GUI2 implements ActionListener , PlayerObserver {
                             timer.start();
                         }
                         else {
-                            removeButtons(game);
+                            //removeButtons(game);
                             setOkButton(game);
                         }
                     }
@@ -242,9 +242,8 @@ public class GUI2 implements ActionListener , PlayerObserver {
                         game.getCurrentPlayer().setConsecutiveMoves(0);
                         // end button will only be created if current player is not AI
                         setEndTurnButton(game);
-                        game.switchTurn();
                     }
-
+                    //removeButtons(game);
                 }
 
             });
@@ -520,7 +519,7 @@ public class GUI2 implements ActionListener , PlayerObserver {
         endTurnButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                System.out.println("Test");
+                //System.out.println("Test");
                 layeredPane.remove(endTurnButton);
 
                 if (buyCityButton != null) {
@@ -536,6 +535,7 @@ public class GUI2 implements ActionListener , PlayerObserver {
                 endTurnButton = null;
                 layeredPane.revalidate();
                 frame.repaint();
+                game.switchTurn();
                 nextTurn(game);
             }
         });

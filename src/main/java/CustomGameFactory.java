@@ -94,11 +94,17 @@ public class CustomGameFactory implements GameFactory {
     public void setCash(int cash) {
         this.money = cash;
     }
+    @Override
     public void setAIDifficulty (AIDifficulty difficulty) { this.difficulty = difficulty; }
+
 
     @Override
     public String getBoardStyle() {
         return boardStyle;
+    }
+    @Override
+    public AIDifficulty getAIDifficulty(){
+        return this.difficulty;
     }
 
     public void setBoardStyle(String style) {

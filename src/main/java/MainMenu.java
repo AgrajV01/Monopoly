@@ -227,7 +227,7 @@ public class MainMenu {
         settingsPanel.setBackground(darkerBlue);
         settingsPanel.setBorder(BorderFactory.createEmptyBorder(20, 20, 20, 20));
 
-        String currentDifficulty = factory.getAIDifficulty();
+        AIDifficulty currentDifficulty = factory.getAIDifficulty();
         aiDifficultySelector.setSelectedItem(currentDifficulty);
 
         JLabel aiDifficultyLabel = new JLabel("AI Difficulty Level: ");
@@ -250,7 +250,7 @@ public class MainMenu {
             factory.setCash(Integer.parseInt(cashInput.getText()));
             factory.setBoardStyle((String) boardStyleSelection.getSelectedItem());
             factory.setNumOfAiPlayers((Integer) aiPlayersSelector.getSelectedItem());
-            factory.setAIDifficulty((String) aiDifficultySelector.getSelectedItem());
+            factory.setAIDifficulty((AIDifficulty) aiDifficultySelector.getSelectedItem());
             settingsDialog.dispose();
         });
 

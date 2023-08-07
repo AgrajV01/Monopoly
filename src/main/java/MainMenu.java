@@ -5,6 +5,8 @@ import java.awt.event.ActionListener;
 import java.awt.event.ComponentAdapter;
 import java.awt.event.ComponentEvent;
 import java.util.Random;
+import java.awt.event.FocusAdapter;
+import java.awt.event.FocusEvent;
 
 public class MainMenu {
     private static JButton newGameButton;
@@ -124,44 +126,103 @@ public class MainMenu {
         settingsDialog.setSize(800, 600);
         settingsDialog.setLocationRelativeTo(null);
 
-        Color darkerBlue = new Color(0, 90, 160);  // Darker blue color
+        Color darkerBlue = new Color(0, 90, 160);
+        Color inputBackground = new Color(0, 102, 204);
+        Color inputForeground = Color.WHITE;
+        Color focusColor = Color.GRAY;
 
-        // Assuming GameFactory has getter methods to retrieve the current settings
-        int currentNumPlayers = factory.getNumPlayers();
-        int currentNumOfAiPlayers = factory.getNumOfAiPlayers();
+        Font standardFont = new Font("Dialog", Font.PLAIN, 16);
+        Font labelFont = new Font("Dialog", Font.BOLD, 20);
+
         int currentCash = factory.getCash();
         String currentBoardStyle = factory.getBoardStyle();
+        int currentNumOfAiPlayers = factory.getNumOfAiPlayers();
 
-        // List of available board styles
         String[] boardStyles = {
-                "Classic", "Bass-Fishing", "Breaking-Bad", "Chtulhu", "David Bowie",
-                "Gay", "Ketchup", "Sponge Bob", "Ted Lasso", "Ukraine"
+                "Classic", "Bass-Fishing", "Breaking-Bad", "Chtulhu", "Ukraine",
+                "Gay", "Ketchup", "Sponge Bob", "Ted Lasso", "David Bowie"
         };
+
         JComboBox<String> boardStyleSelection = new JComboBox<>(boardStyles);
         boardStyleSelection.setSelectedItem(currentBoardStyle);
+        boardStyleSelection.setFont(standardFont);
+        boardStyleSelection.setBackground(inputBackground);
+        boardStyleSelection.setForeground(inputForeground);
+        boardStyleSelection.setPreferredSize(new Dimension(200, 30));
+        boardStyleSelection.addFocusListener(new FocusAdapter() {
+            public void focusGained(FocusEvent e) {
+                boardStyleSelection.setBackground(focusColor);
+            }
+            public void focusLost(FocusEvent e) {
+                boardStyleSelection.setBackground(inputBackground);
+            }
+        });
 
         JTextField cashInput = new JTextField(String.valueOf(currentCash));
+        cashInput.setFont(standardFont);
+        cashInput.setBackground(inputBackground);
+        cashInput.setForeground(inputForeground);
+        cashInput.setPreferredSize(new Dimension(200, 30));
+        cashInput.setBorder(BorderFactory.createRaisedBevelBorder());
+        cashInput.addFocusListener(new FocusAdapter() {
+            public void focusGained(FocusEvent e) {
+                cashInput.setBackground(focusColor);
+            }
+            public void focusLost(FocusEvent e) {
+                cashInput.setBackground(inputBackground);
+            }
+        });
 
-        // Layout for the settings, for simplicity, just using a basic grid for now:
-        JPanel settingsPanel = new JPanel(new GridLayout(0, 2));
-        settingsPanel.add(new JLabel("Board Style: "));
-        settingsPanel.add(boardStyleSelection);  // Add JComboBox to the settings panel
+        Integer[] aiPlayerOptions = {0, 1, 2, 3, 4};  // AI players up to 4
+        JComboBox<Integer> aiPlayersSelector = new JComboBox<>(aiPlayerOptions);
+        aiPlayersSelector.setSelectedItem(currentNumOfAiPlayers);
+        aiPlayersSelector.setFont(standardFont);
+        aiPlayersSelector.setBackground(inputBackground);
+        aiPlayersSelector.setForeground(inputForeground);
+        aiPlayersSelector.setPreferredSize(new Dimension(200, 30));
+        aiPlayersSelector.addFocusListener(new FocusAdapter() {
+            public void focusGained(FocusEvent e) {
+                aiPlayersSelector.setBackground(focusColor);
+            }
+            public void focusLost(FocusEvent e) {
+                aiPlayersSelector.setBackground(inputBackground);
+            }
+        });
 
-        settingsPanel.add(new JLabel("Starting Cash: "));
+        JLabel boardStyleLabel = new JLabel("Board Style: ");
+        boardStyleLabel.setFont(labelFont);
+        boardStyleLabel.setForeground(Color.WHITE);
+
+        JLabel cashLabel = new JLabel("Starting Cash: ");
+        cashLabel.setFont(labelFont);
+        cashLabel.setForeground(Color.WHITE);
+
+        JLabel aiPlayersLabel = new JLabel("Number of AI Players: ");
+        aiPlayersLabel.setFont(labelFont);
+        aiPlayersLabel.setForeground(Color.WHITE);
+
+        JPanel settingsPanel = new JPanel(new GridLayout(0, 2, 10, 10));
+        settingsPanel.add(boardStyleLabel);
+        settingsPanel.add(boardStyleSelection);
+        settingsPanel.add(cashLabel);
         settingsPanel.add(cashInput);
+        settingsPanel.add(aiPlayersLabel);
+        settingsPanel.add(aiPlayersSelector);
+
         settingsPanel.setBackground(darkerBlue);
+        settingsPanel.setBorder(BorderFactory.createEmptyBorder(20, 20, 20, 20));
 
         JButton applyButton = new JButton("Apply");
+        styleButton(applyButton);
         applyButton.addActionListener(e -> {
-            // Logic to apply the settings
             factory.setCash(Integer.parseInt(cashInput.getText()));
             factory.setBoardStyle((String) boardStyleSelection.getSelectedItem());
+            factory.setNumOfAiPlayers((Integer) aiPlayersSelector.getSelectedItem());
             settingsDialog.dispose();
         });
 
-        System.out.println("boardStyleSelection: " + factory.getBoardStyle());
-
         JButton leaveButton = new JButton("Leave");
+        styleButton(leaveButton);
         leaveButton.addActionListener(e -> settingsDialog.dispose());
 
         JPanel buttonPanel = new JPanel(new FlowLayout(FlowLayout.CENTER));

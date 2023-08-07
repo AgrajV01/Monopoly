@@ -255,6 +255,11 @@ public class Player {
     }
 
     public void move(int steps) {
+        if (inJail) {
+            inJail = false;
+            consecutiveMoves = 0;
+        }
+
         consecutiveMoves++;
 
         int temp = position;
@@ -262,6 +267,7 @@ public class Player {
         positionDiff = Math.abs(position - temp);
         inJail = false; // remove this line once the jail delay is set correctly
         if (steps > 0 && position < temp) {
+
 
             gui.getTextArea().setText("You have passed Go! You collect 200$.\n");
 

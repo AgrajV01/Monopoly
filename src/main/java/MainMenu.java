@@ -256,37 +256,38 @@ public class MainMenu {
                 "Monopoly Game Rules:\n\n" +
 
                         "• Setup:\n" +
-                        "   - Each player selects a token and places it on the 'Go' space.\n" +
-                        "   - Players are given starting money: two each of $500s, $100s, $50s; and six $20s.\n\n" +
+                        "   - Each player receives a token and starts from the 'Go' space.\n" +
+                        "   - Default starting amount for players: $2000 (modifiable in settings before starting).\n\n"+
 
                         "• On Your Turn:\n" +
-                        "   - Roll two six-sided dice and move your token that number of spaces.\n" +
-                        "   - If you roll doubles, you get another turn. However, rolling doubles three times in a row sends you to jail.\n\n" +
+                        "   - Roll two six-sided dice; the token automatically moves the rolled number of spaces.\n" +
+                        "   - Rolling doubles grants an extra turn.\n\n" +
 
                         "• Buying Property:\n" +
-                        "   - If you land on an unowned property, you may buy it for the price listed on its card.\n" +
-                        "   - If you choose not to buy it, it remains unowned.\n\n" +
+                        "   - Land on an unowned property to purchase it for the listed price on its card.\n" +
+                        "   - Opting not to buy leaves the property unowned.\n\n" +
 
                         "• Paying Rent:\n" +
-                        "   - If you land on a property owned by another player, you must pay them rent based on the property's deed card.\n\n" +
+                        "   - Land on another player's property, pay them rent according to the property's deed card.\n\n" +
 
                         "• Special Spaces:\n" +
-                        "   - 'Go to Jail': Move your token to the Jail space and do not collect $200.\n" +
-                        "   - 'Free Parking': Nothing happens. Consider it a free space.\n" +
-                        "   - 'Income Tax': Pay the bank $200 or 10% of your total cash (excluding properties), whichever you prefer.\n" +
+                        "   - 'Go to Jail': Token moves to the Jail space.\n" +
+                        "   - 'Free Parking': No action; consider it a free space.\n" +
+                        "   - 'Income Tax': Pay the bank $200.\n" +
                         "   - 'Luxury Tax': Pay the bank $100.\n\n" +
 
                         "• Houses & Hotels:\n" +
-                        "   - Before buying houses or hotels, you must own all the properties in its color group.\n" +
-                        "   - Houses must be built evenly. For instance, you can't have three houses on one property and one on another in the same group.\n\n" +
+                        "   - Own all properties in a color group before purchasing houses or hotels.\n" +
+                        "   - Houses must be built evenly; no uneven distribution in a group.\n\n" +
 
                         "• Going Bankrupt:\n" +
-                        "   - If you owe more money than you can pay either to another player or the Bank, you are declared bankrupt.\n" +
-                        "   - If your debt is to another player, you give them everything you have, and they can choose to auction off any of your properties.\n" +
-                        "   - If you're in debt to the Bank, everything you have is returned to the Bank and all properties you own are returned to the Bank's title deed card pile.\n\n" +
+                        "   - Owed amount exceeding your cash results in bankruptcy.\n" +
+                        "   - Debt to another player: Give them your available money.\n" +
+                        "   - Debt to the Bank: Hand over your available money.\n\n" +
 
                         "• Winning:\n" +
-                        "   - The game ends when all but one player has gone bankrupt. The remaining player wins the game.\n\n" +
+                        "   - The game concludes when a player goes bankrupt.\n" +
+                        "   - The player with the highest property and liquid funds wins the Game!.\n\n" +
 
                         "Note: Trading between players is not allowed in this version."
         );

@@ -246,6 +246,14 @@ public class MainMenu {
             settingsDialog.dispose();
         });
 
+        applyButton.addActionListener(e -> {
+            factory.setCash(Integer.parseInt(cashInput.getText()));
+            factory.setBoardStyle((String) boardStyleSelection.getSelectedItem());
+            factory.setNumOfAiPlayers((Integer) aiPlayersSelector.getSelectedItem());
+            factory.setAIDifficulty((String) aiDifficultySelector.getSelectedItem());  // Add this setter in GameFactory
+            settingsDialog.dispose();
+        });
+
         JButton leaveButton = new JButton("Leave");
         styleButton(leaveButton);
         leaveButton.addActionListener(e -> settingsDialog.dispose());

@@ -189,8 +189,8 @@ public class MainMenu {
             }
         });
 
-        String[] aiDifficultyOptions = {"Easy", "Medium", "Hard"};
-        JComboBox<String> aiDifficultySelector = new JComboBox<>(aiDifficultyOptions);
+        AIDifficulty[] aiDifficultyOptions = {AIDifficulty.EASY, AIDifficulty.MEDIUM, AIDifficulty.HARD};
+        JComboBox<AIDifficulty> aiDifficultySelector = new JComboBox<>(aiDifficultyOptions);
         aiDifficultySelector.setFont(standardFont);
         aiDifficultySelector.setBackground(inputBackground);
         aiDifficultySelector.setForeground(inputForeground);

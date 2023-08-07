@@ -162,13 +162,10 @@ public class Player {
         positionDiff = Math.abs(position - temp);
         inJail = false; // remove this line once the jail delay is set correctly
         if (steps > 0 && position < temp) {
-<<<<<<< HEAD
+
 
             gui.getTextArea().setText("You have passed Go! You collect 200$.\n");
-=======
-            System.out.println("You have passed Go! You collect 200$.");
-            gui.getTextArea().setText("You have passed Go! You collect 200$\n");
->>>>>>> 274e61babb011ff7e4f9da1666dc17acb7467d65
+
             money += 200;
         }
         notifyObservers();

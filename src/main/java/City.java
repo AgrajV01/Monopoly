@@ -17,6 +17,7 @@ public class City extends Space {
     private GUI2 gui;
     private propertyColor color;
 
+    public City() {super();}
     public City(String name, int price, int rent, int houseCost, GUI2 gui, propertyColor color) {
         this.isProperty = true;
         this.name = name;

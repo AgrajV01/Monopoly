@@ -1,6 +1,7 @@
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
+import java.io.FileWriter;
 import java.util.ArrayList;
 import java.util.List;
 import java.lang.Math;
@@ -9,6 +10,8 @@ import javax.swing.Timer;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 /**
  * The Player class represents a player in the Monopoly game.
  * It holds information about the player's name, money, position, owned cities,
@@ -24,13 +27,17 @@ public class Player {
     private int consecutiveMoves;
     private boolean isBankrupted;
     private List<City> ownedCities;
+
+    @JsonIgnore
     private GUI2 gui; // added this to be able to print elements on screen
 
     private List<Utility> ownedUtilities;
 
     private boolean inJail;
+
     private int jailCards; // number of get out of jail free cards this player has
 
+    @JsonIgnore
     private List<PlayerObserver> subscribers;
 
     public GUI2 getGui() {
@@ -44,9 +51,11 @@ public class Player {
     public void setOnCity(City onCity){
         this.onCity = onCity;
     }
+    @JsonIgnore
     public String getType(){
         return "Player";
     }
+    @JsonIgnore
     public City getOnCity(){
         return onCity;
     }
@@ -63,18 +72,38 @@ public class Player {
         return ownedUtilities;
     }
 
-    public void saveState(String path) {
+    public void saveState() {
 
-        ObjectMapper mapper = new ObjectMapper();
+        try{
+            ObjectMapper mapper = new ObjectMapper();
 
-        String saveString = mapper.writeValueAsString(this);
+            String saveString = mapper.writeValueAsString(this);
+
+            FileWriter f = new FileWriter(name+".json");
+            f.write(saveString);
+            f.close();
+        }
+        catch(Exception e)
+        {
+            System.out.print("Exception: ");
+            System.out.println(e);
+
+        }
     }
 
-    public void loadState(String path) {
+    public static Player loadPlayer(String name) {
 
         ObjectMapper mapper = new ObjectMapper();
 
-        Player savedPlayer = mapper.readValue(new File(), Player.class);
+        try{
+            return mapper.readValue(new File(name+".json"), Player.class);
+        }
+        catch(Exception e)
+        {
+            System.out.println(e);
+            return null;
+        }
+
     }
 
     public Player(Player o) {
@@ -92,6 +121,37 @@ public class Player {
         inJail = false;
     }
 
+    public Player() {super();}
+    public Player(
+        String name,
+        City onCity,
+        Utility onUtility,
+        int money,
+        int position,
+        int positionDiff,
+        int consecutiveMoves,
+        boolean isBankrupted,
+        List<City> ownedCities,
+        GUI2 gui, // added this to be able to print elements on screen
+        List<Utility> ownedUtilities,
+        boolean inJail,
+        int jailCards, // number of get out of jail free cards this player has
+        List<PlayerObserver> subscribers
+    ) {
+        this.name = name;
+        this.money = money; // Starting money in Monopoly
+        this.position = position; // Starting at 'GO'
+        this.positionDiff = positionDiff;
+        this.consecutiveMoves = consecutiveMoves;
+        this.ownedCities = ownedCities;
+        this.ownedUtilities = ownedUtilities;
+        this.jailCards = jailCards;
+        this.isBankrupted = isBankrupted;
+        this.onCity = onCity;
+        this.onUtility = onUtility;
+        this.inJail = inJail;
+        this.subscribers = subscribers;
+    }
 
     //
     public Player(String name, int money, GUI2 gui) {
@@ -109,6 +169,7 @@ public class Player {
         this.onUtility = null;
         inJail = false;
         this.gui = gui; // gui object is passed to constructor, we can print to textArea from this class
+        this.subscribers = new ArrayList<>();
 
     }
 
@@ -118,6 +179,8 @@ public class Player {
     }
 
     public void notifyObservers(){
+        if (subscribers == null)
+            return;
         for(PlayerObserver p : subscribers){
             p.onPlayerState(this);
         }
@@ -279,6 +342,7 @@ public class Player {
         notifyObservers();
     }
 
+    @JsonIgnore
     public boolean getJailState() { return inJail; }
 
     // displays the player's money before and after purchasing the utility

@@ -133,17 +133,16 @@ public class Player {
 
         // Notify the player about being sent to jail before the delay
 
-
         gui.getTextArea().setText(name + " is being sent to jail!");
 
 
         // Introduce a delay of 2 seconds (2000 milliseconds) before sending the player to jail
-        int delayMilliseconds = 0;
+        int delayMilliseconds = 1000;
         Timer timer = new Timer(delayMilliseconds, (ActionEvent e) -> {
 
             // Notify the player again after the delay
 
-
+            Audio.playAudio("src/main/resources/jailSiren.wav");
             gui.getTextArea().setText(name + " has been sent to jail!");
 
         });
@@ -166,6 +165,7 @@ public class Player {
             consecutiveMoves = 0;
         }
 
+        Audio.playAudio("src/main/resources/diceRoll.wav");
         consecutiveMoves++;
 
         int temp = position;

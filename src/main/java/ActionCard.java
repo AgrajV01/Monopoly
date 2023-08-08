@@ -1,4 +1,5 @@
 import java.util.Random;
+
 /**
  * The ActionCard class represents an action card in the Monopoly game.
  * It extends the Space class and implements the action method to perform a specific action
@@ -52,9 +53,11 @@ public class ActionCard extends Space {
             case 2:
                 player.receiveRent(100); // player receives money from the bank
                 gui.getTextArea().append(player.getName() + " receives 100$ from the bank! New balance: " + player.getMoney());
+                Audio.playAudio("src/main/resources/gotCash.wav");
                 break;
             case 3:
                 gui.getTextArea().append(player.getName() + " must pay 150$ to the bank! New balance: " + player.getMoney());
+                Audio.playAudio("src/main/resources/lostMoney.wav");
                 player.payRent(150); // player pays taxes to the bank
                 break;
                 /*

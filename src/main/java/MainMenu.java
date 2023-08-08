@@ -1,10 +1,7 @@
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.awt.event.ComponentAdapter;
 import java.awt.event.ComponentEvent;
-import java.util.Random;
 import java.awt.event.FocusAdapter;
 import java.awt.event.FocusEvent;
 
@@ -20,6 +17,7 @@ public class MainMenu {
     private GameFactory factory;
 
     MainMenu(boolean tutor) {
+        Audio.playAudio("src/main/resources/bgm.wav");
         layeredPane = new JLayeredPane();
 
         ImageIcon bgIcon = new ImageIcon(getClass().getResource("MainMenu.png"));
@@ -96,6 +94,10 @@ public class MainMenu {
         styleButton(newGameButton);
         newGameButton.addActionListener(e -> {
             Game game = new Game(factory, a);
+
+            // for now, BGM stops when game is started
+            // Audio.stopSound(Audio.bgmClip);
+
             a.initializeTheBoard(game, factory);
             game.subscribeToPlayers(a);
 

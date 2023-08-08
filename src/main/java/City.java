@@ -47,18 +47,14 @@ public class City extends Space {
         this.numHouses++;
     }
 
-    public void addHouses(int count) {
+    public void addHouse() {
         if (numHouses == 0) {
             rent *= 5;
-            if (count > 1) {
-                rent *= 2 * (count - 1);
-            }
         }
         else {
-            rent *= count * 2;
+            rent *= 2;
         }
-
-        numHouses += count;
+        numHouses++;
     }
 
     public void addHotel() {

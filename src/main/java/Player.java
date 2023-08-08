@@ -174,7 +174,7 @@ public class Player {
         inJail = false; // remove this line once the jail delay is set correctly
         if (steps > 0 && position < temp) {
 
-
+            Audio.playAudio("src/main/resources/gotCash.wav");
             gui.getTextArea().setText("You have passed Go! You collect 200$.\n");
 
             money += 200;
@@ -309,8 +309,9 @@ public class Player {
         return false;
     }
 
-    public void buyHouse(City city, int count) {
-        if (city.getHouseCost() * count > money) {
+    public void buyHouse(City city) {
+        /*
+        if (city.getHouseCost()> money) {
             gui.getTextArea().append("You cannot afford that many houses!");
             if(gui.getTutor())
                 gui.getTextArea().append("\nYou can earn more money by collecting rent, " +
@@ -318,12 +319,16 @@ public class Player {
         }
 
         else {
-            payRent(city.getHouseCost() * count);
-            city.addHouses(count);
+            payRent(city.getHouseCost());
+            city.addHouse();
         }
+         */
+        payRent(city.getHouseCost());
+        city.addHouse();
     }
 
     public void buyHotel(City city) {
+        /*
         // if price of hotel (5 houses - # of current houses) exceeds player balance
         if ((city.getHouseCost() * 5) - (city.getHouseCost() * city.getNumHouses()) > money) {
             gui.getTextArea().append("You cannot afford a hotel!");
@@ -336,6 +341,9 @@ public class Player {
             payRent((city.getHouseCost() * 5) - (city.getHouseCost() * city.getNumHouses()));
             city.addHotel();
         }
+        */
+        payRent(city.getHouseCost());
+        city.addHotel();
     }
 
     public boolean makeDecision() {

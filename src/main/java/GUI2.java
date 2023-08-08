@@ -12,7 +12,7 @@ public class GUI2 implements ActionListener , PlayerObserver {
     private boolean tutor = false;
 
     private int movesMade = 0;
-    private JButton buyUtilityButton, endTurnButton, buyCityButton, buyHouseButton, quitButton;
+    private JButton buyUtilityButton, endTurnButton, buyCityButton, buyHouseButton, quitButton, buyHotelButton;
     private Point[] boardPositions;
     private static Die die = new Die();
     private boolean isAnimating = false;
@@ -143,12 +143,13 @@ public class GUI2 implements ActionListener , PlayerObserver {
     public void setOkButton(Game game) {
         // clears text box
         //getTextArea().setText("");
+        Player currentPlayer = game.getCurrentPlayer();
         movesMade++;
 
         // create quit button
         setQuitButton(game);
 
-        if (game.getCurrentPlayer().getType().equals("Player")) {
+        if (currentPlayer.getType().equals("Player")) {
             button = new JButton("Roll");
             button.setBounds(460, 550 + MOVEUP, 80, 25);
 
@@ -201,25 +202,31 @@ public class GUI2 implements ActionListener , PlayerObserver {
                     // if current player is not AI
 
                     // city and utility buttons will be set accordingly
-                    if (game.getCurrentPlayer().getOnCity() != null && game.getCurrentPlayer().getOnCity().isAvailable())
+                    if (currentPlayer.getOnCity() != null && currentPlayer.getOnCity().isAvailable())
                         setBuyCityButton(game);
 
-                    else if (game.getCurrentPlayer().getOnUtility() != null && game.getCurrentPlayer().getOnUtility().isAvailable())
+                    else if (currentPlayer.getOnUtility() != null && currentPlayer.getOnUtility().isAvailable())
                         setBuyUtilityButton(game);
 
-                    // if player owns the entire property set they are on
-                    if (game.getCurrentPlayer().getOnCity() != null && game.getCurrentPlayer().ownsCurrentSet(game.getCurrentPlayer().getOnCity())) {
+                    // if player owns the entire property set they are on and can afford a house
+                    if (currentPlayer.getOnCity() != null && currentPlayer.ownsCurrentSet(currentPlayer.getOnCity()) && currentPlayer.getMoney() > currentPlayer.getOnCity().getHouseCost()) {
 
                         // if houses/hotels are still able to be purchased on this property
-                        if (!game.getCurrentPlayer().getOnCity().getHasHotel()) setBuyHouseButton(game);
+                        if (currentPlayer.getOnCity().getNumHouses() < City.MAXHOUSES) {
+                            setBuyHouseButton(game);
+                        }
+
+                        else {
+                            setBuyHotelButton(game);
+                        }
                     }
 
-                    if (die.isDouble() && !game.getCurrentPlayer().getJailState()) {
-                        if (game.getCurrentPlayer().getConsecutiveMoves() >= 3) {
+                    if (die.isDouble() && !currentPlayer.getJailState()) {
+                        if (currentPlayer.getConsecutiveMoves() >= 3) {
                             //System.out.println("Test");
                             removeButtons(game);
 
-                            game.getCurrentPlayer().sendToJail();
+                            currentPlayer.sendToJail();
                             moveOnBoard(game);
 
                             Timer timer = new Timer(2000, new ActionListener() {
@@ -239,7 +246,7 @@ public class GUI2 implements ActionListener , PlayerObserver {
                         }
                     }
                     else {
-                        game.getCurrentPlayer().setConsecutiveMoves(0);
+                        currentPlayer.setConsecutiveMoves(0);
                         // end button will only be created if current player is not AI
                         setEndTurnButton(game);
                     }
@@ -458,6 +465,7 @@ public class GUI2 implements ActionListener , PlayerObserver {
         buyCityButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
+                Audio.playAudio("src/main/resources/buyProperty.wav");
                 System.out.println(game.getCurrentPlayer().getName() + " initially has $" + game.getCurrentPlayer().getMoney());
                 game.getCurrentPlayer().buyCity(game.getCurrentPlayer().getOnCity());
                 System.out.println("This city is available for purchase at a price of " + game.getCurrentPlayer().getOnCity().getPrice());
@@ -481,6 +489,7 @@ public class GUI2 implements ActionListener , PlayerObserver {
         buyUtilityButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
+                Audio.playAudio("src/main/resources/buyProperty.wav");
                 System.out.println(game.getCurrentPlayer().getName() + " initially has $" + game.getCurrentPlayer().getMoney());
                 game.getCurrentPlayer().buyUtility(game.getCurrentPlayer().getOnUtility());
                 System.out.println("This utility is available for purchase at a price of " + game.getCurrentPlayer().getOnUtility().getPrice());
@@ -494,7 +503,7 @@ public class GUI2 implements ActionListener , PlayerObserver {
     }
 
     public void setBuyHouseButton(Game game) {
-        buyHouseButton = new JButton("Buy house/hotel");
+        buyHouseButton = new JButton("Buy house");
         buyHouseButton.setBounds(440, 520 + MOVEUP, 120, 25);
 
         layeredPane.add(buyHouseButton, new Integer(5));
@@ -503,13 +512,45 @@ public class GUI2 implements ActionListener , PlayerObserver {
             @Override
             public void actionPerformed(ActionEvent e) {
                 // find out how many houses can be purchased (max houses on a city - number of existing houses on city)
+                game.getCurrentPlayer().buyHouse(game.getCurrentPlayer().getOnCity());
+
+                // TODO: add code to show house being built on GUI
+
                 int possibleHouses = City.MAXHOUSES - game.getCurrentPlayer().getOnCity().getNumHouses();
 
-                // TO DO: create 5 buttons (1, 2, 3, 4, hotel) and determine if hotel/houses are purchasable
+                if (possibleHouses > 0) {
+                    setBuyHouseButton(game);
+                    frame.repaint();
+                }
+
+                else {
+                    game.cleanProperty();
+                    layeredPane.remove(buyHouseButton);
+                    setBuyHotelButton(game);
+                    frame.repaint();
+                }
             }
         });
     }
 
+    public void setBuyHotelButton(Game game) {
+        buyHotelButton = new JButton("Buy hotel");
+        buyHotelButton.setBounds(440, 520 + MOVEUP, 120, 25);
+
+        layeredPane.add(buyHotelButton, new Integer(5));
+
+        buyHotelButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                // TODO: add code to show hotel being built on GUI
+
+                game.getCurrentPlayer().buyHotel(game.getCurrentPlayer().getOnCity());
+                game.cleanProperty();
+                layeredPane.remove(buyHotelButton);
+                frame.repaint();
+            }
+        });
+    }
 
     public void setEndTurnButton(Game game) {
         endTurnButton = new JButton("End turn");

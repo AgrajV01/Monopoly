@@ -93,6 +93,7 @@ public class MainMenu {
         newGameButton = new JButton("New Game");
         styleButton(newGameButton);
         newGameButton.addActionListener(e -> {
+            Audio.playAudio("src/main/resources/mainMenuClick.wav");
             Game game = new Game(factory, a);
 
             // for now, BGM stops when game is started
@@ -109,6 +110,7 @@ public class MainMenu {
         loadGameButton = new JButton("Load Game");
         styleButton(loadGameButton);
         loadGameButton.addActionListener(e -> {
+            Audio.playAudio("src/main/resources/mainMenuClick.wav");
             // To Do
             frame.dispose();
         });
@@ -117,7 +119,10 @@ public class MainMenu {
     public void setSettingsButton() {
         settingsButton = new JButton("Settings");
         styleButton(settingsButton);
-        settingsButton.addActionListener(e -> showSettingsDialog());
+        settingsButton.addActionListener(e -> {
+            showSettingsDialog();
+            Audio.playAudio("src/main/resources/mainMenuClick.wav");
+        });
     }
 
     public void showSettingsDialog() {
@@ -254,11 +259,15 @@ public class MainMenu {
             factory.setNumOfAiPlayers((Integer) aiPlayersSelector.getSelectedItem());
             factory.setAIDifficulty((AIDifficulty) aiDifficultySelector.getSelectedItem());
             settingsDialog.dispose();
+            Audio.playAudio("src/main/resources/mainMenuClick.wav");
         });
 
         JButton leaveButton = new JButton("Leave");
         styleButton(leaveButton);
-        leaveButton.addActionListener(e -> settingsDialog.dispose());
+        leaveButton.addActionListener(e -> {
+            settingsDialog.dispose();
+            Audio.playAudio("src/main/resources/mainMenuClick.wav");
+        });
 
         JPanel buttonPanel = new JPanel(new FlowLayout(FlowLayout.CENTER));
         buttonPanel.add(applyButton);
@@ -274,7 +283,10 @@ public class MainMenu {
     public void setRulesButton() {
         rulesButton = new JButton("Rules");
         styleButton(rulesButton);
-        rulesButton.addActionListener(e -> showRulesDialog());
+        rulesButton.addActionListener(e -> {
+            showRulesDialog();
+            Audio.playAudio("src/main/resources/mainMenuClick.wav");
+        });
     }
 
     public void showRulesDialog() {
@@ -361,7 +373,10 @@ public class MainMenu {
 
         JButton gotItButton = new JButton("Got It!");
         styleButton(gotItButton);
-        gotItButton.addActionListener(e -> rulesDialog.dispose());
+        gotItButton.addActionListener(e -> {
+            rulesDialog.dispose();
+            Audio.playAudio("src/main/resources/mainMenuClick.wav");
+        });
 
         JPanel bottomPanel = new JPanel(new FlowLayout(FlowLayout.CENTER));
         bottomPanel.setBackground(darkerBlue);

@@ -564,20 +564,23 @@ public class GUI2 implements ActionListener , PlayerObserver {
         buyHouseButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                // find out how many houses can be purchased (max houses on a city - number of existing houses on city)
                 Audio.playAudio("src/main/resources/buildHouse.wav");
                 game.getCurrentPlayer().buyHouse(game.getCurrentPlayer().getOnCity());
 
-                // TODO: add code to show house being built on GUI
-
                 int possibleHouses = City.MAXHOUSES - game.getCurrentPlayer().getOnCity().getNumHouses();
+
+                int currentPlayerPosition = game.getCurrentPlayer().getPosition();
+                Point housePosition = new Point(boardPositions[currentPlayerPosition]);
+
+                ImageIcon houseIcon = new ImageIcon("house.png");
+                JLabel houseLabel = new JLabel(houseIcon);
+                houseLabel.setBounds(housePosition.x, housePosition.y, houseIcon.getIconWidth(), houseIcon.getIconHeight());
+                layeredPane.add(houseLabel, new Integer(4));
 
                 if (possibleHouses > 0) {
                     setBuyHouseButton(game);
                     frame.repaint();
-                }
-
-                else {
+                } else {
                     game.cleanProperty();
                     layeredPane.remove(buyHouseButton);
                     setBuyHotelButton(game);
@@ -586,6 +589,7 @@ public class GUI2 implements ActionListener , PlayerObserver {
             }
         });
     }
+
 
     public void setBuyHotelButton(Game game) {
         buyHotelButton = new JButton("Buy hotel");
@@ -596,16 +600,28 @@ public class GUI2 implements ActionListener , PlayerObserver {
         buyHotelButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                // TODO: add code to show hotel being built on GUI
                 Audio.playAudio("src/main/resources/buildHouse.wav");
 
                 game.getCurrentPlayer().buyHotel(game.getCurrentPlayer().getOnCity());
                 game.cleanProperty();
+
+                int currentPlayerPosition = game.getCurrentPlayer().getPosition();
+                Point housePosition = new Point(boardPositions[currentPlayerPosition]);
+
+                ImageIcon originalIcon = new ImageIcon("house.png");
+                Image scaledImage = originalIcon.getImage().getScaledInstance(originalIcon.getIconWidth() * 2, originalIcon.getIconHeight() * 2, Image.SCALE_SMOOTH);
+                ImageIcon scaledIcon = new ImageIcon(scaledImage);
+
+                JLabel houseLabel = new JLabel(scaledIcon);
+                houseLabel.setBounds(housePosition.x, housePosition.y, scaledIcon.getIconWidth(), scaledIcon.getIconHeight());
+                layeredPane.add(houseLabel, new Integer(4));
+
                 layeredPane.remove(buyHotelButton);
                 frame.repaint();
             }
         });
     }
+
 
     public void setEndTurnButton(Game game) {
         endTurnButton = new JButton("End turn");

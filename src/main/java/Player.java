@@ -174,7 +174,7 @@ public class Player {
 
          */
 
-        Audio.playAudio("src/main/resources/diceRoll.wav");
+        if (!this.getType().equals("Player")) Audio.playAudio("src/main/resources/diceRoll.wav");
         consecutiveMoves++;
 
         int temp = position;

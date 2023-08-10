@@ -165,9 +165,13 @@ public class GUI2 implements ActionListener , PlayerObserver {
             button.addActionListener(new ActionListener() {
                 @Override
                 public void actionPerformed(ActionEvent e) {
+                    removeButtons(game);
                     if (isAnimating) return;
 
+                    boolean exitedJail = true;
+
                     die.roll();
+                    Audio.playAudio("src/main/resources/diceRoll.wav");
 
                     if (diceLabel1 != null) {
                         layeredPane.remove(diceLabel1);
@@ -182,9 +186,7 @@ public class GUI2 implements ActionListener , PlayerObserver {
                         if (die.isDouble()) {
                             currentPlayer.leaveJail();
                             getTextArea().append(currentPlayer.getName() + " has rolled a doubles! They leave jail");
-                        }
-
-                        else {
+                        } else {
                             currentPlayer.setTurnsInJail(currentPlayer.getTurnsInJail() + 1);
 
                             if (currentPlayer.getTurnsInJail() >= 3) {
@@ -195,21 +197,25 @@ public class GUI2 implements ActionListener , PlayerObserver {
                             }
 
                             else {
-                                getTextArea().append(currentPlayer.getName() + " failed to roll a doubles! They stay in jail");
-                                game.switchTurn();
-                                nextTurn(game);
+                                exitedJail = false;
+                                getTextArea().setText(currentPlayer.getName() + " failed to roll a doubles! They stay in jail");
+                                removeButtons(game);
+                                layeredPane.remove(button);
+                                button = null;
+                                setEndTurnButton(game);
                             }
                         }
                     }
                     // TO DO: add conditional situation in case player is in jail (they cannot move unless they pay or roll doubles)
 
-                    game.makeMove(die);
+                    if (exitedJail) {
+                        game.makeMove(die);
 
-                    // Display new dice values
-                    displayDice();
+                        // Display new dice values
+                        displayDice();
 
-                    // logic for movement animation
-                    moveOnBoard(game);
+                        // logic for movement animation
+                        moveOnBoard(game);
                 /*
                 if (buyCityButton != null) {
                     game.cleanProperty();
@@ -222,67 +228,61 @@ public class GUI2 implements ActionListener , PlayerObserver {
                 }
 
                  */
-                    layeredPane.remove(button);
-                    button = null;
-                    layeredPane.revalidate();
-                    layeredPane.repaint();
+                        layeredPane.remove(button);
+                        button = null;
+                        layeredPane.revalidate();
+                        layeredPane.repaint();
 
-                    // TO DO: create setButtons function instead of checking for each individually
+                        // TO DO: create setButtons function instead of checking for each individually
 
-                    // if current player is not AI
+                        // if current player is not AI
 
-                    // city and utility buttons will be set accordingly
-                    if (currentPlayer.getOnCity() != null && currentPlayer.getOnCity().isAvailable())
-                        setBuyCityButton(game, die);
+                        // city and utility buttons will be set accordingly
+                        if (currentPlayer.getOnCity() != null && currentPlayer.getOnCity().isAvailable())
+                            setBuyCityButton(game, die);
 
-                    else if (currentPlayer.getOnUtility() != null && currentPlayer.getOnUtility().isAvailable())
-                        setBuyUtilityButton(game, die);
+                        else if (currentPlayer.getOnUtility() != null && currentPlayer.getOnUtility().isAvailable())
+                            setBuyUtilityButton(game, die);
 
-                    // if player owns the entire property set they are on and can afford a house
-                    if (currentPlayer.getOnCity() != null && currentPlayer.ownsCurrentSet(currentPlayer.getOnCity()) && currentPlayer.getMoney() > currentPlayer.getOnCity().getHouseCost()) {
+                        // if player owns the entire property set they are on and can afford a house
+                        if (currentPlayer.getOnCity() != null && currentPlayer.ownsCurrentSet(currentPlayer.getOnCity()) && currentPlayer.getMoney() > currentPlayer.getOnCity().getHouseCost()) {
 
-                        // if houses/hotels are still able to be purchased on this property
-                        if (currentPlayer.getOnCity().getNumHouses() < City.MAXHOUSES) {
-                            setBuyHouseButton(game);
+                            // if houses/hotels are still able to be purchased on this property
+                            if (currentPlayer.getOnCity().getNumHouses() < City.MAXHOUSES) {
+                                setBuyHouseButton(game);
+                            } else {
+                                setBuyHotelButton(game);
+                            }
                         }
 
-                        else {
-                            setBuyHotelButton(game);
+                        if (die.isDouble() && !currentPlayer.getJailState()) {
+                            if (currentPlayer.getConsecutiveMoves() >= 3) {
+                                removeButtons(game);
+                                currentPlayer.sendToJail();
+                                moveOnBoard(game);
+
+                                Timer timer = new Timer(2000, new ActionListener() {
+                                    @Override
+                                    public void actionPerformed(ActionEvent e) {
+                                        game.switchTurn();
+                                        nextTurn(game);
+                                    }
+                                });
+
+                                timer.setRepeats(false);
+                                timer.start();
+                            } else {
+                                //removeButtons(game);
+                                setOkButton(game);
+                            }
+                        } else {
+                            currentPlayer.setConsecutiveMoves(0);
+                            // end button will only be created if current player is not AI
+                            setEndTurnButton(game);
                         }
+                        //removeButtons(game);
                     }
-
-                    if (die.isDouble() && !currentPlayer.getJailState()) {
-                        if (currentPlayer.getConsecutiveMoves() >= 3) {
-                            //System.out.println("Test");
-                            removeButtons(game);
-
-                            currentPlayer.sendToJail();
-                            moveOnBoard(game);
-
-                            Timer timer = new Timer(2000, new ActionListener() {
-                                @Override
-                                public void actionPerformed(ActionEvent e) {
-                                    game.switchTurn();
-                                    nextTurn(game);
-                                }
-                            });
-
-                            timer.setRepeats(false);
-                            timer.start();
-                        }
-                        else {
-                            //removeButtons(game);
-                            setOkButton(game);
-                        }
-                    }
-                    else {
-                        currentPlayer.setConsecutiveMoves(0);
-                        // end button will only be created if current player is not AI
-                        setEndTurnButton(game);
-                    }
-                    //removeButtons(game);
                 }
-
             });
         }
 
@@ -315,6 +315,21 @@ public class GUI2 implements ActionListener , PlayerObserver {
             layeredPane.remove(buyUtilityButton);
             buyUtilityButton = null;
         }
+
+        if (buyHotelButton != null) {
+            game.cleanProperty();
+            layeredPane.remove(buyHotelButton);
+            buyHotelButton = null;
+        }
+
+        if (bailButton != null) {
+            game.cleanProperty();
+            layeredPane.remove(bailButton);
+            bailButton = null;
+        }
+
+        layeredPane.revalidate();
+        frame.repaint();
     }
 
     private void nextTurn(Game game) {
@@ -326,6 +341,8 @@ public class GUI2 implements ActionListener , PlayerObserver {
             public void actionPerformed(ActionEvent e) {
 
                 if (!game.getCurrentPlayer().getType().equals("Player")) {
+                    removeButtons(game);
+
                     movesMade++;
                     die.roll();
                     if (diceLabel1 != null) {
@@ -488,12 +505,13 @@ public class GUI2 implements ActionListener , PlayerObserver {
 
     public void setBailButton(Game game) {
         bailButton = new JButton("Pay bail");
-        bailButton.setBounds(440, 550 + MOVEUP, 120, 25);
+        bailButton.setBounds(460, 520 + MOVEUP, 80, 25);
         layeredPane.add(bailButton, new Integer(5));
 
         bailButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
+                Audio.playAudio("src/main/resources/lostMoney.wav");
                 game.getCurrentPlayer().setTurnsInJail(0);
                 game.getCurrentPlayer().payRent(50);
                 game.getCurrentPlayer().leaveJail();

@@ -20,6 +20,7 @@ public class Player {
     private int position;
     private int positionDiff;
     private int consecutiveMoves;
+    private int turnsInJail;
     private boolean isBankrupted;
     private List<City> ownedCities;
     private GUI2 gui; // added this to be able to print elements on screen
@@ -69,6 +70,7 @@ public class Player {
         this.position = 0; // Starting at 'GO'
         this.positionDiff = 0;
         consecutiveMoves = 0;
+        turnsInJail = 0;
         this.ownedCities = new ArrayList<>();
         this.ownedUtilities = new ArrayList<>();
         this.subscribers = new ArrayList<>();
@@ -127,6 +129,10 @@ public class Player {
     }
     public void setPosition(int position) { this.position = position; }
 
+    public int getTurnsInJail() { return turnsInJail; }
+
+    public void setTurnsInJail(int count) { turnsInJail = count; }
+
     public void sendToJail() {
 //        setPosition(10);
 //        inJail = true;
@@ -134,7 +140,7 @@ public class Player {
         // Notify the player about being sent to jail before the delay
 
         gui.getTextArea().setText(name + " is being sent to jail!");
-
+        consecutiveMoves = 0;
 
         // Introduce a delay of 2 seconds (2000 milliseconds) before sending the player to jail
         int delayMilliseconds = 1000;
@@ -160,10 +166,13 @@ public class Player {
     }
 
     public void move(int steps) {
+        /*
         if (inJail) {
             inJail = false;
             consecutiveMoves = 0;
         }
+
+         */
 
         Audio.playAudio("src/main/resources/diceRoll.wav");
         consecutiveMoves++;
@@ -255,6 +264,8 @@ public class Player {
     }
 
     public boolean getJailState() { return inJail; }
+
+    public void leaveJail() { inJail = false; }
 
     // displays the player's money before and after purchasing the utility
     public boolean wantToBuyUtility(Utility utility) {

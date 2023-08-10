@@ -12,7 +12,7 @@ public class GUI2 implements ActionListener , PlayerObserver {
     private boolean tutor = false;
 
     private int movesMade = 0;
-    private JButton buyUtilityButton, endTurnButton, buyCityButton, buyHouseButton, quitButton, buyHotelButton;
+    private JButton buyUtilityButton, endTurnButton, buyCityButton, buyHouseButton, quitButton, buyHotelButton, bailButton;
     private Point[] boardPositions;
     private static Die die = new Die();
     private boolean isAnimating = false;
@@ -141,9 +141,12 @@ public class GUI2 implements ActionListener , PlayerObserver {
     }
 
     public void setOkButton(Game game) {
-        // clears text box
-        //getTextArea().setText("");
         Player currentPlayer = game.getCurrentPlayer();
+
+        if (currentPlayer.getJailState() && currentPlayer.getJailCards() > 0) {
+            getTextArea().setText(game.getCurrentPlayer().getName() + " uses a Get out of jail free card!");
+            currentPlayer.setJailCards(currentPlayer.getJailCards() - 1);
+        }
         movesMade++;
 
         // create quit button
@@ -154,6 +157,10 @@ public class GUI2 implements ActionListener , PlayerObserver {
             button.setBounds(460, 550 + MOVEUP, 80, 25);
 
             layeredPane.add(button, new Integer(5));
+
+            if (currentPlayer.getJailState()) {
+                setBailButton(game);
+            }
 
             button.addActionListener(new ActionListener() {
                 @Override
@@ -171,6 +178,29 @@ public class GUI2 implements ActionListener , PlayerObserver {
                         diceLabel2 = null;
                     }
 
+                    if (currentPlayer.getJailState()) {
+                        if (die.isDouble()) {
+                            currentPlayer.leaveJail();
+                            getTextArea().append(currentPlayer.getName() + " has rolled a doubles! They leave jail");
+                        }
+
+                        else {
+                            currentPlayer.setTurnsInJail(currentPlayer.getTurnsInJail() + 1);
+
+                            if (currentPlayer.getTurnsInJail() >= 3) {
+                                currentPlayer.setTurnsInJail(0);
+                                currentPlayer.payRent(50);
+                                currentPlayer.leaveJail();
+                                getTextArea().append(currentPlayer.getName() + " has spent 3 turns in jail! They must pay to get out");
+                            }
+
+                            else {
+                                getTextArea().append(currentPlayer.getName() + " failed to roll a doubles! They stay in jail");
+                                game.switchTurn();
+                                nextTurn(game);
+                            }
+                        }
+                    }
                     // TO DO: add conditional situation in case player is in jail (they cannot move unless they pay or roll doubles)
 
                     game.makeMove(die);
@@ -203,10 +233,10 @@ public class GUI2 implements ActionListener , PlayerObserver {
 
                     // city and utility buttons will be set accordingly
                     if (currentPlayer.getOnCity() != null && currentPlayer.getOnCity().isAvailable())
-                        setBuyCityButton(game);
+                        setBuyCityButton(game, die);
 
                     else if (currentPlayer.getOnUtility() != null && currentPlayer.getOnUtility().isAvailable())
-                        setBuyUtilityButton(game);
+                        setBuyUtilityButton(game, die);
 
                     // if player owns the entire property set they are on and can afford a house
                     if (currentPlayer.getOnCity() != null && currentPlayer.ownsCurrentSet(currentPlayer.getOnCity()) && currentPlayer.getMoney() > currentPlayer.getOnCity().getHouseCost()) {
@@ -456,7 +486,26 @@ public class GUI2 implements ActionListener , PlayerObserver {
         }
     }
 
-    public void setBuyCityButton(Game game) {
+    public void setBailButton(Game game) {
+        bailButton = new JButton("Pay bail");
+        bailButton.setBounds(440, 550 + MOVEUP, 120, 25);
+        layeredPane.add(bailButton, new Integer(5));
+
+        bailButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                game.getCurrentPlayer().setTurnsInJail(0);
+                game.getCurrentPlayer().payRent(50);
+                game.getCurrentPlayer().leaveJail();
+                getTextArea().append(game.getCurrentPlayer().getName() + " has paid 50$ to leave jail!");
+
+                layeredPane.remove(bailButton);
+                frame.repaint();
+            }
+        });
+    }
+
+    public void setBuyCityButton(Game game, Die die) {
         buyCityButton = new JButton("Buy City");
         buyCityButton.setBounds(460,520+MOVEUP, 80, 25);
 
@@ -471,8 +520,9 @@ public class GUI2 implements ActionListener , PlayerObserver {
                 System.out.println("This city is available for purchase at a price of " + game.getCurrentPlayer().getOnCity().getPrice());
                 System.out.println("After Purchasing, the balance amount you have is " + game.getCurrentPlayer().getMoney());
                 getTextArea().setText(game.getCurrentPlayer().getName() + " has purchased " + game.getCurrentPlayer().getOnCity().name + " for " + game.getCurrentPlayer().getOnCity().getPrice() + "$");
-                if(tutor)
-                    getTextArea().append("\nPress the End Turn button to continue.");
+
+                if (tutor && !die.isDouble()) getTextArea().append("\nPress the End Turn button to continue.");
+
                 game.cleanProperty();
                 layeredPane.remove(buyCityButton);
                 frame.repaint();
@@ -480,7 +530,7 @@ public class GUI2 implements ActionListener , PlayerObserver {
         });
     }
 
-    public void setBuyUtilityButton(Game game) {
+    public void setBuyUtilityButton(Game game, Die die) {
         buyUtilityButton = new JButton("Buy Utility");
         buyUtilityButton.setBounds(440,520+MOVEUP, 120, 25);
 
@@ -495,6 +545,9 @@ public class GUI2 implements ActionListener , PlayerObserver {
                 System.out.println("This utility is available for purchase at a price of " + game.getCurrentPlayer().getOnUtility().getPrice());
                 System.out.println("After Purchasing, the balance amount you have is " + game.getCurrentPlayer().getMoney());
                 getTextArea().append("\n" + game.getCurrentPlayer().getName() + " has purchased " + game.getCurrentPlayer().getOnUtility().name + " for " + game.getCurrentPlayer().getOnUtility().getPrice() + "$");
+
+                if (tutor && !die.isDouble()) getTextArea().append("\nPress the End Turn button to continue.");
+
                 game.cleanProperty();
                 layeredPane.remove(buyUtilityButton);
                 frame.repaint();
@@ -512,6 +565,7 @@ public class GUI2 implements ActionListener , PlayerObserver {
             @Override
             public void actionPerformed(ActionEvent e) {
                 // find out how many houses can be purchased (max houses on a city - number of existing houses on city)
+                Audio.playAudio("src/main/resources/buildHouse.wav");
                 game.getCurrentPlayer().buyHouse(game.getCurrentPlayer().getOnCity());
 
                 // TODO: add code to show house being built on GUI
@@ -543,6 +597,7 @@ public class GUI2 implements ActionListener , PlayerObserver {
             @Override
             public void actionPerformed(ActionEvent e) {
                 // TODO: add code to show hotel being built on GUI
+                Audio.playAudio("src/main/resources/buildHouse.wav");
 
                 game.getCurrentPlayer().buyHotel(game.getCurrentPlayer().getOnCity());
                 game.cleanProperty();

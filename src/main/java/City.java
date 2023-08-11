@@ -87,7 +87,7 @@ public class City extends Space {
 
     @Override
     public void action(Player player) {
-
+        player.setOnCity(this);
         gui.getTextArea().append(player.getName() + " has landed on: " + this.name);
 
         // if property is available to be purchased

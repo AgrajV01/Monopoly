@@ -96,7 +96,7 @@ public class MainMenu {
         styleButton(newGameButton);
         newGameButton.addActionListener(e -> {
             Game game = new Game(factory, a);
-            a.initializeTheBoard(game, factory);
+            a.initializeTheBoard(game);
             game.subscribeToPlayers(a);
 
             frame.dispose();
@@ -108,7 +108,15 @@ public class MainMenu {
         styleButton(loadGameButton);
         loadGameButton.addActionListener(e -> {
             // To Do
-            frame.dispose();
+            try{
+                Game game = Game.loadGame(factory, a);
+                a.initializeTheBoard(game);
+                game.subscribeToPlayers(a);
+            } catch (Exception exception){
+                System.out.println("Unable to load game " + exception);
+            }
+
+//            frame.dispose();
         });
     }
 

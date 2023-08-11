@@ -693,7 +693,9 @@ public class GUI2 implements ActionListener , PlayerObserver {
         quitButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                System.exit(0);
+                Audio.stopClip(Audio.bgmClip);
+                frame.dispose();
+                MainMenu menu = new MainMenu(true);
             }
         });
     }

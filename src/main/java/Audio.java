@@ -5,7 +5,7 @@ import javax.sound.sampled.Clip;
 import javax.sound.sampled.FloatControl;
 
 public class Audio {
-    private static boolean musicOn = true;
+    private static boolean soundOn = true;
     public static Clip bgmClip;
 
     public static void setVolume(Clip clip, float volume) {
@@ -48,13 +48,15 @@ public class Audio {
     }
 
     public static void toggleSound(Clip clip) {
-        if (musicOn) {
+        if (soundOn) {
             clip.stop();
-            musicOn = false;
+            soundOn = false;
         }
         else {
-            musicOn = true;
+            soundOn = true;
             clip.start();
         }
     }
+
+    public static void stopClip(Clip clip) { clip.stop(); }
 }

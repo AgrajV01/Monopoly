@@ -32,30 +32,6 @@ public class Game {
         }
     }
 
-    // unused
-    public void rollDiceAndMove() {
-        int roll = die.roll();
-        players.get(currentPlayer).move(roll);
-        System.out.println("You rolled: " + die.diceOne + " + " + die.diceTwo + " = " + roll);
-        if (die.isDouble()) {
-            System.out.println("You rolled a double!");
-        }
-
-        // Check if player's new position is a city and it's owned by someone else
-        int position = players.get(currentPlayer).getPosition();
-        // action is decided depending on position of the player
-        board.getPosition(position).action(players.get(currentPlayer));
-    }
-
-
-
-    /*
-        public void buyCurrentCity() {
-            int position = players.get(currentPlayer).getPosition();
-            City city = board.getCity(position);
-            players.get(currentPlayer).buyCity(city);
-        }
-    */
     public int switchTurn() {
         if(numOfPlayers == currentPlayer + 1)
             currentPlayer = -1;
@@ -76,26 +52,10 @@ public class Game {
         //if (getCurrentPlayer().getType().equals("Player"))
         board.getPosition(position).action(getCurrentPlayer());
 
-/*
-        if(board.getPosition(position) instanceof City) {
-            City city = (City) board.getPosition(position);
-            if(city.getOwner() != null && city.getOwner() != players.get(currentPlayer)) {
-                players.get(currentPlayer).payRent(city.getRent());
-                city.getOwner().receiveRent(city.getRent());
-            }
-        }
-
- */
-
-
-        // Switch the turn to the next player
         for(Player pl : players) {
             if (pl.getIsBankrupted())
                 return;
         }
-
-        // switch turns if the player did not roll doubles
-        // switchTurn();
     }
 
 

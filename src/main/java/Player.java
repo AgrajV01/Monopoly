@@ -321,38 +321,11 @@ public class Player {
     }
 
     public void buyHouse(City city) {
-        /*
-        if (city.getHouseCost()> money) {
-            gui.getTextArea().append("You cannot afford that many houses!");
-            if(gui.getTutor())
-                gui.getTextArea().append("\nYou can earn more money by collecting rent, " +
-                        "passing go, or drawing community chest cards!");
-        }
-
-        else {
-            payRent(city.getHouseCost());
-            city.addHouse();
-        }
-         */
         payRent(city.getHouseCost());
         city.addHouse();
     }
 
     public void buyHotel(City city) {
-        /*
-        // if price of hotel (5 houses - # of current houses) exceeds player balance
-        if ((city.getHouseCost() * 5) - (city.getHouseCost() * city.getNumHouses()) > money) {
-            gui.getTextArea().append("You cannot afford a hotel!");
-            if(gui.getTutor())
-                gui.getTextArea().append("\nYou can earn more money by collecting rent, " +
-                        "passing go, or drawing community chest cards!");
-        }
-
-        else {
-            payRent((city.getHouseCost() * 5) - (city.getHouseCost() * city.getNumHouses()));
-            city.addHotel();
-        }
-        */
         payRent(city.getHouseCost());
         city.addHotel();
     }

@@ -12,7 +12,7 @@ public class GUI2 implements ActionListener , PlayerObserver {
     private boolean tutor = false;
 
     private int movesMade = 0;
-    private JButton buyUtilityButton, endTurnButton, buyCityButton, buyHouseButton, quitButton, buyHotelButton, bailButton;
+    private JButton buyUtilityButton, endTurnButton, buyCityButton, buyHouseButton, quitButton, buyHotelButton, bailButton, muteButton;
     private Point[] boardPositions;
     private static Die die = new Die();
     private boolean isAnimating = false;
@@ -149,8 +149,9 @@ public class GUI2 implements ActionListener , PlayerObserver {
         }
         movesMade++;
 
-        // create quit button
-        setQuitButton(game);
+        // create quit button and mute button
+        setQuitButton();
+        setMuteButton();
 
         if (currentPlayer.getType().equals("Player")) {
             button = new JButton("Roll");
@@ -523,6 +524,20 @@ public class GUI2 implements ActionListener , PlayerObserver {
         });
     }
 
+    public void setMuteButton() {
+        muteButton = new JButton("Toggle Music");
+        muteButton.setBounds(560, 135, 120, 50);
+
+        layeredPane.add(muteButton, new Integer(5));
+
+        muteButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                Audio.toggleSound(Audio.bgmClip);
+            }
+        });
+    }
+
     public void setBuyCityButton(Game game, Die die) {
         buyCityButton = new JButton("Buy City");
         buyCityButton.setBounds(460,520+MOVEUP, 80, 25);
@@ -671,7 +686,7 @@ public class GUI2 implements ActionListener , PlayerObserver {
         });
     }
 
-    public void setQuitButton(Game game) {
+    public void setQuitButton() {
         quitButton = new JButton("Quit");
         quitButton.setBounds(710, 135, 70, 50);
         layeredPane.add(quitButton, new Integer(5));

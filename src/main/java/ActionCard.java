@@ -35,8 +35,7 @@ public class ActionCard extends Space {
                         "They can send you somewhere good or bad!\n");
 
         }
-        //int cardType = random.nextInt(4);
-        int cardType = 1;
+        int cardType = random.nextInt(4);
 
         switch (cardType) {
             case 0:
@@ -60,18 +59,6 @@ public class ActionCard extends Space {
                 Audio.playAudio("src/main/resources/lostMoney.wav");
                 player.payRent(150); // player pays taxes to the bank
                 break;
-                /*
-            case 4:
-                player.move(3); // player moves forward 3 squares
-                System.out.println("You move forward 3 squares");
-
-                break;
-            case 5:
-                player.move(-3); // player moves backward 3 squares
-                System.out.println("You move backwards 3 squares");
-                break;
-
-                 */
         }
     }
 }

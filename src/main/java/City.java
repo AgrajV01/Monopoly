@@ -108,15 +108,7 @@ public class City extends Space {
                 System.out.println("Insufficient funds to buy the Property");
                 gui.getTextArea().append(" Insufficient funds to buy the Property");
             }
-            /*
-            System.out.println("This city is available for purchase at a price of $" + price);
-            if (player.wantToBuyCity(this)) {
-                player.buyCity(this);
-                System.out.println("Congratulations! You have successfully purchased " + this.name);
-            } else {
-                System.out.println("You chose not to purchase " + this.name);
-            }
-            */
+
         }
         // if property is owned by another player
         else if (getOwner() != player) {
@@ -130,17 +122,7 @@ public class City extends Space {
                 gui.getTextArea().append("\n" + player.getName() + " must pay " + owner.getName() + " " + rent + "$");
                 player.payRent(rent);
                 owner.receiveRent(rent);
-                /*
-                System.out.println(player.getName() + " initially has $" + player.getMoney());
-                gui.getTextArea().append(player.getName() + " initially has $" + player.getMoney() + ".");
-                player.payRent(rent);
-                owner.receiveRent(rent);
-                System.out.println("Amount left after paying rent is: $" + player.getMoney());
-                gui.getTextArea().append(" Amount left after paying rent is: $" + player.getMoney());
-                System.out.println("After receiving the rent, Owner(" + owner.getName() + ") has $" + owner.getMoney() + ".");
-                gui.getTextArea().append(" After receiving the rent, Owner(" + owner.getName() + ") has $" + owner.getMoney());
 
-                 */
             }
             else{
 

@@ -548,7 +548,11 @@ public class GUI2 implements ActionListener , PlayerObserver {
         quitButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
+                game.saveGame();
+
                 System.exit(0);
+
+
             }
         });
     }
@@ -650,14 +654,14 @@ public class GUI2 implements ActionListener , PlayerObserver {
         setBackdrop(black);
     }
 
-    public void initializeTheBoard(Game game, GameFactory factory) {
+    public void initializeTheBoard(Game game) {
         System.out.println("initializingTheBoard");
 
         setBoardPositions();
 
-        String imagePath = factory.getBoardStyle() + ".png";
+        String imagePath = game.getBoardStyle() + ".png";
         System.out.println("Attempting to load image from: " + imagePath);
-        System.out.println("Board Style from Factory: " + factory.getBoardStyle());
+        System.out.println("Board Style from Factory: " + game.getBoardStyle());
         ImageIcon icon = new ImageIcon(getClass().getResource(imagePath));
 
         Image image = icon.getImage();

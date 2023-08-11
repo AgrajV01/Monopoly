@@ -8,6 +8,7 @@ public class Game {
     private Die die;
     public static List<Player> players;
     private int currentPlayer, numOfPlayers;
+    private boolean allColors;
     private GUI2 gui;
 
     public void cleanProperty(){
@@ -20,6 +21,7 @@ public class Game {
         this.board = factory.createBoard(gui);
         this.players = factory.createPlayers(this);
         this.gui = gui;
+        this.allColors = factory.getAllColors();
         board = new Board(gui);
         die = new Die();
         currentPlayer = 0; // Player 1 starts the game
@@ -130,5 +132,9 @@ public class Game {
         }
 
         return totalValue;
+    }
+
+    public boolean getAllColors(){
+        return allColors;
     }
 }

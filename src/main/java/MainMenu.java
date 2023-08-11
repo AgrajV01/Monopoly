@@ -230,6 +230,7 @@ public class MainMenu {
         settingsPanel.add(cashInput);
         settingsPanel.add(aiPlayersLabel);
         settingsPanel.add(aiPlayersSelector);
+        boolean currentAllColors = factory.getAllColors();
 
         settingsPanel.setBackground(darkerBlue);
         settingsPanel.setBorder(BorderFactory.createEmptyBorder(20, 20, 20, 20));
@@ -244,6 +245,14 @@ public class MainMenu {
         settingsPanel.add(aiDifficultyLabel);
         settingsPanel.add(aiDifficultySelector);
 
+        JCheckBox allColorsCheckbox = new JCheckBox("All Colors To Buy a House/Hotel Requirement", currentAllColors);
+        allColorsCheckbox.setFont(standardFont);
+        allColorsCheckbox.setBackground(darkerBlue);
+        allColorsCheckbox.setForeground(Color.WHITE);
+
+        settingsPanel.add(new JLabel(""));
+        settingsPanel.add(allColorsCheckbox);
+
         JButton applyButton = new JButton("Apply");
         styleButton(applyButton);
         applyButton.addActionListener(e -> {
@@ -251,6 +260,16 @@ public class MainMenu {
             factory.setBoardStyle((String) boardStyleSelection.getSelectedItem());
             factory.setNumOfAiPlayers((Integer) aiPlayersSelector.getSelectedItem());
             settingsDialog.dispose();
+        });
+
+        applyButton.addActionListener(e -> {
+            factory.setCash(Integer.parseInt(cashInput.getText()));
+            factory.setBoardStyle((String) boardStyleSelection.getSelectedItem());
+            factory.setNumOfAiPlayers((Integer) aiPlayersSelector.getSelectedItem());
+            factory.setAIDifficulty((AIDifficulty) aiDifficultySelector.getSelectedItem());
+            factory.setAllColors(allColorsCheckbox.isSelected()); // Set the allColors value based on checkbox state
+            settingsDialog.dispose();
+            Audio.playAudio("src/main/resources/mainMenuClick.wav");
         });
 
         applyButton.addActionListener(e -> {

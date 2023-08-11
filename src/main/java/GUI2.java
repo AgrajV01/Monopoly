@@ -246,7 +246,7 @@ public class GUI2 implements ActionListener , PlayerObserver {
                             setBuyUtilityButton(game, die);
 
                         // if player owns the entire property set they are on and can afford a house
-                        if (currentPlayer.getOnCity() != null && currentPlayer.ownsCurrentSet(currentPlayer.getOnCity()) && currentPlayer.getMoney() > currentPlayer.getOnCity().getHouseCost()) {
+                        if ((currentPlayer.getOnCity() != null) && ((currentPlayer.ownsCurrentSet(currentPlayer.getOnCity()) && currentPlayer.getMoney() > currentPlayer.getOnCity().getHouseCost()) || (!game.getAllColors() && currentPlayer.getOnCity().getOwner() == currentPlayer))) {
 
                             // if houses/hotels are still able to be purchased on this property
                             if (currentPlayer.getOnCity().getNumHouses() < City.MAXHOUSES) {
@@ -555,6 +555,10 @@ public class GUI2 implements ActionListener , PlayerObserver {
                 getTextArea().setText(game.getCurrentPlayer().getName() + " has purchased " + game.getCurrentPlayer().getOnCity().name + " for " + game.getCurrentPlayer().getOnCity().getPrice() + "$");
 
                 if (tutor && !die.isDouble()) getTextArea().append("\nPress the End Turn button to continue.");
+
+                if (!game.getAllColors()) {
+                    setBuyHouseButton(game);
+                }
 
                 game.cleanProperty();
                 layeredPane.remove(buyCityButton);

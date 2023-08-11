@@ -7,6 +7,7 @@ import java.util.List;
 public class CustomGameFactory implements GameFactory {
     private int numPlayers;
     private int money;
+    private boolean allColors;
     private String boardStyle = "Classic";
     private int numOfAiPlayers;
     private GUI2 gui;
@@ -18,6 +19,7 @@ public class CustomGameFactory implements GameFactory {
         this.money = cash;
         this.boardStyle = new String(boardStyle);
         this.gui = gui; // added gui into contructor
+        this.allColors = false;
     }
 
     @Override
@@ -78,6 +80,12 @@ public class CustomGameFactory implements GameFactory {
     }
     public void setNumPlayers(int numPlayers){
         this.numPlayers = numPlayers;
+    }
+    public boolean getAllColors(){
+        return allColors;
+    }
+    public void setAllColors(boolean allColors){
+        this.allColors = allColors;
     }
     @Override
     public int getNumOfAiPlayers(){

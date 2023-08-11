@@ -12,6 +12,9 @@ public interface GameFactory {
     public AIDifficulty getAIDifficulty();
     public void setAIDifficulty (AIDifficulty difficulty);
 
+
+    public boolean getAllColors();
+    public void setAllColors(boolean allColors);
     int getCash();
     void setCash(int cash);
 

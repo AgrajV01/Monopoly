@@ -336,14 +336,16 @@ public class MainMenu {
 
                         "• Going Bankrupt:\n" +
                         "   - Owed amount exceeding your cash results in bankruptcy.\n" +
-                        "   - Debt to another player: Give them your available money.\n" +
+                        "   - Debt to another player: Give player all remaining money and properties.\n" +
                         "   - Debt to the Bank: Hand over your available money.\n\n" +
 
                         "• Winning:\n" +
                         "   - The game concludes when a player goes bankrupt.\n" +
                         "   - The player with the highest property and liquid funds wins the Game!.\n\n" +
 
-                        "Note: Trading between players is not allowed in this version."
+                        "Notes:\n " +
+                        "   - Trading between players is not allowed in this version.\n" +
+                        "   - You can only purchase houses/hotels on the property you are currently on."
         );
         rulesText.setWrapStyleWord(true);
         rulesText.setLineWrap(true);

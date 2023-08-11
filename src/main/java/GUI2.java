@@ -556,11 +556,7 @@ public class GUI2 implements ActionListener , PlayerObserver {
 
                 if (tutor && !die.isDouble()) getTextArea().append("\nPress the End Turn button to continue.");
 
-                if (!game.getAllColors()) {
-                    setBuyHouseButton(game);
-                }
-
-                game.cleanProperty();
+                //game.cleanProperty();
                 layeredPane.remove(buyCityButton);
                 frame.repaint();
             }
@@ -612,9 +608,10 @@ public class GUI2 implements ActionListener , PlayerObserver {
                 ImageIcon houseIcon = new ImageIcon("house.png");
                 JLabel houseLabel = new JLabel(houseIcon);
                 houseLabel.setBounds(housePosition.x, housePosition.y, houseIcon.getIconWidth(), houseIcon.getIconHeight());
-                layeredPane.add(houseLabel, new Integer(4));
+                layeredPane.add(houseLabel, new Integer(8));
 
                 if (possibleHouses > 0) {
+                    layeredPane.remove(buyHouseButton);
                     setBuyHouseButton(game);
                     frame.repaint();
                 } else {
@@ -651,7 +648,7 @@ public class GUI2 implements ActionListener , PlayerObserver {
 
                 JLabel houseLabel = new JLabel(scaledIcon);
                 houseLabel.setBounds(housePosition.x, housePosition.y, scaledIcon.getIconWidth(), scaledIcon.getIconHeight());
-                layeredPane.add(houseLabel, new Integer(4));
+                layeredPane.add(houseLabel, new Integer(8));
 
                 layeredPane.remove(buyHotelButton);
                 frame.repaint();

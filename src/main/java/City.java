@@ -125,7 +125,7 @@ public class City extends Space {
 
             }
             else{
-
+                player.transferAssets(getOwner());
                 gui.getTextArea().append(player.getName() + " has  $" + player.getMoney() + ". ");
 
                 gui.getTextArea().append("Insufficient funds! The Player is Bankrupted!");

@@ -227,19 +227,38 @@ public class Player {
         if(money >= rent) {
             money -= rent;
         } else {
-            /*
-            System.out.println("Not enough money to pay rent. Transferring assets and going bankrupt.");
-            for(City city : ownedCities) {
-                city.getOwner().receiveRent(city.getPrice());
-                city.setOwner(null);
-            }
-             */
-            money =0;
+
+            //System.out.println("Not enough money to pay rent. Transferring assets and going bankrupt.");
+
+            money = 0;
             playerbankrupted();
             return;
         }
         notifyObservers();
     }
+
+    public void transferAssetsBank() {
+        for (City city : ownedCities) {
+            city.setOwner(null);
+        }
+
+        for (Utility utility : ownedUtilities) {
+            utility.setOwner(null);
+        }
+    }
+
+    public void transferAssets(Player receiver) {
+        for (City city : ownedCities) {
+            city.setOwner(receiver);
+        }
+
+        for (Utility utility : ownedUtilities) {
+            utility.setOwner(receiver);
+        }
+
+        receiver.setJailCards(receiver.getJailCards() + this.getJailCards());
+    }
+
     private void playerbankrupted(){
         System.out.println(name + " is Bankrupted!");
         gui.getTextArea().setText(name + " is Bankrupted!");

@@ -58,6 +58,7 @@ public class ActionCard extends Space {
                 gui.getTextArea().append(player.getName() + " must pay 150$ to the bank! New balance: " + player.getMoney());
                 Audio.playAudio("src/main/resources/lostMoney.wav");
                 player.payRent(150); // player pays taxes to the bank
+                if (player.getIsBankrupted()) player.transferAssetsBank();
                 break;
         }
     }

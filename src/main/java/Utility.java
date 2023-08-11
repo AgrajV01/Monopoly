@@ -117,6 +117,7 @@ public class Utility extends Space{
                  */
             }
             else{
+                player.transferAssets(getOwner());
                 System.out.println(player.getName() + " has  $" + player.getMoney());
                 gui.getTextArea().append(" " + player.getName() + " has  $" + player.getMoney());
                 System.out.println("Insufficient funds! The Player is Bankrupted");

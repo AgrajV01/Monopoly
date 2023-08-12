@@ -615,14 +615,13 @@ public class GUI2 implements ActionListener , PlayerObserver {
 
                 JLabel houseLabel = new JLabel(scaledHouseIcon);
                 houseLabel.setBounds(housePosition.x, housePosition.y, 30, 30);
-                layeredPane.add(houseLabel, new Integer(8));
+                layeredPane.add(houseLabel, new Integer(7));
 
                 if (possibleHouses > 0) {
                     layeredPane.remove(buyHouseButton);
                     setBuyHouseButton(game);
                     frame.repaint();
                 } else {
-                    game.cleanProperty();
                     layeredPane.remove(buyHouseButton);
                     setBuyHotelButton(game);
                     frame.repaint();
@@ -652,7 +651,7 @@ public class GUI2 implements ActionListener , PlayerObserver {
                 ImageIcon scaledIcon = new ImageIcon(scaledImage);
 
                 JLabel houseLabel = new JLabel(scaledIcon);
-                houseLabel.setBounds(housePosition.x, housePosition.y, 60, 60);
+                houseLabel.setBounds(housePosition.x - 20, housePosition.y - 12, 60, 60);
                 layeredPane.add(houseLabel, new Integer(8));
 
                 layeredPane.remove(buyHotelButton);

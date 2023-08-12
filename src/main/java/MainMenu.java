@@ -99,7 +99,7 @@ public class MainMenu {
             // for now, BGM stops when game is started
             // Audio.stopSound(Audio.bgmClip);
 
-            a.initializeTheBoard(game, factory);
+            a.initializeTheBoard(game);
             game.subscribeToPlayers(a);
 
             frame.dispose();
@@ -111,7 +111,13 @@ public class MainMenu {
         styleButton(loadGameButton);
         loadGameButton.addActionListener(e -> {
             Audio.playAudio("src/main/resources/mainMenuClick.wav");
-            // To Do
+            try{
+                Game game = Game.loadGame(factory, a);
+                a.initializeTheBoard(game);
+                game.subscribeToPlayers(a);
+            } catch (Exception exception){
+                System.out.println("Unable to load game " + exception);
+            }
             frame.dispose();
         });
     }

@@ -605,9 +605,16 @@ public class GUI2 implements ActionListener , PlayerObserver {
                 int currentPlayerPosition = game.getCurrentPlayer().getPosition();
                 Point housePosition = new Point(boardPositions[currentPlayerPosition]);
 
-                ImageIcon houseIcon = new ImageIcon("house.png");
-                JLabel houseLabel = new JLabel(houseIcon);
-                houseLabel.setBounds(housePosition.x, housePosition.y, houseIcon.getIconWidth(), houseIcon.getIconHeight());
+                // Random adjustments for x and y position within 10 pixels
+                Random rand = new Random();
+                housePosition.translate(rand.nextInt(21) - 10, rand.nextInt(21) - 10);
+
+                ImageIcon originalHouseIcon = new ImageIcon("src/main/resources/house.png");
+                Image scaledHouseImage = originalHouseIcon.getImage().getScaledInstance(30, 30, Image.SCALE_SMOOTH);
+                ImageIcon scaledHouseIcon = new ImageIcon(scaledHouseImage);
+
+                JLabel houseLabel = new JLabel(scaledHouseIcon);
+                houseLabel.setBounds(housePosition.x, housePosition.y, 30, 30);
                 layeredPane.add(houseLabel, new Integer(8));
 
                 if (possibleHouses > 0) {
@@ -624,7 +631,6 @@ public class GUI2 implements ActionListener , PlayerObserver {
         });
     }
 
-
     public void setBuyHotelButton(Game game) {
         buyHotelButton = new JButton("Buy hotel");
         buyHotelButton.setBounds(440, 520 + MOVEUP, 120, 25);
@@ -637,17 +643,16 @@ public class GUI2 implements ActionListener , PlayerObserver {
                 Audio.playAudio("src/main/resources/buildHouse.wav");
 
                 game.getCurrentPlayer().buyHotel(game.getCurrentPlayer().getOnCity());
-                game.cleanProperty();
 
                 int currentPlayerPosition = game.getCurrentPlayer().getPosition();
                 Point housePosition = new Point(boardPositions[currentPlayerPosition]);
 
-                ImageIcon originalIcon = new ImageIcon("house.png");
-                Image scaledImage = originalIcon.getImage().getScaledInstance(originalIcon.getIconWidth() * 2, originalIcon.getIconHeight() * 2, Image.SCALE_SMOOTH);
+                ImageIcon originalIcon = new ImageIcon("src/main/resources/house.png");
+                Image scaledImage = originalIcon.getImage().getScaledInstance(60, 60, Image.SCALE_SMOOTH); // Scaling to 60x60
                 ImageIcon scaledIcon = new ImageIcon(scaledImage);
 
                 JLabel houseLabel = new JLabel(scaledIcon);
-                houseLabel.setBounds(housePosition.x, housePosition.y, scaledIcon.getIconWidth(), scaledIcon.getIconHeight());
+                houseLabel.setBounds(housePosition.x, housePosition.y, 60, 60);
                 layeredPane.add(houseLabel, new Integer(8));
 
                 layeredPane.remove(buyHotelButton);
@@ -655,7 +660,6 @@ public class GUI2 implements ActionListener , PlayerObserver {
             }
         });
     }
-
 
     public void setEndTurnButton(Game game) {
         endTurnButton = new JButton("End turn");

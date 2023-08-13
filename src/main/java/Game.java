@@ -87,7 +87,7 @@ public class Game {
             return currentPlayer-1;
         else return 3;
     }
-    public static void gameOver() {
+    public static void gameOver(GUI2 guiInstance) {
         // Determine the player with the highest value
         Player winner = getPlayerWithHighestValue();
         int propertyMoney =calculateTotalValue(winner) - winner.getMoney();
@@ -102,9 +102,12 @@ public class Game {
                 .sorted((p1, p2) -> Integer.compare(calculateTotalValue(p2), calculateTotalValue(p1)))
                 .forEach(p -> System.out.println(p.getName() + "-- Total Value(Including properties and money): "
                         + calculateTotalValue(p)));
-        System.exit(0);
+
+        guiInstance.onGameOver();
+
+//        System.exit(0);
     }
-    private static Player getPlayerWithHighestValue() {
+    public static Player getPlayerWithHighestValue() {
         Player winner = players.get(0);
         int highestValue = calculateTotalValue(winner);
 

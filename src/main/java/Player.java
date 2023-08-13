@@ -262,9 +262,7 @@ public class Player {
     private void playerbankrupted(){
         System.out.println(name + " is Bankrupted!");
         gui.getTextArea().setText(name + " is Bankrupted!");
-        //Game.gameOver();
-
-        Game.gameOver();
+        Game.gameOver(gui);
         notifyGameOver();
     }
 

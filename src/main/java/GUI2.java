@@ -1094,22 +1094,11 @@ public class GUI2 implements ActionListener , PlayerObserver {
         JLabel pictureLabel = new JLabel(image);
         pictureLabel.setBounds(0,0,frame.getWidth(), frame.getHeight());
 
-        layeredPane.removeAll();
+        // If you want to display only the Bankruptcy image, uncomment the below line
+//        layeredPane.removeAll();
 
 
         layeredPane.add(pictureLabel, new Integer(5));
-        Player winner = Game.getPlayerWithHighestValue();
-
-//        if (winner.getName().contains("1")) {
-//            p1.setNameLabel("Winner: " + winner.getName());
-//        } else if (winner.getName().contains("2")) {
-//            p2.setNameLabel("Winner: " + winner.getName());
-//        } else if (winner.getName().contains("3")) {
-//            p3.setNameLabel("Winner: " + winner.getName());
-//        } else {
-//            p4.setNameLabel("Winner: " + winner.getName());
-//        }
-
 
         frame.repaint();
         this.enableDiceRollButton = false;

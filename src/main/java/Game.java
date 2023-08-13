@@ -105,9 +105,21 @@ public class Game {
 
         guiInstance.onGameOver();
 
+        // Update the text box with the winner details
+        guiInstance.getTextArea().append("\nThe Winner is : " + winner.getName() + "\n");
+        guiInstance.getTextArea().append(winner.getName() + " has total $" + calculateTotalValue(winner) +
+                "($" + winner.getMoney() + "-- money, $" + propertyMoney + "-- properties)\n");
+        guiInstance.getTextArea().append("Other players:\n");
+        players.stream()
+                .filter(player -> player != winner)
+                .sorted((p1, p2) -> Integer.compare(calculateTotalValue(p2), calculateTotalValue(p1)))
+                .forEach(p -> guiInstance.getTextArea().append(p.getName() + "-- Total Value: "
+                        + calculateTotalValue(p) + "\n"));
+
+
 //        System.exit(0);
     }
-    public static Player getPlayerWithHighestValue() {
+    private static Player getPlayerWithHighestValue() {
         Player winner = players.get(0);
         int highestValue = calculateTotalValue(winner);
 

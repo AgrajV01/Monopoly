@@ -10,6 +10,7 @@ import java.awt.event.ActionListener;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.databind.SerializationFeature;
+
 import java.io.File;
 import java.io.FileWriter;
 
@@ -23,16 +24,19 @@ public class Player {
     private Utility onUtility;
     private List<City> ownedCities;
     private GUI2 gui; // added this to be able to print elements on screen
-
     private List<Utility> ownedUtilities;
-
 
     private List<PlayerObserver> subscribers;
 
     public static class PlayerState{
 
-        public PlayerState() { }
+        public PlayerState() { 
+            utilities = new ArrayList<>(); 
+            cities = new ArrayList<>(); 
+        }
         public String name;
+        public ArrayList<String> utilities;
+        public ArrayList<String> cities;
         public int positionDiff;
         public int money;
         public int position;
@@ -41,6 +45,7 @@ public class Player {
         public boolean inJail;
         public int jailCards; // number of get out of jail free cards this player has
         public int turnsInJail;
+        public String imageIcon;
     }
     private PlayerState state;
 
@@ -54,6 +59,9 @@ public class Player {
     }
     public void setOnCity(City onCity){
         this.onCity = onCity;
+    }
+    public String getImageIcon(){
+        return state.imageIcon;
     }
     public String getType(){
         return "Player";
@@ -79,6 +87,7 @@ public class Player {
     public Player(String name, int money, GUI2 gui) {
         this.state = new PlayerState();
         this.state.name = name;
+        this.state.imageIcon = null;
         this.state.money = money; // Starting money in Monopoly
         this.state.position = 0; // Starting at 'GO'
         this.state.positionDiff = 0;
@@ -110,13 +119,38 @@ public class Player {
     }
 
 
-    public static Player loadPlayer(String name, GUI2 gui2) {
+    public static Player loadPlayer(String name, GUI2 gui2, Board board) {
 
         ObjectMapper mapper = new ObjectMapper();
 
         try{
             PlayerState s = mapper.readValue(new File(name +".json"), PlayerState.class);
-            return new Player(s, gui2);
+            
+            Player p = new Player(s, gui2);
+            int money = p.getMoney();
+
+            for (String u : p.state.utilities){
+                Utility utility = (Utility)board.getSpace(u);
+                if (utility == null){
+                    continue;
+                }
+                // ensure enough money to buy back properties
+                p.setMoney(2000);
+                p.buyUtility(utility);
+            }
+
+            for (String u : p.state.cities){
+                City city = (City)board.getSpace(u);
+                if (city == null){
+                    continue;
+                }
+                p.setMoney(2000);
+                p.buyCity(city);
+            }
+            // set to actual amount of money
+            p.setMoney(money);
+
+            return p;
         }
         catch(Exception e)
         {
@@ -128,11 +162,22 @@ public class Player {
 
     public void saveState() {
 
+        // save all properties before saving to file
+        for (Utility u : ownedUtilities){
+            state.utilities.add(u.getName());
+        }
+
+        for (City c : ownedCities){
+            state.cities.add(c.getName());
+        }
+
         try{
+            
+
             ObjectMapper mapper = new ObjectMapper();
 
             String saveString = mapper.writeValueAsString(this.state);
-
+            
             FileWriter f = new FileWriter(state.name+".json");
             f.write(saveString);
             f.close();

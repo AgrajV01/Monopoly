@@ -80,7 +80,7 @@ public class Game {
         this.die = new Die();
 
         for (String name : this.state.playerNames){
-            Player p = Player.loadPlayer(name, gui);
+            Player p = Player.loadPlayer(name, gui, board);
             Game.players.add(p);
             System.out.println(p.getPosition());
         }
@@ -115,6 +115,15 @@ public class Game {
             System.out.println(e);
         }
    }
+
+    public Player findPlayer(String imageIcon){
+        for (Player p : players){
+            if (imageIcon.equals(p.getImageIcon())){
+                return p;
+            }
+        }
+        return null;
+    }
 
 
     public void subscribeToPlayers(PlayerObserver o){

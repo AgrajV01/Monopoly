@@ -8,6 +8,7 @@ public class Game {
     private Die die;
     public static List<Player> players;
     private int currentPlayer, numOfPlayers;
+    private boolean allColors;
     private GUI2 gui;
 
     public void cleanProperty(){
@@ -20,6 +21,7 @@ public class Game {
         this.board = factory.createBoard(gui);
         this.players = factory.createPlayers(this);
         this.gui = gui;
+        this.allColors = factory.getAllColors();
         board = new Board(gui);
         die = new Die();
         currentPlayer = 0; // Player 1 starts the game
@@ -32,30 +34,6 @@ public class Game {
         }
     }
 
-    // unused
-    public void rollDiceAndMove() {
-        int roll = die.roll();
-        players.get(currentPlayer).move(roll);
-        System.out.println("You rolled: " + die.diceOne + " + " + die.diceTwo + " = " + roll);
-        if (die.isDouble()) {
-            System.out.println("You rolled a double!");
-        }
-
-        // Check if player's new position is a city and it's owned by someone else
-        int position = players.get(currentPlayer).getPosition();
-        // action is decided depending on position of the player
-        board.getPosition(position).action(players.get(currentPlayer));
-    }
-
-
-
-    /*
-        public void buyCurrentCity() {
-            int position = players.get(currentPlayer).getPosition();
-            City city = board.getCity(position);
-            players.get(currentPlayer).buyCity(city);
-        }
-    */
     public int switchTurn() {
         if(numOfPlayers == currentPlayer + 1)
             currentPlayer = -1;
@@ -76,26 +54,10 @@ public class Game {
         //if (getCurrentPlayer().getType().equals("Player"))
         board.getPosition(position).action(getCurrentPlayer());
 
-/*
-        if(board.getPosition(position) instanceof City) {
-            City city = (City) board.getPosition(position);
-            if(city.getOwner() != null && city.getOwner() != players.get(currentPlayer)) {
-                players.get(currentPlayer).payRent(city.getRent());
-                city.getOwner().receiveRent(city.getRent());
-            }
-        }
-
- */
-
-
-        // Switch the turn to the next player
         for(Player pl : players) {
             if (pl.getIsBankrupted())
                 return;
         }
-
-        // switch turns if the player did not roll doubles
-        // switchTurn();
     }
 
 
@@ -125,7 +87,7 @@ public class Game {
             return currentPlayer-1;
         else return 3;
     }
-    public static void gameOver() {
+    public static void gameOver(GUI2 guiInstance) {
         // Determine the player with the highest value
         Player winner = getPlayerWithHighestValue();
         int propertyMoney =calculateTotalValue(winner) - winner.getMoney();
@@ -140,7 +102,22 @@ public class Game {
                 .sorted((p1, p2) -> Integer.compare(calculateTotalValue(p2), calculateTotalValue(p1)))
                 .forEach(p -> System.out.println(p.getName() + "-- Total Value(Including properties and money): "
                         + calculateTotalValue(p)));
-        System.exit(0);
+
+        guiInstance.onGameOver();
+
+        // Update the text box with the winner details
+        guiInstance.getTextArea().append("\nThe Winner is : " + winner.getName() + "\n");
+        guiInstance.getTextArea().append(winner.getName() + " has total $" + calculateTotalValue(winner) +
+                "($" + winner.getMoney() + "-- money, $" + propertyMoney + "-- properties)\n");
+        guiInstance.getTextArea().append("Other players:\n");
+        players.stream()
+                .filter(player -> player != winner)
+                .sorted((p1, p2) -> Integer.compare(calculateTotalValue(p2), calculateTotalValue(p1)))
+                .forEach(p -> guiInstance.getTextArea().append(p.getName() + "-- Total Value: "
+                        + calculateTotalValue(p) + "\n"));
+
+
+//        System.exit(0);
     }
     private static Player getPlayerWithHighestValue() {
         Player winner = players.get(0);
@@ -170,5 +147,9 @@ public class Game {
         }
 
         return totalValue;
+    }
+
+    public boolean getAllColors(){
+        return allColors;
     }
 }

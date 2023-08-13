@@ -20,6 +20,7 @@ public class Player {
     private int position;
     private int positionDiff;
     private int consecutiveMoves;
+    private int turnsInJail;
     private boolean isBankrupted;
     private List<City> ownedCities;
     private GUI2 gui; // added this to be able to print elements on screen
@@ -69,6 +70,7 @@ public class Player {
         this.position = 0; // Starting at 'GO'
         this.positionDiff = 0;
         consecutiveMoves = 0;
+        turnsInJail = 0;
         this.ownedCities = new ArrayList<>();
         this.ownedUtilities = new ArrayList<>();
         this.subscribers = new ArrayList<>();
@@ -127,23 +129,26 @@ public class Player {
     }
     public void setPosition(int position) { this.position = position; }
 
+    public int getTurnsInJail() { return turnsInJail; }
+
+    public void setTurnsInJail(int count) { turnsInJail = count; }
+
     public void sendToJail() {
 //        setPosition(10);
 //        inJail = true;
 
         // Notify the player about being sent to jail before the delay
 
-
         gui.getTextArea().setText(name + " is being sent to jail!");
-
+        consecutiveMoves = 0;
 
         // Introduce a delay of 2 seconds (2000 milliseconds) before sending the player to jail
-        int delayMilliseconds = 0;
+        int delayMilliseconds = 1000;
         Timer timer = new Timer(delayMilliseconds, (ActionEvent e) -> {
 
             // Notify the player again after the delay
 
-
+            Audio.playAudio("src/main/resources/jailSiren.wav");
             gui.getTextArea().setText(name + " has been sent to jail!");
 
         });
@@ -161,11 +166,15 @@ public class Player {
     }
 
     public void move(int steps) {
+        /*
         if (inJail) {
             inJail = false;
             consecutiveMoves = 0;
         }
 
+         */
+
+        if (!this.getType().equals("Player")) Audio.playAudio("src/main/resources/diceRoll.wav");
         consecutiveMoves++;
 
         int temp = position;
@@ -174,7 +183,7 @@ public class Player {
         inJail = false; // remove this line once the jail delay is set correctly
         if (steps > 0 && position < temp) {
 
-
+            Audio.playAudio("src/main/resources/gotCash.wav");
             gui.getTextArea().setText("You have passed Go! You collect 200$.\n");
 
             money += 200;
@@ -218,25 +227,42 @@ public class Player {
         if(money >= rent) {
             money -= rent;
         } else {
-            /*
-            System.out.println("Not enough money to pay rent. Transferring assets and going bankrupt.");
-            for(City city : ownedCities) {
-                city.getOwner().receiveRent(city.getPrice());
-                city.setOwner(null);
-            }
-             */
-            money =0;
+
+            //System.out.println("Not enough money to pay rent. Transferring assets and going bankrupt.");
+
+            money = 0;
             playerbankrupted();
             return;
         }
         notifyObservers();
     }
+
+    public void transferAssetsBank() {
+        for (City city : ownedCities) {
+            city.setOwner(null);
+        }
+
+        for (Utility utility : ownedUtilities) {
+            utility.setOwner(null);
+        }
+    }
+
+    public void transferAssets(Player receiver) {
+        for (City city : ownedCities) {
+            city.setOwner(receiver);
+        }
+
+        for (Utility utility : ownedUtilities) {
+            utility.setOwner(receiver);
+        }
+
+        receiver.setJailCards(receiver.getJailCards() + this.getJailCards());
+    }
+
     private void playerbankrupted(){
         System.out.println(name + " is Bankrupted!");
         gui.getTextArea().setText(name + " is Bankrupted!");
-        //Game.gameOver();
-
-        Game.gameOver();
+        Game.gameOver(gui);
         notifyGameOver();
     }
 
@@ -255,6 +281,8 @@ public class Player {
     }
 
     public boolean getJailState() { return inJail; }
+
+    public void leaveJail() { inJail = false; }
 
     // displays the player's money before and after purchasing the utility
     public boolean wantToBuyUtility(Utility utility) {
@@ -309,33 +337,14 @@ public class Player {
         return false;
     }
 
-    public void buyHouse(City city, int count) {
-        if (city.getHouseCost() * count > money) {
-            gui.getTextArea().append("You cannot afford that many houses!");
-            if(gui.getTutor())
-                gui.getTextArea().append("\nYou can earn more money by collecting rent, " +
-                        "passing go, or drawing community chest cards!");
-        }
-
-        else {
-            payRent(city.getHouseCost() * count);
-            city.addHouses(count);
-        }
+    public void buyHouse(City city) {
+        payRent(city.getHouseCost());
+        city.addHouse();
     }
 
     public void buyHotel(City city) {
-        // if price of hotel (5 houses - # of current houses) exceeds player balance
-        if ((city.getHouseCost() * 5) - (city.getHouseCost() * city.getNumHouses()) > money) {
-            gui.getTextArea().append("You cannot afford a hotel!");
-            if(gui.getTutor())
-                gui.getTextArea().append("\nYou can earn more money by collecting rent, " +
-                        "passing go, or drawing community chest cards!");
-        }
-
-        else {
-            payRent((city.getHouseCost() * 5) - (city.getHouseCost() * city.getNumHouses()));
-            city.addHotel();
-        }
+        payRent(city.getHouseCost());
+        city.addHotel();
     }
 
     public boolean makeDecision() {

@@ -1,10 +1,7 @@
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.awt.event.ComponentAdapter;
 import java.awt.event.ComponentEvent;
-import java.util.Random;
 import java.awt.event.FocusAdapter;
 import java.awt.event.FocusEvent;
 
@@ -20,6 +17,7 @@ public class MainMenu {
     private GameFactory factory;
 
     MainMenu(boolean tutor) {
+        Audio.playAudio("src/main/resources/bgm.wav");
         layeredPane = new JLayeredPane();
 
         ImageIcon bgIcon = new ImageIcon(getClass().getResource("MainMenu.png"));
@@ -95,7 +93,12 @@ public class MainMenu {
         newGameButton = new JButton("New Game");
         styleButton(newGameButton);
         newGameButton.addActionListener(e -> {
+            Audio.playAudio("src/main/resources/mainMenuClick.wav");
             Game game = new Game(factory, a);
+
+            // for now, BGM stops when game is started
+            // Audio.stopSound(Audio.bgmClip);
+
             a.initializeTheBoard(game, factory);
             game.subscribeToPlayers(a);
 
@@ -107,6 +110,7 @@ public class MainMenu {
         loadGameButton = new JButton("Load Game");
         styleButton(loadGameButton);
         loadGameButton.addActionListener(e -> {
+            Audio.playAudio("src/main/resources/mainMenuClick.wav");
             // To Do
             frame.dispose();
         });
@@ -115,7 +119,10 @@ public class MainMenu {
     public void setSettingsButton() {
         settingsButton = new JButton("Settings");
         styleButton(settingsButton);
-        settingsButton.addActionListener(e -> showSettingsDialog());
+        settingsButton.addActionListener(e -> {
+            showSettingsDialog();
+            Audio.playAudio("src/main/resources/mainMenuClick.wav");
+        });
     }
 
     public void showSettingsDialog() {
@@ -189,6 +196,21 @@ public class MainMenu {
             }
         });
 
+        AIDifficulty[] aiDifficultyOptions = {AIDifficulty.EASY, AIDifficulty.MEDIUM, AIDifficulty.HARD};
+        JComboBox<AIDifficulty> aiDifficultySelector = new JComboBox<>(aiDifficultyOptions);
+        aiDifficultySelector.setFont(standardFont);
+        aiDifficultySelector.setBackground(inputBackground);
+        aiDifficultySelector.setForeground(inputForeground);
+        aiDifficultySelector.setPreferredSize(new Dimension(200, 30));
+        aiDifficultySelector.addFocusListener(new FocusAdapter() {
+            public void focusGained(FocusEvent e) {
+                aiDifficultySelector.setBackground(focusColor);
+            }
+            public void focusLost(FocusEvent e) {
+                aiDifficultySelector.setBackground(inputBackground);
+            }
+        });
+
         JLabel boardStyleLabel = new JLabel("Board Style: ");
         boardStyleLabel.setFont(labelFont);
         boardStyleLabel.setForeground(Color.WHITE);
@@ -208,9 +230,28 @@ public class MainMenu {
         settingsPanel.add(cashInput);
         settingsPanel.add(aiPlayersLabel);
         settingsPanel.add(aiPlayersSelector);
+        boolean currentAllColors = factory.getAllColors();
 
         settingsPanel.setBackground(darkerBlue);
         settingsPanel.setBorder(BorderFactory.createEmptyBorder(20, 20, 20, 20));
+
+        AIDifficulty currentDifficulty = factory.getAIDifficulty();
+        aiDifficultySelector.setSelectedItem(currentDifficulty);
+
+        JLabel aiDifficultyLabel = new JLabel("AI Difficulty Level: ");
+        aiDifficultyLabel.setFont(labelFont);
+        aiDifficultyLabel.setForeground(Color.WHITE);
+
+        settingsPanel.add(aiDifficultyLabel);
+        settingsPanel.add(aiDifficultySelector);
+
+        JCheckBox allColorsCheckbox = new JCheckBox("All Colors To Buy a House/Hotel Requirement", currentAllColors);
+        allColorsCheckbox.setFont(standardFont);
+        allColorsCheckbox.setBackground(darkerBlue);
+        allColorsCheckbox.setForeground(Color.WHITE);
+
+        settingsPanel.add(new JLabel(""));
+        settingsPanel.add(allColorsCheckbox);
 
         JButton applyButton = new JButton("Apply");
         styleButton(applyButton);
@@ -221,9 +262,31 @@ public class MainMenu {
             settingsDialog.dispose();
         });
 
+        applyButton.addActionListener(e -> {
+            factory.setCash(Integer.parseInt(cashInput.getText()));
+            factory.setBoardStyle((String) boardStyleSelection.getSelectedItem());
+            factory.setNumOfAiPlayers((Integer) aiPlayersSelector.getSelectedItem());
+            factory.setAIDifficulty((AIDifficulty) aiDifficultySelector.getSelectedItem());
+            factory.setAllColors(allColorsCheckbox.isSelected()); // Set the allColors value based on checkbox state
+            settingsDialog.dispose();
+            Audio.playAudio("src/main/resources/mainMenuClick.wav");
+        });
+
+        applyButton.addActionListener(e -> {
+            factory.setCash(Integer.parseInt(cashInput.getText()));
+            factory.setBoardStyle((String) boardStyleSelection.getSelectedItem());
+            factory.setNumOfAiPlayers((Integer) aiPlayersSelector.getSelectedItem());
+            factory.setAIDifficulty((AIDifficulty) aiDifficultySelector.getSelectedItem());
+            settingsDialog.dispose();
+            Audio.playAudio("src/main/resources/mainMenuClick.wav");
+        });
+
         JButton leaveButton = new JButton("Leave");
         styleButton(leaveButton);
-        leaveButton.addActionListener(e -> settingsDialog.dispose());
+        leaveButton.addActionListener(e -> {
+            settingsDialog.dispose();
+            Audio.playAudio("src/main/resources/mainMenuClick.wav");
+        });
 
         JPanel buttonPanel = new JPanel(new FlowLayout(FlowLayout.CENTER));
         buttonPanel.add(applyButton);
@@ -239,7 +302,10 @@ public class MainMenu {
     public void setRulesButton() {
         rulesButton = new JButton("Rules");
         styleButton(rulesButton);
-        rulesButton.addActionListener(e -> showRulesDialog());
+        rulesButton.addActionListener(e -> {
+            showRulesDialog();
+            Audio.playAudio("src/main/resources/mainMenuClick.wav");
+        });
     }
 
     public void showRulesDialog() {
@@ -256,39 +322,49 @@ public class MainMenu {
                 "Monopoly Game Rules:\n\n" +
 
                         "• Setup:\n" +
-                        "   - Each player selects a token and places it on the 'Go' space.\n" +
-                        "   - Players are given starting money: two each of $500s, $100s, $50s; and six $20s.\n\n" +
+                        "   - Each player receives a token and starts from the 'Go' space.\n" +
+                        "   - Default starting amount for players: $2000 (modifiable in settings before starting).\n\n"+
+
+                        "• Number of AI players:\n" +
+                        "   - Default number of AI players: 2 (modifiable from 0-4 in settings before starting).\n\n"+
+
+                        "• AI Difficulty:\n" +
+                        "   - Default AI difficulty: EASY (modifiable to MEDIUM, or HARD in settings before starting).\n"+
+                        "   - AI players' decision-making probabilities are influenced by their chosen difficulty level.\n\n"+
 
                         "• On Your Turn:\n" +
-                        "   - Roll two six-sided dice and move your token that number of spaces.\n" +
-                        "   - If you roll doubles, you get another turn. However, rolling doubles three times in a row sends you to jail.\n\n" +
+                        "   - Roll two six-sided dice; the token automatically moves the rolled number of spaces.\n" +
+                        "   - Rolling doubles grants an extra turn.\n\n" +
 
                         "• Buying Property:\n" +
-                        "   - If you land on an unowned property, you may buy it for the price listed on its card.\n" +
-                        "   - If you choose not to buy it, it remains unowned.\n\n" +
+                        "   - Land on an unowned property to purchase it for the listed price on its card.\n" +
+                        "   - Opting not to buy leaves the property unowned.\n\n" +
 
                         "• Paying Rent:\n" +
-                        "   - If you land on a property owned by another player, you must pay them rent based on the property's deed card.\n\n" +
+                        "   - Land on another player's property, pay them rent according to the property's deed card.\n\n" +
 
                         "• Special Spaces:\n" +
-                        "   - 'Go to Jail': Move your token to the Jail space and do not collect $200.\n" +
-                        "   - 'Free Parking': Nothing happens. Consider it a free space.\n" +
-                        "   - 'Income Tax': Pay the bank $200 or 10% of your total cash (excluding properties), whichever you prefer.\n" +
+                        "   - 'Go to Jail': Token moves to the Jail space.\n" +
+                        "   - 'Free Parking': No action; consider it a free space.\n" +
+                        "   - 'Income Tax': Pay the bank $200.\n" +
                         "   - 'Luxury Tax': Pay the bank $100.\n\n" +
 
                         "• Houses & Hotels:\n" +
-                        "   - Before buying houses or hotels, you must own all the properties in its color group.\n" +
-                        "   - Houses must be built evenly. For instance, you can't have three houses on one property and one on another in the same group.\n\n" +
+                        "   - Own all properties in a color group before purchasing houses or hotels.\n" +
+                        "   - Houses must be built evenly; no uneven distribution in a group.\n\n" +
 
                         "• Going Bankrupt:\n" +
-                        "   - If you owe more money than you can pay either to another player or the Bank, you are declared bankrupt.\n" +
-                        "   - If your debt is to another player, you give them everything you have, and they can choose to auction off any of your properties.\n" +
-                        "   - If you're in debt to the Bank, everything you have is returned to the Bank and all properties you own are returned to the Bank's title deed card pile.\n\n" +
+                        "   - Owed amount exceeding your cash results in bankruptcy.\n" +
+                        "   - Debt to another player: Give player all remaining money and properties.\n" +
+                        "   - Debt to the Bank: Hand over your available money.\n\n" +
 
                         "• Winning:\n" +
-                        "   - The game ends when all but one player has gone bankrupt. The remaining player wins the game.\n\n" +
+                        "   - The game concludes when a player goes bankrupt.\n" +
+                        "   - The player with the highest property and liquid funds wins the Game!.\n\n" +
 
-                        "Note: Trading between players is not allowed in this version."
+                        "Notes:\n " +
+                        "   - Trading between players is not allowed in this version.\n" +
+                        "   - You can only purchase houses/hotels on the property you are currently on."
         );
         rulesText.setWrapStyleWord(true);
         rulesText.setLineWrap(true);
@@ -318,7 +394,10 @@ public class MainMenu {
 
         JButton gotItButton = new JButton("Got It!");
         styleButton(gotItButton);
-        gotItButton.addActionListener(e -> rulesDialog.dispose());
+        gotItButton.addActionListener(e -> {
+            rulesDialog.dispose();
+            Audio.playAudio("src/main/resources/mainMenuClick.wav");
+        });
 
         JPanel bottomPanel = new JPanel(new FlowLayout(FlowLayout.CENTER));
         bottomPanel.setBackground(darkerBlue);

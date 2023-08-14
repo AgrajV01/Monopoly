@@ -1100,6 +1100,11 @@ public class GUI2 implements ActionListener , PlayerObserver {
 
         layeredPane.add(pictureLabel, new Integer(5));
 
+        ImageIcon image2 = new ImageIcon(getClass().getResource("gameOver.png"));
+        JLabel pictureLabel2 = new JLabel(image2);
+        pictureLabel2.setBounds(435,415+MOVEUP,130, 170);
+        layeredPane.add(pictureLabel2, new Integer(6));
+
         frame.repaint();
         this.enableDiceRollButton = false;
     }

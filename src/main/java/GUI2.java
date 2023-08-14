@@ -957,7 +957,7 @@ public class GUI2 implements ActionListener , PlayerObserver {
 
         System.out.println("setting backdrop");
 
-        URL url = getClass().getResource("back1.jpeg");
+        URL url = getClass().getResource("back0.jpeg");
         ImageIcon originalIcon = new ImageIcon(url); // get StatDisplay image
         Image originalImage = originalIcon.getImage();
         Image resizedImage = originalImage.getScaledInstance(1500, 1000, Image.SCALE_SMOOTH);

@@ -12,7 +12,7 @@ public class GUI2 implements ActionListener , PlayerObserver {
     private boolean tutor = false;
 
     private int movesMade = 0;
-    private JButton buyUtilityButton, endTurnButton, buyCityButton, buyHouseButton, quitButton, buyHotelButton, bailButton, muteButton;
+    private JButton buyUtilityButton, endTurnButton, buyCityButton, buyHouseButton, quitButton, buyHotelButton, bailButton, muteButton, saveButton;
     private Point[] boardPositions;
     private static Die die = new Die();
     private boolean isAnimating = false;
@@ -78,9 +78,10 @@ public class GUI2 implements ActionListener , PlayerObserver {
         }
         movesMade++;
 
-        // create quit button and mute button
+        // create quit button, save button, and mute button
         setQuitButton(game);
         setMuteButton();
+        setSaveButton(game);
 
         if (currentPlayer.getType().equals("Player")) {
             if(enableDiceRollButton){
@@ -619,6 +620,22 @@ public class GUI2 implements ActionListener , PlayerObserver {
         });
     }
 
+    public void setSaveButton(Game game) {
+        saveButton = new JButton("Save");
+        saveButton.setBounds(710, 200, 70, 50);
+        layeredPane.add(saveButton, new Integer(5));
+
+        saveButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                if (game.getCurrentPlayer().getType().equals("Player") && button == null) {
+                    game.switchTurn();
+                }
+                game.saveGame();
+            }
+        });
+    }
+
     public void setQuitButton(Game game) {
         quitButton = new JButton("Quit");
         quitButton.setBounds(710, 135, 70, 50);
@@ -627,7 +644,6 @@ public class GUI2 implements ActionListener , PlayerObserver {
             @Override
             public void actionPerformed(ActionEvent e) {
                 Audio.stopClip(Audio.bgmClip);
-                game.saveGame();
                 frame.dispose();
                 GUI2 gui = new GUI2(true);
                 MainMenu menu = new MainMenu(gui);

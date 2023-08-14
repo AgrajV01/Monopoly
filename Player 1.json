@@ -1,1 +1,5 @@
+<<<<<<< HEAD
 {"name":"Player 1","utilities":[],"cities":["Baltic Avenue"],"positionDiff":3,"money":1940,"position":3,"consecutiveMoves":0,"isBankrupted":false,"inJail":false,"jailCards":0,"turnsInJail":0,"imageIcon":null}
+=======
+{"name":"Player 1","utilities":[],"cities":[],"positionDiff":0,"money":2000,"position":0,"consecutiveMoves":1,"isBankrupted":false,"inJail":false,"jailCards":0,"turnsInJail":0,"imageIcon":null}
+>>>>>>> b221df01aeaa10e3347e7fc71cbd9a49001c67d5

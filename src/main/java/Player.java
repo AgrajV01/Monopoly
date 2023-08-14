@@ -119,14 +119,24 @@ public class Player {
     }
 
 
-    public static Player loadPlayer(String name, GUI2 gui2, Board board) {
+    public static Player loadPlayer(String name, GUI2 gui2, Board board, Game game) {
 
         ObjectMapper mapper = new ObjectMapper();
 
         try{
             PlayerState s = mapper.readValue(new File(name +".json"), PlayerState.class);
-            
-            Player p = new Player(s, gui2);
+
+            Player p;
+
+            if (s.name.contains("AI")) {
+                p = new AI(s.name, s.money, gui2, game, AIDifficulty.MEDIUM);
+                System.out.println(p.getName());
+            }
+
+            else {
+                p = new Player(s, gui2);
+            }
+
             int money = p.getMoney();
 
             for (String u : p.state.utilities){

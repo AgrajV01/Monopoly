@@ -1,5 +1,1 @@
-<<<<<<< HEAD
-{"name":"AI 2","utilities":[],"cities":[],"positionDiff":7,"money":2000,"position":10,"consecutiveMoves":0,"isBankrupted":false,"inJail":true,"jailCards":0,"turnsInJail":0,"imageIcon":null}
-=======
-{"name":"AI 2","utilities":[],"cities":[],"positionDiff":0,"money":2000,"position":0,"consecutiveMoves":1,"isBankrupted":false,"inJail":false,"jailCards":0,"turnsInJail":0,"imageIcon":null}
->>>>>>> b221df01aeaa10e3347e7fc71cbd9a49001c67d5
+{"name":"AI 2","utilities":["B. & O. Railroad"],"cities":[],"positionDiff":3,"money":1900,"position":25,"consecutiveMoves":0,"isBankrupted":false,"inJail":false,"jailCards":0,"turnsInJail":0,"imageIcon":null}

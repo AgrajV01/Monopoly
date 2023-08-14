@@ -833,9 +833,9 @@ public class GUI2 implements ActionListener , PlayerObserver {
             int currentPlayerPosition = game.getPlayer(i-1).getPosition();
 
 
-            System.out.println("Sending player to " + currentPlayerPosition);
+            System.out.println("Sending player" +(i)+ " to " + currentPlayerPosition);
 
-            JLabel currentPlayerIcon = playerIcons.get(game.getCurrentPlayerIndex());
+            JLabel currentPlayerIcon = playerIcons.get(i-1);
 
             System.out.println("823");
 
@@ -850,21 +850,21 @@ public class GUI2 implements ActionListener , PlayerObserver {
 
             System.out.println("834");
             if (currentPlayerPosition < 11) {
-                newPosition.y += yOffset * game.getCurrentPlayerIndex();
+                newPosition.y += yOffset * (i-1);
                 System.out.println("837");}
             else if (currentPlayerPosition < 21) {
-                newPosition.x -= xOffset * game.getCurrentPlayerIndex();
+                newPosition.x -= xOffset * (i-1);
                 System.out.println("840"); }
             else if (currentPlayerPosition < 31) {
-                newPosition.y -= yOffset * game.getCurrentPlayerIndex();
+                newPosition.y -= yOffset * (i-1);
                 System.out.println("843"); }
             else {
-                newPosition.x += xOffset * game.getCurrentPlayerIndex();
+                newPosition.x += xOffset * (i-1);
                 System.out.println("846"); }
-            animateMovement(currentPlayerIcon, newPosition, 15);
+            currentPlayerIcon.setLocation(newPosition.x, newPosition.y); // sets player location
 
             if (game.getCurrentPlayer().getJailState()) {
-                System.out.println("Current player: " + game.getCurrentPlayerIndex());
+                System.out.println("Current player: " + (i-1));
                 //System.out.println(game.getPrevPlayer().getPosition());
                 game.getCurrentPlayer().setPosition(10);
                 newPosition = new Point(boardPositions[game.getCurrentPlayer().getPosition()]);
@@ -878,7 +878,6 @@ public class GUI2 implements ActionListener , PlayerObserver {
                     newPosition.y -= yOffset * game.getCurrentPlayerIndex();
                 else
                     newPosition.x += xOffset * game.getCurrentPlayerIndex();
-
 
 
             }

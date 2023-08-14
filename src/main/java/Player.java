@@ -138,6 +138,7 @@ public class Player {
             }
 
             int money = p.getMoney();
+            p.setPosition(s.position);
 
             for (String u : p.state.utilities){
                 Utility utility = (Utility)board.getSpace(u);

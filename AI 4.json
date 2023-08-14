@@ -1,5 +1,1 @@
-<<<<<<< HEAD
-{"name":"AI 4","utilities":[],"cities":[],"positionDiff":0,"money":2000,"position":0,"consecutiveMoves":0,"isBankrupted":false,"inJail":false,"jailCards":0,"turnsInJail":0,"imageIcon":null}
-=======
-{"name":"AI 4","utilities":[],"cities":[],"positionDiff":0,"money":2000,"position":0,"consecutiveMoves":1,"isBankrupted":false,"inJail":false,"jailCards":0,"turnsInJail":0,"imageIcon":null}
->>>>>>> b221df01aeaa10e3347e7fc71cbd9a49001c67d5
+{"name":"AI 4","utilities":[],"cities":[],"positionDiff":0,"money":1894,"position":13,"consecutiveMoves":0,"isBankrupted":false,"inJail":false,"jailCards":0,"turnsInJail":0,"imageIcon":null}

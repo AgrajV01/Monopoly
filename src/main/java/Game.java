@@ -16,6 +16,12 @@ public class Game {
             p.nullCityUtility();
     }
 
+    public Player getPlayer(int i) { // for sending to display players in GUI2
+
+        return players.get(i);
+
+    }
+
     public Game(GameFactory factory, GUI2 gui) {
         STARTMONEY = factory.getCash();
         this.board = factory.createBoard(gui);

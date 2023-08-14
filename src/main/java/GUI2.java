@@ -829,7 +829,7 @@ public class GUI2 implements ActionListener , PlayerObserver {
 
             //int currentPlayerPosition = game.getCurrentPlayer().getPosition();
 
-            System.out.println("816");
+
             int currentPlayerPosition = game.getPlayer(i-1).getPosition();
 
 
@@ -837,38 +837,38 @@ public class GUI2 implements ActionListener , PlayerObserver {
 
             JLabel currentPlayerIcon = playerIcons.get(i-1);
 
-            System.out.println("823");
+
 
             Point newPosition = new Point(boardPositions[currentPlayerPosition]);
 
-            System.out.println("827");
+
             int yOffset = 70 / game.getNumPlayers();
 
-            System.out.println("830");
+
 
             int xOffset = yOffset;
 
-            System.out.println("834");
-            if (currentPlayerPosition < 11) {
+
+            if (currentPlayerPosition < 11)
                 newPosition.y += yOffset * (i-1);
-                System.out.println("837");}
-            else if (currentPlayerPosition < 21) {
+
+            else if (currentPlayerPosition < 21)
                 newPosition.x -= xOffset * (i-1);
-                System.out.println("840"); }
-            else if (currentPlayerPosition < 31) {
+
+            else if (currentPlayerPosition < 31)
                 newPosition.y -= yOffset * (i-1);
-                System.out.println("843"); }
-            else {
+
+            else
                 newPosition.x += xOffset * (i-1);
-                System.out.println("846"); }
+
             currentPlayerIcon.setLocation(newPosition.x, newPosition.y); // sets player location
 
             if (game.getCurrentPlayer().getJailState()) {
                 System.out.println("Current player: " + (i-1));
-                //System.out.println(game.getPrevPlayer().getPosition());
+
                 game.getCurrentPlayer().setPosition(10);
                 newPosition = new Point(boardPositions[game.getCurrentPlayer().getPosition()]);
-                //System.out.println(game.getPrevPlayer().getPosition());
+
 
                 if (currentPlayerPosition < 11)
                     newPosition.y += yOffset * game.getCurrentPlayerIndex();

@@ -783,11 +783,14 @@ public class GUI2 implements ActionListener , PlayerObserver {
 
             JLabel playerIcon = new JLabel(resizedIcon);
 
-            int playerPosition = game.getPlayer(i-1).getPosition(); // use this is setBounds
-            // returns player position from
-            // To do, make playerPosition work with the setBounds below so save will load last positons
 
             playerIcon.setBounds(800 + (i - 1) * DISTPLAYERS, 800 + MOVEUP + (i - 1) * DISTPLAYERS, 50, 50);
+
+            int playerPosition = game.getPlayer(i-1).getPosition();
+            // returns player position from player
+
+
+            game.getPlayer(i-1).move(playerPosition); // to move the player to the correct position
             playerIcons.add(playerIcon);
 
             layeredPane.add(playerIcons.get(i - 1), new Integer(6));

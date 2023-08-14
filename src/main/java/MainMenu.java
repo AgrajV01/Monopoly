@@ -46,6 +46,12 @@ public class MainMenu {
         factory = new CustomGameFactory(4,2,2000,"Classic", a);
         //defaultSettings();
 
+        String tutorialMode = "ON"; // for the drop down
+
+        if(a.getTutor() == false)
+            tutorialMode = "OFF";
+        else tutorialMode = "ON";
+
         setNewGameButton(a);
         setLoadGameButton(a);
         setSettingsButton();
@@ -216,10 +222,7 @@ public class MainMenu {
                 "ON", "OFF"
         };
 
-        String tutorialMode = "ON"
-        if(tutor == false)
-            tutorialMode = "OFF";
-        else tutorialMode = "ON";
+
 
 
         // tutorial drop down

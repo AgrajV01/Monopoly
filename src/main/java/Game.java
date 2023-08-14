@@ -93,6 +93,9 @@ public class Game {
     }
 
     public static Game loadGame(GameFactory factory, GUI2 gui) throws Exception {
+
+
+
         ObjectMapper mapper = new ObjectMapper();
 
         GameState state = mapper.readValue(new File(SAVE_FILE), GameState.class);

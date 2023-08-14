@@ -628,7 +628,7 @@ public class GUI2 implements ActionListener , PlayerObserver {
             public void actionPerformed(ActionEvent e) {
                 Audio.stopClip(Audio.bgmClip);
                 frame.dispose();
-                GUI2 gui = new GUI2(false);
+                GUI2 gui = new GUI2(true);
                 MainMenu menu = new MainMenu(gui);
             }
         });

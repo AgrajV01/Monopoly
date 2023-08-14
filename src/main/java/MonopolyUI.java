@@ -12,9 +12,10 @@ public class MonopolyUI implements PlayerObserver{
 
     public MonopolyUI(Game game) {
         this.game = game;
-        initializeUI();
+        //initializeUI();
     }
 
+/*
     private void initializeUI() {
         frame = new JFrame("Monopoly");
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -28,7 +29,7 @@ public class MonopolyUI implements PlayerObserver{
                 updateUI();
             }
         });
-/*
+
         buyCityButton = new JButton("Buy City");
         buyCityButton.addActionListener(new ActionListener() {
             @Override
@@ -38,7 +39,7 @@ public class MonopolyUI implements PlayerObserver{
             }
         });
 
- */
+
         gameBoardPanel = new JPanel();
         // You should add code to draw the game board on the JPanel here
 
@@ -46,6 +47,8 @@ public class MonopolyUI implements PlayerObserver{
         frame.getContentPane().add(rollDiceButton, BorderLayout.NORTH);
         //frame.getContentPane().add(buyCityButton, BorderLayout.SOUTH);
     }
+
+ */
 
     private void updateUI() {
         // You should add code to update the UI based on the current game state here

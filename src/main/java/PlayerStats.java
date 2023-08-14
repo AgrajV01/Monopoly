@@ -2,7 +2,7 @@ import javax.swing.*;
 import java.awt.*;
 public class PlayerStats extends PlayerStatMenu{
 
-
+    private int numHousesBuilt = 0;
 	public PlayerStats(int i){
 		super(i);
 	}
@@ -10,10 +10,6 @@ public class PlayerStats extends PlayerStatMenu{
 	public PlayerStats clone(){
 		return this;
 	}
-
-//	public void initializeImage(int i){
-//		originalIcon = new ImageIcon(getClass().getResource("S" + i + ".png")); // get StatDisplay image
-//	}
 
 	public void setMoneyLabel(int money) {
 
@@ -31,6 +27,16 @@ public class PlayerStats extends PlayerStatMenu{
 
     public JLabel getPropertyLabel() {
         return super.propertyLabel;
+    }
+
+
+    // Add getter and setter for numHousesBuilt
+    public int getNumHousesBuilt() {
+        return numHousesBuilt;
+    }
+
+    public void setNumHousesBuilt(int numHousesBuilt) {
+        this.numHousesBuilt = numHousesBuilt;
     }
 }
 

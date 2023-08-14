@@ -628,7 +628,8 @@ public class GUI2 implements ActionListener , PlayerObserver {
             public void actionPerformed(ActionEvent e) {
                 Audio.stopClip(Audio.bgmClip);
                 frame.dispose();
-                MainMenu menu = new MainMenu(true);
+                GUI2 gui = new GUI2(false);
+                MainMenu menu = new MainMenu(gui);
             }
         });
     }
@@ -952,6 +953,8 @@ public class GUI2 implements ActionListener , PlayerObserver {
     public boolean getTutor() {
         return tutor;
     }
+
+    public void setTutor(Boolean tutor) { this.tutor = tutor; }
 
     public void displayBackground() {
 

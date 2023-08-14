@@ -16,8 +16,12 @@ public class MainMenu {
     private JLabel bgLabel;
     private GameFactory factory;
     private String tutorialMode = "ON"; // for the drop down
+    private GUI2 gui;
 
-    MainMenu(boolean tutor) {
+    MainMenu(GUI2 gui) {
+
+        this.gui = gui;
+
         Audio.playAudio("src/main/resources/bgm.wav");
         layeredPane = new JLayeredPane();
 
@@ -43,16 +47,17 @@ public class MainMenu {
         frame.setLayout(new BorderLayout());
         frame.setResizable(true);
 
-        GUI2 a = new GUI2(true);
-        factory = new CustomGameFactory(4,2,2000,"Classic", a);
+
+        factory = new CustomGameFactory(4,2,2000,"Classic", gui);
         //defaultSettings();
 
-        if(a.getTutor() == false)  // reads boolean and sets string to on or off
+
+        if(!gui.getTutor())  // reads boolean and sets string to on or off
             tutorialMode = "OFF";
         else tutorialMode = "ON";
 
-        setNewGameButton(a);
-        setLoadGameButton(a);
+        setNewGameButton(gui);
+        setLoadGameButton(gui);
         setSettingsButton();
         setRulesButton();
         setQuitButton();
@@ -294,6 +299,9 @@ public class MainMenu {
             factory.setCash(Integer.parseInt(cashInput.getText()));
             factory.setBoardStyle((String) boardStyleSelection.getSelectedItem());
             factory.setNumOfAiPlayers((Integer) aiPlayersSelector.getSelectedItem());
+
+            gui.setTutor(tutorialSelection.getSelectedItem() != "OFF");
+
             settingsDialog.dispose();
         });
 
@@ -304,6 +312,9 @@ public class MainMenu {
             factory.setAIDifficulty((AIDifficulty) aiDifficultySelector.getSelectedItem());
             factory.setAllColors(allColorsCheckbox.isSelected()); // Set the allColors value based on checkbox state
             settingsDialog.dispose();
+
+            gui.setTutor(tutorialSelection.getSelectedItem() != "OFF");
+
             Audio.playAudio("src/main/resources/mainMenuClick.wav");
         });
 
@@ -313,6 +324,9 @@ public class MainMenu {
             factory.setNumOfAiPlayers((Integer) aiPlayersSelector.getSelectedItem());
             factory.setAIDifficulty((AIDifficulty) aiDifficultySelector.getSelectedItem());
             settingsDialog.dispose();
+
+            gui.setTutor(tutorialSelection.getSelectedItem() != "OFF");
+
             Audio.playAudio("src/main/resources/mainMenuClick.wav");
         });
 

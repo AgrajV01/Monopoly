@@ -79,7 +79,7 @@ public class GUI2 implements ActionListener , PlayerObserver {
         movesMade++;
 
         // create quit button and mute button
-        setQuitButton();
+        setQuitButton(game);
         setMuteButton();
 
         if (currentPlayer.getType().equals("Player")) {
@@ -619,7 +619,7 @@ public class GUI2 implements ActionListener , PlayerObserver {
         });
     }
 
-    public void setQuitButton() {
+    public void setQuitButton(Game game) {
         quitButton = new JButton("Quit");
         quitButton.setBounds(710, 135, 70, 50);
         layeredPane.add(quitButton, new Integer(5));
@@ -627,6 +627,7 @@ public class GUI2 implements ActionListener , PlayerObserver {
             @Override
             public void actionPerformed(ActionEvent e) {
                 Audio.stopClip(Audio.bgmClip);
+                game.saveGame();
                 frame.dispose();
                 GUI2 gui = new GUI2(true);
                 MainMenu menu = new MainMenu(gui);
@@ -733,14 +734,14 @@ public class GUI2 implements ActionListener , PlayerObserver {
         }
     }
 
-    public void initializeTheBoard(Game game, GameFactory factory) {
+    public void initializeTheBoard(Game game) {
         System.out.println("initializingTheBoard");
 
         setBoardPositions();
 
-        String imagePath = factory.getBoardStyle() + ".png";
+        String imagePath = game.getBoardStyle() + ".png";
         System.out.println("Attempting to load image from: " + imagePath);
-        System.out.println("Board Style from Factory: " + factory.getBoardStyle());
+        System.out.println("Board Style from Factory: " + game.getBoardStyle());
         ImageIcon icon = new ImageIcon(getClass().getResource(imagePath));
 
         Image image = icon.getImage();

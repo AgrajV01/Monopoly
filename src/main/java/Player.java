@@ -7,30 +7,47 @@ import java.util.Scanner;
 import javax.swing.Timer;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.databind.SerializationFeature;
+
+import java.io.File;
+import java.io.FileWriter;
+
 /**
  * The Player class represents a player in the Monopoly game.
- * It holds information about the player's name, money, position, owned cities,
+ * It holds information about the player's name, state.money, position, owned cities,
  * jail status, and jail cards.
  */
 public class Player {
-    private String name;
     private City onCity;
     private Utility onUtility;
-    private int money;
-    private int position;
-    private int positionDiff;
-    private int consecutiveMoves;
-    private int turnsInJail;
-    private boolean isBankrupted;
     private List<City> ownedCities;
     private GUI2 gui; // added this to be able to print elements on screen
-
     private List<Utility> ownedUtilities;
 
-    private boolean inJail;
-    private int jailCards; // number of get out of jail free cards this player has
-
     private List<PlayerObserver> subscribers;
+
+    public static class PlayerState{
+
+        public PlayerState() { 
+            utilities = new ArrayList<>(); 
+            cities = new ArrayList<>(); 
+        }
+        public String name;
+        public ArrayList<String> utilities;
+        public ArrayList<String> cities;
+        public int positionDiff;
+        public int money;
+        public int position;
+        public int consecutiveMoves;
+        public boolean isBankrupted;
+        public boolean inJail;
+        public int jailCards; // number of get out of jail free cards this player has
+        public int turnsInJail;
+        public String imageIcon;
+    }
+    private PlayerState state;
 
     public GUI2 getGui() {
         return gui;
@@ -42,6 +59,9 @@ public class Player {
     }
     public void setOnCity(City onCity){
         this.onCity = onCity;
+    }
+    public String getImageIcon(){
+        return state.imageIcon;
     }
     public String getType(){
         return "Player";
@@ -65,22 +85,109 @@ public class Player {
 
     //
     public Player(String name, int money, GUI2 gui) {
-        this.name = name;
-        this.money = money; // Starting money in Monopoly
-        this.position = 0; // Starting at 'GO'
-        this.positionDiff = 0;
-        consecutiveMoves = 0;
-        turnsInJail = 0;
+        this.state = new PlayerState();
+        this.state.name = name;
+        this.state.imageIcon = null;
+        this.state.money = money; // Starting money in Monopoly
+        this.state.position = 0; // Starting at 'GO'
+        this.state.positionDiff = 0;
+        this.state.consecutiveMoves = 0;
+        this.state.turnsInJail = 0;
         this.ownedCities = new ArrayList<>();
         this.ownedUtilities = new ArrayList<>();
         this.subscribers = new ArrayList<>();
-        this.jailCards = 0;
-        this.isBankrupted = false;
+        this.state.jailCards = 0;
+        this.state.isBankrupted = false;
         this.onCity = null;
         this.onUtility = null;
-        inJail = false;
+        this.state.inJail = false;
         this.gui = gui; // gui object is passed to constructor, we can print to textArea from this class
 
+    }
+
+    public Player(PlayerState state, GUI2 gui) {
+
+        this.state = state;
+        this.ownedCities = new ArrayList<>();
+        this.ownedUtilities = new ArrayList<>();
+        this.subscribers = new ArrayList<>();
+        this.onCity = null;
+        this.onUtility = null;
+        this.gui = gui; // gui object is passed to constructor, we can print to textArea from this class
+        this.subscribers = new ArrayList<>();
+
+    }
+
+
+    public static Player loadPlayer(String name, GUI2 gui2, Board board) {
+
+        ObjectMapper mapper = new ObjectMapper();
+
+        try{
+            PlayerState s = mapper.readValue(new File(name +".json"), PlayerState.class);
+            
+            Player p = new Player(s, gui2);
+            int money = p.getMoney();
+
+            for (String u : p.state.utilities){
+                Utility utility = (Utility)board.getSpace(u);
+                if (utility == null){
+                    continue;
+                }
+                // ensure enough money to buy back properties
+                p.setMoney(2000);
+                p.buyUtility(utility);
+            }
+
+            for (String u : p.state.cities){
+                City city = (City)board.getSpace(u);
+                if (city == null){
+                    continue;
+                }
+                p.setMoney(2000);
+                p.buyCity(city);
+            }
+            // set to actual amount of money
+            p.setMoney(money);
+
+            return p;
+        }
+        catch(Exception e)
+        {
+            System.out.println(e);
+            return null;
+        }
+
+    }
+
+    public void saveState() {
+
+        // save all properties before saving to file
+        for (Utility u : ownedUtilities){
+            state.utilities.add(u.getName());
+        }
+
+        for (City c : ownedCities){
+            state.cities.add(c.getName());
+        }
+
+        try{
+            
+
+            ObjectMapper mapper = new ObjectMapper();
+
+            String saveString = mapper.writeValueAsString(this.state);
+            
+            FileWriter f = new FileWriter(state.name+".json");
+            f.write(saveString);
+            f.close();
+        }
+        catch(Exception e)
+        {
+            System.out.print("Exception: ");
+            System.out.println(e);
+
+        }
     }
 
     public void subscribe(PlayerObserver p){
@@ -101,37 +208,37 @@ public class Player {
     }
 
     public String getName() {
-        return name;
+        return state.name;
     }
 
     public int getMoney() {
-        return money;
+        return state.money;
     }
 
 
 
     public void setMoney(int money) {
-        this.money = money;
+        this.state.money = money;
     }
 
     public int getPosition() {
-        return position;
+        return state.position;
     }
 
-    public int getPositionDiff() { return positionDiff; }
-    public int getConsecutiveMoves() { return consecutiveMoves; }
-    public void setConsecutiveMoves(int count) { consecutiveMoves = count; }
+    public int getPositionDiff() { return state.positionDiff; }
+    public int getConsecutiveMoves() { return state.consecutiveMoves; }
+    public void setConsecutiveMoves(int count) { state.consecutiveMoves = count; }
     public boolean getIsBankrupted(){
-        return isBankrupted;
+        return state.isBankrupted;
     }
     public void setIsBankrupted(boolean ans){
-        isBankrupted = ans;
+        state.isBankrupted = ans;
     }
-    public void setPosition(int position) { this.position = position; }
+    public void setPosition(int position) { this.state.position = position; }
 
-    public int getTurnsInJail() { return turnsInJail; }
+    public int getTurnsInJail() { return state.turnsInJail; }
 
-    public void setTurnsInJail(int count) { turnsInJail = count; }
+    public void setTurnsInJail(int count) { state.turnsInJail = count; }
 
     public void sendToJail() {
 //        setPosition(10);
@@ -139,8 +246,8 @@ public class Player {
 
         // Notify the player about being sent to jail before the delay
 
-        gui.getTextArea().setText(name + " is being sent to jail!");
-        consecutiveMoves = 0;
+        gui.getTextArea().setText(state.name + " is being sent to jail!");
+        state.consecutiveMoves = 0;
 
         // Introduce a delay of 2 seconds (2000 milliseconds) before sending the player to jail
         int delayMilliseconds = 1000;
@@ -149,13 +256,13 @@ public class Player {
             // Notify the player again after the delay
 
             Audio.playAudio("src/main/resources/jailSiren.wav");
-            gui.getTextArea().setText(name + " has been sent to jail!");
+            gui.getTextArea().setText(state.name + " has been sent to jail!");
 
         });
 
 
         //setPosition(10);
-        inJail = true;
+        state.inJail = true;
 
         // Start the timer
         timer.setRepeats(false);
@@ -175,25 +282,25 @@ public class Player {
          */
 
         if (!this.getType().equals("Player")) Audio.playAudio("src/main/resources/diceRoll.wav");
-        consecutiveMoves++;
+        state.consecutiveMoves++;
 
-        int temp = position;
-        position = Math.floorMod(position + steps, 40);  // Assuming the board size is 40
-        positionDiff = Math.abs(position - temp);
-        inJail = false; // remove this line once the jail delay is set correctly
-        if (steps > 0 && position < temp) {
+        int temp = state.position;
+        state.position = Math.floorMod(state.position + steps, 40);  // Assuming the board size is 40
+        state.positionDiff = Math.abs(state.position - temp);
+        state.inJail = false; // remove this line once the jail delay is set correctly
+        if (steps > 0 && state.position < temp) {
 
             Audio.playAudio("src/main/resources/gotCash.wav");
             gui.getTextArea().setText("You have passed Go! You collect 200$.\n");
 
-            money += 200;
+            state.money += 200;
         }
         notifyObservers();
     }
 
 
     public void buyCity(City city) {
-        if(city.getPrice() > money) {
+        if(city.getPrice() > state.money) {
 
             gui.getTextArea().setText("Not enough money to buy this city");
             if(gui.getTutor())
@@ -201,14 +308,14 @@ public class Player {
                         "passing go, or drawing community chest cards!\n");
             return;
         }
-        money -= city.getPrice();
+        state.money -= city.getPrice();
         ownedCities.add(city);
         city.setOwner(this);
         notifyObservers();
     }
 
     public void buyUtility(Utility utility) {
-        if (utility.getPrice() > money) {
+        if (utility.getPrice() > state.money) {
 
             gui.getTextArea().setText("Not enough money to buy this utility");
             if(gui.getTutor())
@@ -217,20 +324,20 @@ public class Player {
 
             return;
         }
-        money -= utility.getPrice();
+        state.money -= utility.getPrice();
         ownedUtilities.add(utility);
         utility.setOwner(this);
         notifyObservers();
     }
 
     public void payRent(int rent) {
-        if(money >= rent) {
-            money -= rent;
+        if(state.money >= rent) {
+            state.money -= rent;
         } else {
 
-            //System.out.println("Not enough money to pay rent. Transferring assets and going bankrupt.");
+            //System.out.println("Not enough state.money to pay rent. Transferring assets and going bankrupt.");
 
-            money = 0;
+            state.money = 0;
             playerbankrupted();
             return;
         }
@@ -260,41 +367,43 @@ public class Player {
     }
 
     private void playerbankrupted(){
-        System.out.println(name + " is Bankrupted!");
-        gui.getTextArea().setText(name + " is Bankrupted!");
+
+        System.out.println(state.name + " is Bankrupted!");
+        gui.getTextArea().setText(state.name + " is Bankrupted!");
         Game.gameOver(gui);
+
         notifyGameOver();
     }
 
     public void receiveRent(int rent) {
-        money += rent;
+        state.money += rent;
         notifyObservers();
     }
 
     public int getJailCards() {
-        return jailCards;
+        return state.jailCards;
     }
 
     public void setJailCards(int count) {
-        jailCards = count;
+        state.jailCards = count;
         notifyObservers();
     }
 
-    public boolean getJailState() { return inJail; }
+    public boolean getJailState() { return state.inJail; }
 
-    public void leaveJail() { inJail = false; }
+    public void leaveJail() { state.inJail = false; }
 
-    // displays the player's money before and after purchasing the utility
+    // displays the player's state.money before and after purchasing the utility
     public boolean wantToBuyUtility(Utility utility) {
         Scanner scanner = new Scanner(System.in);
 
-        gui.getTextArea().setText("Current Money: $" + money + ".");
+        gui.getTextArea().setText("Current Money: $" + state.money + ".");
 
         gui.getTextArea().append(" Do you want to buy " + utility.getName() + " for $" + utility.getPrice() + "? (Y/N)");
         String input = scanner.nextLine().trim().toLowerCase();
 
         if (input.equals("y")) {
-            int remainingMoney = money - utility.getPrice();
+            int remainingMoney = state.money - utility.getPrice();
 
             gui.getTextArea().setText("Remaining Money: $" + remainingMoney);
             return true;
@@ -302,17 +411,17 @@ public class Player {
             return false;
         }
     }
-    // displays the player's money before and after purchasing the city
+    // displays the player's state.money before and after purchasing the city
     public boolean wantToBuyCity(City city){
         Scanner scanner = new Scanner(System.in);
 
-        gui.getTextArea().setText("Current Money: $" + money +".");
+        gui.getTextArea().setText("Current Money: $" + state.money +".");
 
         gui.getTextArea().append(" Do you want to buy " + city.getName() + " for $" + city.getPrice() + "? (Y/N)");
         String input = scanner.nextLine().trim().toLowerCase();
 
         if (input.equals("y")) {
-            int remainingMoney = money - city.getPrice();
+            int remainingMoney = state.money - city.getPrice();
             System.out.println("Remaining Money: $" + remainingMoney);
             gui.getTextArea().setText("Remaining Money: $" + remainingMoney);
             return true;

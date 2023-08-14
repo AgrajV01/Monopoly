@@ -285,6 +285,17 @@ public class GUI2 implements ActionListener , PlayerObserver {
                         diceLabel2 = null;
                     }
 
+                    if (game.getCurrentPlayer().getJailState()) {
+                        Audio.playAudio("src/main/resources/lostMoney.wav");
+                        game.getCurrentPlayer().payRent(50);
+
+                        if (game.getCurrentPlayer().getMoney() >= 0) {
+                            game.getCurrentPlayer().setTurnsInJail(0);
+                            game.getCurrentPlayer().leaveJail();
+                            getTextArea().append(game.getCurrentPlayer().getName() + " has paid 50$ to leave jail!");
+                        }
+                    }
+
                     game.makeMove(die);
 
 

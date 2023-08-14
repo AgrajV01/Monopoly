@@ -87,6 +87,7 @@ public class MainMenu {
         factory.setNumOfAiPlayers(2);
         factory.setCash(2000);
         factory.setBoardStyle("Classic");
+
     }
 
     public void setNewGameButton(GUI2 a) {
@@ -208,6 +209,32 @@ public class MainMenu {
             }
             public void focusLost(FocusEvent e) {
                 aiDifficultySelector.setBackground(inputBackground);
+            }
+        });
+
+        String[] tutorialOptions = {
+                "ON", "OFF"
+        };
+
+        String tutorialMode = "ON"
+        if(tutor == false)
+            tutorialMode = "OFF";
+        else tutorialMode = "ON";
+
+
+        // tutorial drop down
+        JComboBox<String> tutorialSelection = new JComboBox<>(tutorialOptions);
+        boardStyleSelection.setSelectedItem(tutorialMode);
+        boardStyleSelection.setFont(standardFont);
+        boardStyleSelection.setBackground(inputBackground);
+        boardStyleSelection.setForeground(inputForeground);
+        boardStyleSelection.setPreferredSize(new Dimension(200, 30));
+        boardStyleSelection.addFocusListener(new FocusAdapter() {
+            public void focusGained(FocusEvent e) {
+                boardStyleSelection.setBackground(focusColor);
+            }
+            public void focusLost(FocusEvent e) {
+                boardStyleSelection.setBackground(inputBackground);
             }
         });
 

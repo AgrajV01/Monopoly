@@ -339,7 +339,7 @@ public class Player {
 
     public void buyHouse(City city) {
         payRent(city.getHouseCost());
-        city.addHouse();
+//        city.addHouse();
     }
 
     public void buyHotel(City city) {

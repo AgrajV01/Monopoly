@@ -756,18 +756,31 @@ public class GUI2 implements ActionListener , PlayerObserver {
         setBackdrop(black);
 
         displayBackground();
-        displayPlayers(game);
+// was here originally
         displayStats(game);
+
         displayMan(game);
+
         displayTextBox(game);
+
         displayTextArea();
+
         displayCards(5,6);
+
+
+
         displayDice();
+
+
 
         game.subscribeToPlayers(this); // for updating player stats
 
+
+
         //setOkButton(game);
         nextTurn(game);
+
+        displayPlayers(game);
         //setBuildHouseButton(game);
         frame.setVisible(true);
     }
@@ -787,14 +800,77 @@ public class GUI2 implements ActionListener , PlayerObserver {
 
             playerIcon.setBounds(800 + (i - 1) * DISTPLAYERS, 800 + MOVEUP + (i - 1) * DISTPLAYERS, 50, 50);
 
-            int playerPosition = game.getPlayer(i-1).getPosition();
+
             // returns player position from player
 
 
-            game.getPlayer(i-1).move(playerPosition); // to move the player to the correct position
+
             playerIcons.add(playerIcon);
 
             layeredPane.add(playerIcons.get(i - 1), new Integer(6));
+
+            //////////////////
+
+            //int currentPlayerPosition = game.getCurrentPlayer().getPosition();
+
+            System.out.println("816");
+            int currentPlayerPosition = game.getPlayer(i-1).getPosition();
+
+
+            System.out.println("Sending player to " + currentPlayerPosition);
+
+            JLabel currentPlayerIcon = playerIcons.get(game.getCurrentPlayerIndex());
+
+            System.out.println("823");
+
+            Point newPosition = new Point(boardPositions[currentPlayerPosition]);
+
+            System.out.println("827");
+            int yOffset = 70 / game.getNumPlayers();
+
+            System.out.println("830");
+
+            int xOffset = yOffset;
+
+            System.out.println("834");
+            if (currentPlayerPosition < 11) {
+                newPosition.y += yOffset * game.getCurrentPlayerIndex();
+                System.out.println("837");}
+            else if (currentPlayerPosition < 21) {
+                newPosition.x -= xOffset * game.getCurrentPlayerIndex();
+                System.out.println("840"); }
+            else if (currentPlayerPosition < 31) {
+                newPosition.y -= yOffset * game.getCurrentPlayerIndex();
+                System.out.println("843"); }
+            else {
+                newPosition.x += xOffset * game.getCurrentPlayerIndex();
+                System.out.println("846"); }
+            animateMovement(currentPlayerIcon, newPosition, 15);
+
+            if (game.getCurrentPlayer().getJailState()) {
+                System.out.println("Current player: " + game.getCurrentPlayerIndex());
+                //System.out.println(game.getPrevPlayer().getPosition());
+                game.getCurrentPlayer().setPosition(10);
+                newPosition = new Point(boardPositions[game.getCurrentPlayer().getPosition()]);
+                //System.out.println(game.getPrevPlayer().getPosition());
+
+                if (currentPlayerPosition < 11)
+                    newPosition.y += yOffset * game.getCurrentPlayerIndex();
+                else if (currentPlayerPosition < 21)
+                    newPosition.x -= xOffset * game.getCurrentPlayerIndex();
+                else if (currentPlayerPosition < 31)
+                    newPosition.y -= yOffset * game.getCurrentPlayerIndex();
+                else
+                    newPosition.x += xOffset * game.getCurrentPlayerIndex();
+
+
+
+            }
+
+
+
+
+
         }
 
         frame.setVisible(true);

@@ -30,16 +30,6 @@ public class GUI2 implements ActionListener , PlayerObserver {
     private PlayerStats p2;
     private PlayerStats p3;
     private PlayerStats p4;
-
-//    private JLabel money1; // for player stats
-//    private JLabel money2;
-//    private JLabel money3;
-//    private JLabel money4;
-//
-//    private JLabel property1;
-//    private JLabel property2;
-//    private JLabel property3;
-//    private JLabel property4;
     private PlayerStats PlayerMenuPrototype;
 
 
@@ -69,68 +59,6 @@ public class GUI2 implements ActionListener , PlayerObserver {
 
         this.tutor = tutor; // sets the tutorial mode on or off
     }
-/*
-    public void setMoney1(int money) {
-
-        String moneyString = String.valueOf(money);
-        money1.setText(moneyString);
-
-    }
-
-    public void setMoney2(int money) {
-
-        String moneyString = String.valueOf(money);
-        money2.setText(moneyString);
-
-    }
-
-    public void setMoney3(int money) {
-
-        String moneyString = String.valueOf(money);
-        money3.setText(moneyString);
-
-    }
-
-    public void setMoney4(int money) {
-
-        String moneyString = String.valueOf(money);
-        money4.setText(moneyString);
-
-    }
-
-    public void setProperty1(int size) {
-
-
-        String numProperties = String.valueOf(size);
-        property1.setText(numProperties);
-
-    }
-
-    public void setProperty2(int size) {
-
-
-        String numProperties = String.valueOf(size);
-        property2.setText(numProperties);
-
-    }
-
-    public void setProperty3(int size) {
-
-
-        String numProperties = String.valueOf(size);
-        property3.setText(numProperties);
-
-    }
-
-    public void setProperty4(int size) {
-
-
-        String numProperties = String.valueOf(size);
-        property4.setText(numProperties);
-
-    }
-
- */
 
 
     public void setBackdrop(String fileName) {
@@ -867,18 +795,6 @@ public class GUI2 implements ActionListener , PlayerObserver {
     public void displayStats(Game game) {
         System.out.println("initializingTheStatsDisplay");
 
-/*
-        money1 = new JLabel(""); // Setting positions for money labels
-        money2 = new JLabel("hi");
-        money3 = new JLabel("hi");
-        money4 = new JLabel("hi");
-
-        property1 = new JLabel("hi"); // Setting position for property number labels
-        property2 = new JLabel("hi");
-        property3 = new JLabel("hi");
-        property4 = new JLabel("hi");
-
- */
 
         for(int i = 1; i < game.getNumPlayers()+1; i++) {
 
@@ -901,46 +817,30 @@ public class GUI2 implements ActionListener , PlayerObserver {
 
             if(i == 1) { // set money1 and so on
                 p1 = PlayerMenuPrototype.clone();
-                // money1.setBounds(1100 + hShift, 100+vShift, 100, 100);
-                // layeredPane.add(money1, new Integer(7));
-                // property1.setBounds(1120 + hShift, 155+vShift, 100, 100);
-                // layeredPane.add(property1, new Integer(7));
                 p1.setMoneyBounds(1100 + hShift, 100+vShift, 100, 100 );
                 layeredPane.add(p1.getMoneyLabel(), new Integer(7));
                 p1.setPropertyBounds(1120 + hShift, 155+vShift, 100, 100);
                 layeredPane.add(p1.getPropertyLabel(), new Integer(7));
             }
 
-            else if(i == 2) { // set money1 and so on
+            else if(i == 2) {
                 p2 = PlayerMenuPrototype.clone();
-//                money2.setBounds(1100 + hShift, 100+vShift, 100, 100);
-//                layeredPane.add(money2, new Integer(7));
-//                property2.setBounds(1120 + hShift, 155+vShift, 100, 100);
-//                layeredPane.add(property2, new Integer(7));
                 p2.setMoneyBounds(1100 + hShift, 100+vShift, 100, 100 );
                 layeredPane.add(p2.getMoneyLabel(), new Integer(7));
                 p2.setPropertyBounds(1120 + hShift, 155+vShift, 100, 100);
                 layeredPane.add(p2.getPropertyLabel(), new Integer(7));
             }
 
-            else if(i == 3) { // set money1 and so on
-                 p3 = PlayerMenuPrototype.clone();
-//                money3.setBounds(1100 + hShift, 100+vShift, 100, 100);
-//                layeredPane.add(money3, new Integer(7));
-//                property3.setBounds(1120 + hShift, 155+vShift, 100, 100);
-//                layeredPane.add(property3, new Integer(7));
+            else if(i == 3) {
+                p3 = PlayerMenuPrototype.clone();
                 p3.setMoneyBounds(1100 + hShift, 100+vShift, 100, 100 );
                 layeredPane.add(p3.getMoneyLabel(), new Integer(7));
                 p3.setPropertyBounds(1120 + hShift, 155+vShift, 100, 100);
                 layeredPane.add(p3.getPropertyLabel(), new Integer(7));
             }
 
-            else if(i == 4) { // set money1 and so on
-                 p4 = PlayerMenuPrototype.clone();
-//                money4.setBounds(1100 + hShift, 100+vShift, 100, 100);
-//                layeredPane.add(money4, new Integer(7));
-//                property4.setBounds(1120 + hShift, 155+vShift, 100, 100);
-//                layeredPane.add(property4, new Integer(7));
+            else if(i == 4) {
+                p4 = PlayerMenuPrototype.clone();
                 p4.setMoneyBounds(1100 + hShift, 100+vShift, 100, 100 );
                 layeredPane.add(p4.getMoneyLabel(), new Integer(7));
                 p4.setPropertyBounds(1120 + hShift, 155+vShift, 100, 100);
@@ -1071,24 +971,6 @@ public class GUI2 implements ActionListener , PlayerObserver {
 
     }
 
-    /*public void rollDice() {
-
-        rollButton = new JButton("ROLL DICE"); // creates button object
-        rollButton.setBounds(110, 300, 80, 25); // bounds start from upper left corner
-        frame.add(panel);
-        rollButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-
-                frame.dispose();
-
-            }
-        }); // "this" refers to "this class" and using an action method within it
-        panel.add(rollButton);
-        setBackdrop(black)
-        frame.setVisible(true); // must come at the very end
-    }*/
-
     public void onGameOver(){
         image = new ImageIcon(getClass().getResource("bankrupcy.png"));
         JLabel pictureLabel = new JLabel(image);
@@ -1115,31 +997,18 @@ public class GUI2 implements ActionListener , PlayerObserver {
         if (name.contains("1")) {
             p1.setMoneyLabel(p.getMoney());
             p1.setPropertyLabel(p.getOwnedCities().size() + p.getOwnedUtilities().size());
-            //p1.setNumHousesBuilt(p1.getNumHousesBuilt());
-            //setMoney1(p.getMoney());
-            //setProperty1(p.getOwnedCities().size() + p.getOwnedUtilities().size());
-
         }
         else if (name.contains("2")){
             p2.setMoneyLabel(p.getMoney());
             p2.setPropertyLabel(p.getOwnedCities().size() + p.getOwnedUtilities().size());
-//            p2.setNumHousesBuilt(p2.getNumHousesBuilt());
-//            setMoney2(p.getMoney());
-//            setProperty2(p.getOwnedCities().size() + p.getOwnedUtilities().size());
         }
         else if (name.contains("3")){
             p3.setMoneyLabel(p.getMoney());
             p3.setPropertyLabel(p.getOwnedCities().size() + p.getOwnedUtilities().size());
-//            p3.setNumHousesBuilt(p3.getNumHousesBuilt());
-//            setMoney3(p.getMoney());
-//            setProperty3(p.getOwnedCities().size() + p.getOwnedUtilities().size());
         }
         else {
             p4.setMoneyLabel(p.getMoney());
             p4.setPropertyLabel(p.getOwnedCities().size() + p.getOwnedUtilities().size());
-//            p4.setNumHousesBuilt(p4.getNumHousesBuilt());
-//            setMoney4(p.getMoney());
-//            setProperty4(p.getOwnedCities().size() + p.getOwnedUtilities().size());
         }
     }
 

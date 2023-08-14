@@ -1,1 +1,1 @@
-{"name":"Player 3","positionDiff":0,"money":2000,"position":0,"consecutiveMoves":0,"isBankrupted":false,"inJail":false,"jailCards":0}
+{"name":"Player 3","utilities":[],"cities":[],"positionDiff":7,"money":2000,"position":10,"consecutiveMoves":0,"isBankrupted":false,"inJail":true,"jailCards":0,"turnsInJail":0,"imageIcon":null}

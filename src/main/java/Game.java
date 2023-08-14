@@ -86,7 +86,7 @@ public class Game {
         this.die = new Die();
 
         for (String name : this.state.playerNames){
-            Player p = Player.loadPlayer(name, gui, board);
+            Player p = Player.loadPlayer(name, gui, board, this);
             Game.players.add(p);
             System.out.println(p.getPosition());
         }

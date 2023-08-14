@@ -791,6 +791,8 @@ public class GUI2 implements ActionListener , PlayerObserver {
             // returns player position from player
 
 
+            //System.out.println(game.getPlayer(i - 1).getPosition());
+
             game.getPlayer(i-1).move(playerPosition); // to move the player to the correct position
             playerIcons.add(playerIcon);
 

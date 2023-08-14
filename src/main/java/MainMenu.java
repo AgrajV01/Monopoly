@@ -15,6 +15,7 @@ public class MainMenu {
     private static JLayeredPane layeredPane;
     private JLabel bgLabel;
     private GameFactory factory;
+    private String tutorialMode = "ON"; // for the drop down
 
     MainMenu(boolean tutor) {
         Audio.playAudio("src/main/resources/bgm.wav");
@@ -46,9 +47,7 @@ public class MainMenu {
         factory = new CustomGameFactory(4,2,2000,"Classic", a);
         //defaultSettings();
 
-        String tutorialMode = "ON"; // for the drop down
-
-        if(a.getTutor() == false)
+        if(a.getTutor() == false)  // reads boolean and sets string to on or off
             tutorialMode = "OFF";
         else tutorialMode = "ON";
 
@@ -223,23 +222,23 @@ public class MainMenu {
         };
 
 
-
-
         // tutorial drop down
         JComboBox<String> tutorialSelection = new JComboBox<>(tutorialOptions);
-        boardStyleSelection.setSelectedItem(tutorialMode);
-        boardStyleSelection.setFont(standardFont);
-        boardStyleSelection.setBackground(inputBackground);
-        boardStyleSelection.setForeground(inputForeground);
-        boardStyleSelection.setPreferredSize(new Dimension(200, 30));
-        boardStyleSelection.addFocusListener(new FocusAdapter() {
+        tutorialSelection.setSelectedItem(tutorialMode);
+        tutorialSelection.setFont(standardFont);
+        tutorialSelection.setBackground(inputBackground);
+        tutorialSelection.setForeground(inputForeground);
+        tutorialSelection.setPreferredSize(new Dimension(200, 30));
+        tutorialSelection.addFocusListener(new FocusAdapter() {
             public void focusGained(FocusEvent e) {
-                boardStyleSelection.setBackground(focusColor);
+                tutorialSelection.setBackground(focusColor);
             }
             public void focusLost(FocusEvent e) {
-                boardStyleSelection.setBackground(inputBackground);
+                tutorialSelection.setBackground(inputBackground);
             }
         });
+
+
 
         JLabel boardStyleLabel = new JLabel("Board Style: ");
         boardStyleLabel.setFont(labelFont);
@@ -252,6 +251,10 @@ public class MainMenu {
         JLabel aiPlayersLabel = new JLabel("Number of AI Players: ");
         aiPlayersLabel.setFont(labelFont);
         aiPlayersLabel.setForeground(Color.WHITE);
+
+        JLabel tutorialLabel = new JLabel("Tutorial Mode: ");
+        tutorialLabel.setFont(labelFont);
+        tutorialLabel.setForeground(Color.WHITE);
 
         JPanel settingsPanel = new JPanel(new GridLayout(0, 2, 10, 10));
         settingsPanel.add(boardStyleLabel);
@@ -274,8 +277,10 @@ public class MainMenu {
 
         settingsPanel.add(aiDifficultyLabel);
         settingsPanel.add(aiDifficultySelector);
+        settingsPanel.add(tutorialLabel);
+        settingsPanel.add(tutorialSelection);
 
-        JCheckBox allColorsCheckbox = new JCheckBox("All Colors To Buy a House/Hotel Requirement", currentAllColors);
+        JCheckBox allColorsCheckbox = new JCheckBox("One colour per property requirement", currentAllColors);
         allColorsCheckbox.setFont(standardFont);
         allColorsCheckbox.setBackground(darkerBlue);
         allColorsCheckbox.setForeground(Color.WHITE);

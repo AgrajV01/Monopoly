@@ -7,3 +7,5 @@ Linux build instructions:
 Windows Command Prompt instructions:
 mvn package
 java -jar target/gs-maven-0.1.0.jar
+
+Version runnable in IntelliJ in the other branch
